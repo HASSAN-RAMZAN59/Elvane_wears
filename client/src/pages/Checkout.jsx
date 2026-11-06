@@ -62,8 +62,8 @@ export default function Checkout() {
           phone,
           street,
           city,
-          state,
-          zip,
+          state: state || city || 'Pakistan',
+          zip: zip || '',
           country: 'Pakistan',
         })
       );
@@ -212,15 +212,24 @@ export default function Checkout() {
                       />
                     </div>
                     <div>
-                      <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Postal Code</label>
+                      <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Province / State</label>
                       <input
                         type="text"
-                        required
-                        placeholder="e.g. 54000"
-                        value={zip}
-                        onChange={(e) => setZip(e.target.value)}
+                        placeholder="e.g. Punjab / Sindh"
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
                       />
                     </div>
+                  </div>
+
+                  <div>
+                    <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Postal Code (Optional)</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 54000"
+                      value={zip}
+                      onChange={(e) => setZip(e.target.value)}
+                    />
                   </div>
                 </div>
               </div>

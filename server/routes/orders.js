@@ -45,6 +45,10 @@ router.post('/', protect, requireVerifiedEmail, upload.single('jazzCashScreensho
     }
 
     const parsedAddress = JSON.parse(shippingAddress);
+    parsedAddress.state = parsedAddress.state || parsedAddress.city || 'Pakistan';
+    parsedAddress.zip = parsedAddress.zip || '';
+    parsedAddress.country = parsedAddress.country || 'Pakistan';
+
     const order = await Order.create({
       user: req.user._id,
       items: orderItems,

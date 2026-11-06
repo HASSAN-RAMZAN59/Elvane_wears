@@ -19,8 +19,8 @@ const orderSchema = new mongoose.Schema({
     phone: { type: String, required: true },
     street: { type: String, required: true },
     city: { type: String, required: true },
-    state: { type: String, required: true },
-    zip: { type: String, required: true },
+    state: { type: String, default: 'Pakistan' },
+    zip: { type: String, default: '' },
     country: { type: String, default: 'Pakistan' }
   },
   paymentMethod: { type: String, enum: ['COD', 'JazzCash'], required: true },
