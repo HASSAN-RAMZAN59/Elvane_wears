@@ -5,7 +5,61 @@ import nodemailer from 'nodemailer';
  * Universal Email Sender with Resend & SMTP Support
  */
 export const sendEmail = async ({ to, subject, html, replyTo }) => {
-  // 1. Try Resend if RESEND_API_KEY is available
+  // 1. Primary: Use Nodemailer SMTP if configured (e.g. Gmail App Password)
+  const isSmtpValid =
+    process.env.SMTP_USER &&
+    !process.env.SMTP_USER.includes('your_email') &&
+    process.env.SMTP_PASS &&
+    !process.env.SMTP_PASS.includes('your_app_password');
+
+  if (isSmtpValid) {
+    try {
+      const isGmail =
+        (process.env.SMTP_HOST || '').includes('gmail') ||
+        (process.env.SMTP_USER || '').includes('@gmail.com');
+
+      const transporter = nodemailer.createTransport(
+        isGmail
+          ? {
+              service: 'gmail',
+              auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS.replace(/\s+/g, ''),
+              },
+            }
+          : {
+              host: process.env.SMTP_HOST || 'smtp.gmail.com',
+              port: parseInt(process.env.SMTP_PORT) || 587,
+              secure: parseInt(process.env.SMTP_PORT) === 465,
+              auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS.replace(/\s+/g, ''),
+              },
+              connectionTimeout: 10000,
+              greetingTimeout: 10000,
+              socketTimeout: 10000,
+            }
+      );
+
+      const mailOptions = {
+        from: `"Elvane Wear" <${process.env.FROM_EMAIL || process.env.SMTP_USER || 'elvane.wears@gmail.com'}>`,
+        to,
+        subject,
+        html,
+      };
+      if (replyTo) {
+        mailOptions.replyTo = replyTo;
+      }
+
+      const info = await transporter.sendMail(mailOptions);
+      console.log(`📧 [SMTP] Email sent to ${to} (ID: ${info.messageId})`);
+      return true;
+    } catch (error) {
+      console.error(`⚠️ [SMTP] Failed: ${error.message}`);
+    }
+  }
+
+  // 2. Secondary: Try Resend if RESEND_API_KEY is available
   if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY.startsWith('re_')) {
     try {
       const resend = new Resend(process.env.RESEND_API_KEY);
@@ -31,46 +85,6 @@ export const sendEmail = async ({ to, subject, html, replyTo }) => {
       }
     } catch (err) {
       console.error('❌ Resend sending exception:', err.message);
-    }
-  }
-
-  // 2. Fallback to Nodemailer SMTP if configured
-  const isSmtpValid =
-    process.env.SMTP_USER &&
-    !process.env.SMTP_USER.includes('your_email') &&
-    process.env.SMTP_PASS &&
-    !process.env.SMTP_PASS.includes('your_app_password');
-
-  if (isSmtpValid) {
-    try {
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST || 'smtp.gmail.com',
-        port: parseInt(process.env.SMTP_PORT) || 587,
-        secure: false,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
-        },
-        connectionTimeout: 5000,
-        greetingTimeout: 5000,
-        socketTimeout: 5000,
-      });
-
-      const mailOptions = {
-        from: `"Elvane Wear" <${process.env.FROM_EMAIL || 'elvane.wears@gmail.com'}>`,
-        to,
-        subject,
-        html,
-      };
-      if (replyTo) {
-        mailOptions.replyTo = replyTo;
-      }
-
-      await transporter.sendMail(mailOptions);
-      console.log(`📧 [SMTP] Email sent to ${to}`);
-      return true;
-    } catch (error) {
-      console.error(`⚠️ [SMTP] Failed: ${error.message}`);
     }
   }
 
