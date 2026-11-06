@@ -17,7 +17,7 @@ export default function Checkout() {
   const [phone, setPhone] = useState(user?.phone || '');
   const [street, setStreet] = useState(user?.address?.street || '');
   const [city, setCity] = useState(user?.address?.city || '');
-  const [state, setState] = useState(user?.address?.state || '');
+  const [state, setState] = useState(user?.address?.state || 'Punjab');
   const [zip, setZip] = useState(user?.address?.zip || '');
 
   // Payment Method: Strictly Cash on Delivery (COD)
@@ -62,8 +62,8 @@ export default function Checkout() {
           phone,
           street,
           city,
-          state: state || city || 'Pakistan',
-          zip: zip || '',
+          state: state || 'Punjab',
+          zip: zip || '00000',
           country: 'Pakistan',
         })
       );
@@ -212,13 +212,29 @@ export default function Checkout() {
                       />
                     </div>
                     <div>
-                      <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Province / State</label>
-                      <input
-                        type="text"
-                        placeholder="e.g. Punjab / Sindh"
+                      <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Province / Region</label>
+                      <select
                         value={state}
                         onChange={(e) => setState(e.target.value)}
-                      />
+                        style={{
+                          width: '100%',
+                          padding: '12px 14px',
+                          borderRadius: '12px',
+                          border: '1px solid var(--hairline)',
+                          background: '#FFFFFF',
+                          fontSize: '14px',
+                          color: 'var(--charcoal)',
+                          outline: 'none',
+                        }}
+                      >
+                        <option value="Punjab">Punjab</option>
+                        <option value="Sindh">Sindh</option>
+                        <option value="Khyber Pakhtunkhwa">Khyber Pakhtunkhwa</option>
+                        <option value="Balochistan">Balochistan</option>
+                        <option value="Islamabad Capital Territory">Islamabad</option>
+                        <option value="Azad Kashmir">Azad Kashmir</option>
+                        <option value="Gilgit-Baltistan">Gilgit-Baltistan</option>
+                      </select>
                     </div>
                   </div>
 
