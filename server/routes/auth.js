@@ -38,7 +38,7 @@ router.post('/register', async (req, res) => {
       existingUser.password = password;
       existingUser.emailVerificationOTP = otp;
       existingUser.emailVerificationExpires = new Date(Date.now() + 10 * 60 * 1000);
-      existingUser.isEmailVerified = !emailServiceActive;
+      existingUser.isEmailVerified = false;
       user = await existingUser.save();
     } else {
       user = await User.create({
@@ -47,7 +47,7 @@ router.post('/register', async (req, res) => {
         password,
         emailVerificationOTP: otp,
         emailVerificationExpires: new Date(Date.now() + 10 * 60 * 1000),
-        isEmailVerified: !emailServiceActive,
+        isEmailVerified: false,
       });
     }
 
@@ -77,13 +77,10 @@ router.post('/verify-email', protect, async (req, res) => {
 
     if (user.isEmailVerified) return res.json({ message: 'Email already verified' });
 
-    // Master OTP fallback allowed only in local non-production development
-    const isDevelopment = process.env.NODE_ENV !== 'production';
-    const isMasterOtp = isDevelopment && (otp === '123456' || otp === '000000');
-    if (!isMasterOtp && (!user.emailVerificationOTP || user.emailVerificationExpires < new Date())) {
+    if (!user.emailVerificationOTP || user.emailVerificationExpires < new Date()) {
       return res.status(400).json({ message: 'OTP expired. Please request a new one.' });
     }
-    if (!isMasterOtp && user.emailVerificationOTP !== otp) {
+    if (user.emailVerificationOTP !== otp) {
       return res.status(400).json({ message: 'Invalid OTP' });
     }
 

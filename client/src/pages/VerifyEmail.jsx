@@ -153,7 +153,7 @@ export default function VerifyEmail() {
               maxLength={6}
               required
               autoFocus
-              placeholder="123456"
+              placeholder="• • • • • •"
               value={otp}
               onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
               style={{
