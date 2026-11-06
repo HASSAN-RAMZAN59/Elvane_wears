@@ -59,6 +59,7 @@ export default function Checkout() {
         'shippingAddress',
         JSON.stringify({
           fullName,
+          email: user?.email || '',
           phone,
           street,
           city,
