@@ -289,35 +289,43 @@ export default function ProductCard3D({ product }) {
           )}
         </div>
 
-        {/* Floating Wishlist Button (TranslateZ 35px) */}
-        <motion.button
-          onClick={handleWishlistClick}
-          whileHover={{ scale: 1.15 }}
-          whileTap={{ scale: 0.9 }}
+        {/* Floating Wishlist Button (Z-Locked in 3D Space so scale hover never drops behind) */}
+        <div
           style={{
             position: 'absolute',
             top: 20,
             right: 20,
-            zIndex: 20,
-            transform: 'translateZ(35px)',
-            background: isWishlisted ? 'rgba(232, 196, 184, 0.95)' : 'rgba(255, 255, 255, 0.92)',
-            border: '1px solid var(--hairline)',
-            borderRadius: '50%',
-            width: 34,
-            height: 34,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            backdropFilter: 'blur(8px)',
-            boxShadow: '0 4px 12px rgba(26, 26, 26, 0.08)',
-            color: isWishlisted ? 'var(--danger)' : 'var(--graphite)',
-            transition: 'background 0.2s ease',
+            zIndex: 35,
+            transform: 'translateZ(50px)',
+            transformStyle: 'preserve-3d',
           }}
-          title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
+          onClick={(e) => e.stopPropagation()}
         >
-          <Heart size={15} strokeWidth={1.5} fill={isWishlisted ? 'var(--danger)' : 'none'} />
-        </motion.button>
+          <motion.button
+            type="button"
+            onClick={handleWishlistClick}
+            whileHover={{ scale: 1.15 }}
+            whileTap={{ scale: 0.9 }}
+            style={{
+              background: isWishlisted ? 'rgba(232, 196, 184, 0.95)' : 'rgba(255, 255, 255, 0.92)',
+              border: '1px solid var(--hairline)',
+              borderRadius: '50%',
+              width: 34,
+              height: 34,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              backdropFilter: 'blur(8px)',
+              boxShadow: '0 4px 12px rgba(26, 26, 26, 0.08)',
+              color: isWishlisted ? 'var(--danger)' : 'var(--graphite)',
+              transition: 'background 0.2s ease, border-color 0.2s ease',
+            }}
+            title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
+          >
+            <Heart size={15} strokeWidth={1.5} fill={isWishlisted ? 'var(--danger)' : 'none'} />
+          </motion.button>
+        </div>
 
         {/* Product Image Frame: Dual-Image (Model vs. Garment without Face) */}
         <div
