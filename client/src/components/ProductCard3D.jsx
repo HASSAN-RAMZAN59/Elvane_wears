@@ -596,6 +596,19 @@ export default function ProductCard3D({ product }) {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+              {product.originalPrice && Number(product.originalPrice) > Number(product.price) && (
+                <span
+                  style={{
+                    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+                    fontSize: '13px',
+                    fontWeight: 400,
+                    color: 'var(--ash)',
+                    textDecoration: 'line-through',
+                  }}
+                >
+                  {formatPKR(product.originalPrice)}
+                </span>
+              )}
               <span
                 style={{
                   fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
@@ -607,19 +620,6 @@ export default function ProductCard3D({ product }) {
               >
                 {formatPKR(product.price)}
               </span>
-              {product.originalPrice && Number(product.originalPrice) > Number(product.price) && (
-                <span
-                  style={{
-                    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                    fontSize: '12px',
-                    fontWeight: 400,
-                    color: 'var(--ash)',
-                    textDecoration: 'line-through',
-                  }}
-                >
-                  {formatPKR(product.originalPrice)}
-                </span>
-              )}
             </div>
             <span
               style={{

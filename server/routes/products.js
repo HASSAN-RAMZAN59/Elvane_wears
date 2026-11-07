@@ -183,6 +183,7 @@ router.put('/:id', protect, authorize('admin', 'superadmin'), upload.array('imag
     if (price !== undefined) product.price = Number(price);
     if (originalPrice !== undefined) {
       product.originalPrice = (originalPrice === '' || originalPrice === null || Number(originalPrice) <= 0) ? null : Number(originalPrice);
+      product.markModified('originalPrice');
     }
     if (category) product.category = category;
     if (fabric !== undefined) product.fabric = fabric;

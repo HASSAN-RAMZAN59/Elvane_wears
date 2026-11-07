@@ -337,6 +337,19 @@ export default function ProductDetail() {
 
               {/* Price Tag */}
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '14px', flexWrap: 'wrap', marginBottom: '20px' }}>
+                {product.originalPrice && Number(product.originalPrice) > Number(product.price) && (
+                  <span
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: '20px',
+                      color: 'var(--ash)',
+                      textDecoration: 'line-through',
+                      fontWeight: 400,
+                    }}
+                  >
+                    {formatPKR(product.originalPrice)}
+                  </span>
+                )}
                 <span
                   style={{
                     fontFamily: "'Cormorant Garamond', serif",
@@ -348,34 +361,21 @@ export default function ProductDetail() {
                   {formatPKR(product.price)}
                 </span>
                 {product.originalPrice && Number(product.originalPrice) > Number(product.price) && (
-                  <>
-                    <span
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: '18px',
-                        color: 'var(--ash)',
-                        textDecoration: 'line-through',
-                        fontWeight: 400,
-                      }}
-                    >
-                      {formatPKR(product.originalPrice)}
-                    </span>
-                    <span
-                      style={{
-                        background: '#85462C',
-                        color: '#FFFFFF',
-                        fontSize: '11px',
-                        fontWeight: 700,
-                        letterSpacing: '0.08em',
-                        textTransform: 'uppercase',
-                        padding: '3px 8px',
-                        borderRadius: '6px',
-                        display: 'inline-block',
-                      }}
-                    >
-                      {Math.round(((Number(product.originalPrice) - Number(product.price)) / Number(product.originalPrice)) * 100)}% Off
-                    </span>
-                  </>
+                  <span
+                    style={{
+                      background: '#85462C',
+                      color: '#FFFFFF',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      padding: '3px 8px',
+                      borderRadius: '6px',
+                      display: 'inline-block',
+                    }}
+                  >
+                    {Math.round(((Number(product.originalPrice) - Number(product.price)) / Number(product.originalPrice)) * 100)}% Off
+                  </span>
                 )}
                 <span style={{ fontSize: '12px', color: 'var(--ash)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                   Includes Top & Trousers
