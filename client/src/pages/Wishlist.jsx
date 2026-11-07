@@ -9,14 +9,17 @@ import api from '../utils/api';
 export default function Wishlist() {
   const [wishlistProducts, setWishlistProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { user } = useAuthStore();
+  const { user, guestWishlist, getWishlistIds } = useAuthStore();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const { data } = await api.get('/auth/wishlist');
-        setWishlistProducts(data);
+        setLoading(true);
+        const { data: allProducts } = await api.get('/products');
+        const ids = getWishlistIds ? getWishlistIds() : (guestWishlist || []);
+        const filtered = (allProducts || []).filter((p) => ids.includes(p._id));
+        setWishlistProducts(filtered);
       } catch (err) {
         console.error('Failed to load wishlist', err);
       } finally {
@@ -24,7 +27,7 @@ export default function Wishlist() {
       }
     };
     fetchWishlist();
-  }, [user?.wishlist]);
+  }, [user?.wishlist, guestWishlist]);
 
   return (
     <div style={{ background: 'var(--snow)', minHeight: '100vh', paddingTop: '100px', paddingBottom: '120px' }}>

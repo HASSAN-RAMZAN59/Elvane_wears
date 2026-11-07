@@ -151,11 +151,9 @@ export default function Navbar() {
             flex: 1,
           }}
         >
-          {isAuthenticated && (
-            <Link to="/wishlist" style={{ color: 'var(--ash)', display: 'flex' }} className="hidden sm:flex" title="Wishlist">
-              <Heart size={20} strokeWidth={1.25} />
-            </Link>
-          )}
+          <Link to="/wishlist" style={{ color: 'var(--ash)', display: 'flex' }} title="Wishlist">
+            <Heart size={20} strokeWidth={1.25} />
+          </Link>
 
           <button
             onClick={toggleCart}
@@ -186,12 +184,12 @@ export default function Navbar() {
             )}
           </button>
 
-          {isAuthenticated ? (
+          {isAuthenticated && (user?.role === 'admin' || user?.role === 'superadmin') && (
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               <Link
-                to={user?.role === 'superadmin' ? '/super-admin' : user?.role === 'admin' ? '/admin' : '/account'}
+                to={user?.role === 'superadmin' ? '/super-admin' : '/admin'}
                 style={{ color: 'var(--ash)', display: 'flex' }}
-                title="Account"
+                title="Admin Dashboard"
               >
                 <User size={20} strokeWidth={1.25} />
               </Link>
@@ -207,10 +205,6 @@ export default function Navbar() {
                 <LogOut size={18} strokeWidth={1.25} />
               </button>
             </div>
-          ) : (
-            <Link to="/login" style={{ color: 'var(--ash)', display: 'flex' }} title="Sign In">
-              <User size={20} strokeWidth={1.25} />
-            </Link>
           )}
 
           {/* Mobile hamburger toggle button */}
@@ -285,27 +279,16 @@ export default function Navbar() {
                 <span>Private Wishlist</span>
               </Link>
 
-              {isAuthenticated ? (
+              {isAuthenticated && (user?.role === 'admin' || user?.role === 'superadmin') && (
                 <>
                   <Link
-                    to={user?.role === 'superadmin' ? '/super-admin' : user?.role === 'admin' ? '/admin' : '/account'}
+                    to={user?.role === 'superadmin' ? '/super-admin' : '/admin'}
                     onClick={() => setMobileOpen(false)}
-                    style={{ fontSize: 13, color: 'var(--ash)', display: 'flex', alignItems: 'center', gap: '8px' }}
+                    style={{ fontSize: 13, color: 'var(--champagne)', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}
                   >
-                    <User size={16} strokeWidth={1.5} />
-                    <span>Client Portal ({user?.name})</span>
+                    <Shield size={16} strokeWidth={1.5} />
+                    <span>Admin Management Portal</span>
                   </Link>
-
-                  {(user?.role === 'admin' || user?.role === 'superadmin') && (
-                    <Link
-                      to="/admin"
-                      onClick={() => setMobileOpen(false)}
-                      style={{ fontSize: 13, color: 'var(--champagne)', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}
-                    >
-                      <Shield size={16} strokeWidth={1.5} />
-                      <span>Admin Management Portal</span>
-                    </Link>
-                  )}
 
                   <button
                     onClick={() => {
@@ -330,15 +313,6 @@ export default function Navbar() {
                     <span>Sign Out</span>
                   </button>
                 </>
-              ) : (
-                <Link
-                  to="/login"
-                  onClick={() => setMobileOpen(false)}
-                  style={{ fontSize: 13, color: 'var(--graphite)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}
-                >
-                  <User size={16} strokeWidth={1.5} />
-                  <span>Sign In / Register</span>
-                </Link>
               )}
             </div>
           </motion.div>

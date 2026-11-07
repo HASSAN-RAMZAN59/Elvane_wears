@@ -10,6 +10,26 @@ export const useAuthStore = create(
       isAuthenticated: false,
       loading: false,
       error: null,
+      guestWishlist: [],
+
+      isItemWishlisted: (productId) => {
+        const { user, guestWishlist = [] } = get();
+        const userWishlist = user?.wishlist || [];
+        const inUser = userWishlist.some(
+          (id) => (typeof id === 'string' ? id : id?._id) === productId
+        );
+        if (inUser) return true;
+        return (guestWishlist || []).includes(productId);
+      },
+
+      getWishlistIds: () => {
+        const { user, guestWishlist = [] } = get();
+        const userList = (user?.wishlist || []).map((id) =>
+          typeof id === 'string' ? id : id?._id
+        );
+        const set = new Set([...userList, ...(guestWishlist || [])]);
+        return Array.from(set);
+      },
 
       setAuth: (user, token) => set({ user, token, isAuthenticated: !!user, error: null }),
 
@@ -67,15 +87,22 @@ export const useAuthStore = create(
       },
 
       toggleWishlist: async (productId) => {
-        const { token } = get();
-        if (!token) return;
-        try {
-          const { data } = await api.post(`/auth/wishlist/${productId}`, {});
-          set({ user: { ...get().user, wishlist: data.wishlist } });
-          return data;
-        } catch (err) {
-          throw err;
+        const { token, user, guestWishlist = [] } = get();
+        const exists = (guestWishlist || []).includes(productId);
+        const updatedGuest = exists
+          ? guestWishlist.filter((id) => id !== productId)
+          : [...guestWishlist, productId];
+
+        set({ guestWishlist: updatedGuest });
+
+        if (token && user) {
+          try {
+            const { data } = await api.post(`/auth/wishlist/${productId}`, {});
+            set({ user: { ...get().user, wishlist: data.wishlist } });
+            return data;
+          } catch {}
         }
+        return { wishlist: updatedGuest };
       },
     }),
     { name: 'elvane-auth' }

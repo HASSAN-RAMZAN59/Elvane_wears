@@ -23,15 +23,14 @@ export default function ProductDetail() {
   // Review submission state
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
+  const [reviewerName, setReviewName] = useState('');
   const [reviewSubmitting, setReviewSubmitting] = useState(false);
   const [reviewSuccess, setReviewSuccess] = useState(false);
 
-  const { user, isAuthenticated, toggleWishlist } = useAuthStore();
+  const { toggleWishlist, isItemWishlisted } = useAuthStore();
   const { addItem, openCart } = useCartStore();
 
-  const isWishlisted = user?.wishlist?.some(
-    (id) => (typeof id === 'string' ? id : id?._id) === product?._id
-  );
+  const isWishlisted = isItemWishlisted ? isItemWishlisted(product?._id) : false;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -58,28 +57,26 @@ export default function ProductDetail() {
     openCart();
   };
 
-  const handleWishlistClick = async () => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
+  const handleWishlistClick = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
     }
-    await toggleWishlist(product._id);
+    if (product?._id) toggleWishlist(product._id);
   };
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
     setReviewSubmitting(true);
     try {
       await api.post(`/products/${product._id}/reviews`, {
         rating: reviewRating,
         comment: reviewComment,
+        name: reviewerName || 'Verified Buyer',
       });
       setReviewSuccess(true);
       setReviewComment('');
+      setReviewName('');
       // Reload product to get new review
       const { data } = await api.get(`/products/slug/${slug}`);
       setProduct(data);
@@ -738,6 +735,17 @@ export default function ProductDetail() {
               </p>
             ) : (
               <form onSubmit={handleReviewSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div>
+                  <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Your Name (Optional)</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Hassan R."
+                    value={reviewerName}
+                    onChange={(e) => setReviewName(e.target.value)}
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1px solid var(--hairline)', background: '#FFFFFF', fontSize: '13px' }}
+                  />
+                </div>
+
                 <div>
                   <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Rating</label>
                   <div style={{ display: 'flex', gap: '6px' }}>

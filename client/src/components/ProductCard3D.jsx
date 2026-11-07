@@ -85,12 +85,10 @@ export default function ProductCard3D({ product }) {
   const [imageError, setImageError] = useState(false);
   const navigate = useNavigate();
 
-  const { user, isAuthenticated, toggleWishlist } = useAuthStore();
+  const { toggleWishlist, isItemWishlisted } = useAuthStore();
   const { addItem, openCart } = useCartStore();
 
-  const isWishlisted = user?.wishlist?.some(
-    (id) => (typeof id === 'string' ? id : id?._id) === product._id
-  );
+  const isWishlisted = isItemWishlisted ? isItemWishlisted(product._id) : false;
 
   // Available active colors
   const availableColors = (product.colors && product.colors.length > 0)
@@ -164,14 +162,10 @@ export default function ProductCard3D({ product }) {
     openCart();
   };
 
-  const handleWishlistClick = async (e) => {
+  const handleWishlistClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
-    await toggleWishlist(product._id);
+    toggleWishlist(product._id);
   };
 
   return (

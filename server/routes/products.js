@@ -283,10 +283,10 @@ router.delete('/:id', protect, authorize('admin', 'superadmin'), async (req, res
   }
 });
 
-// Add review
-router.post('/:id/reviews', protect, async (req, res) => {
+// Add review (Guest & Member friendly)
+router.post('/:id/reviews', async (req, res) => {
   try {
-    const { rating, comment } = req.body;
+    const { rating, comment, name } = req.body;
     const numRating = Number(rating);
     if (!numRating || numRating < 1 || numRating > 5 || !Number.isInteger(numRating)) {
       return res.status(400).json({ message: 'Rating must be an integer between 1 and 5' });
@@ -296,10 +296,9 @@ router.post('/:id/reviews', protect, async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ message: 'Product not found' });
 
-    const alreadyReviewed = product.reviews.find(r => r.user.toString() === req.user._id.toString());
-    if (alreadyReviewed) return res.status(400).json({ message: 'You have already reviewed this product' });
+    const reviewerName = String(name || 'Verified Buyer').trim().slice(0, 50) || 'Verified Buyer';
 
-    product.reviews.push({ user: req.user._id, name: req.user.name, rating: numRating, comment: cleanComment });
+    product.reviews.push({ user: null, name: reviewerName, rating: numRating, comment: cleanComment });
     product.calculateAverageRating();
     await product.save();
     res.status(201).json({ message: 'Review added' });
