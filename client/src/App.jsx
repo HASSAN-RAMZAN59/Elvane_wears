@@ -125,14 +125,7 @@ export default function App() {
           <Route path="/verify-email" element={<VerifyEmail />} />
 
           {/* Protected Customer Routes */}
-          <Route
-            path="/checkout"
-            element={
-              <ProtectedRoute requireVerified={true}>
-                <Checkout />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/checkout" element={<Checkout />} />
           <Route
             path="/account"
             element={

@@ -11,7 +11,7 @@ const orderItemSchema = new mongoose.Schema({
 }, { _id: false });
 
 const orderSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false, default: null },
   orderNumber: { type: String, unique: true },
   items: [orderItemSchema],
   shippingAddress: {

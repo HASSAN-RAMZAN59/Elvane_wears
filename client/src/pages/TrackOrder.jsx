@@ -87,6 +87,46 @@ export default function TrackOrder() {
           </p>
         </div>
 
+        {/* Order Placed Success Banner */}
+        {searchParams.get('placed') === 'true' && (
+          <div
+            style={{
+              background: 'rgba(90, 138, 106, 0.08)',
+              border: '1px solid rgba(90, 138, 106, 0.25)',
+              borderRadius: '16px',
+              padding: '20px 24px',
+              marginBottom: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
+            }}
+          >
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                background: 'rgba(90, 138, 106, 0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--success)',
+                flexShrink: 0,
+              }}
+            >
+              <CheckCircle2 size={24} />
+            </div>
+            <div>
+              <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--graphite)', margin: '0 0 4px' }}>
+                Order Placed Successfully!
+              </h3>
+              <p style={{ fontSize: '13px', color: 'var(--ash)', margin: 0 }}>
+                Thank you for your order! Your Cash on Delivery order is registered and an order confirmation email has been dispatched. You can track its live status below anytime.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Search Bar Card */}
         <div
           style={{

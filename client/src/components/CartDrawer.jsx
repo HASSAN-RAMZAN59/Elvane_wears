@@ -14,13 +14,7 @@ export default function CartDrawer() {
 
   const handleCheckoutClick = () => {
     closeCart();
-    if (!isAuthenticated) {
-      navigate('/login?redirect=/checkout');
-    } else if (!user?.isEmailVerified) {
-      navigate('/verify-email?redirect=/checkout');
-    } else {
-      navigate('/checkout');
-    }
+    navigate('/checkout');
   };
 
   return (

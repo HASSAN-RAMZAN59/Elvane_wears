@@ -1,6 +1,8 @@
 import express from 'express';
+import jwt from 'jsonwebtoken';
 import Order from '../models/Order.js';
 import Product from '../models/Product.js';
+import User from '../models/User.js';
 import { protect, authorize, requireVerifiedEmail } from '../middleware/auth.js';
 import { upload } from '../middleware/upload.js';
 import { createAuditLog } from '../utils/auditLog.js';
@@ -8,8 +10,27 @@ import { sendOrderPlacedEmail, sendOrderStatusUpdateEmail } from '../utils/email
 
 const router = express.Router();
 
-// Create order (customer, must be verified)
-router.post('/', protect, requireVerifiedEmail, upload.single('jazzCashScreenshot'), async (req, res) => {
+// Optional token middleware for guest or registered checkout
+const optionalAuth = async (req, res, next) => {
+  let token;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies?.token) {
+    token = req.cookies.token;
+  }
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded.id).select('-password');
+    } catch {
+      req.user = null;
+    }
+  }
+  next();
+};
+
+// Create order (Guests allowed without login/account, or registered users)
+router.post('/', optionalAuth, upload.single('jazzCashScreenshot'), async (req, res) => {
   try {
     const { items, shippingAddress } = req.body;
     const parsedItems = JSON.parse(items);
@@ -49,8 +70,12 @@ router.post('/', protect, requireVerifiedEmail, upload.single('jazzCashScreensho
       parsedAddress.state = parsedAddress.state || parsedAddress.city || 'Pakistan';
       parsedAddress.zip = parsedAddress.zip || '00000';
     }
+
+    const recipientEmail = parsedAddress.email || req.user?.email || '';
+    const recipientName = parsedAddress.fullName || req.user?.name || 'Valued Customer';
+
     const order = await Order.create({
-      user: req.user._id,
+      user: req.user?._id || null,
       items: orderItems,
       shippingAddress: parsedAddress,
       paymentMethod: 'COD',
@@ -60,9 +85,11 @@ router.post('/', protect, requireVerifiedEmail, upload.single('jazzCashScreensho
     });
 
     // Trigger instant Order Placed email notification
-    sendOrderPlacedEmail(order, req.user?.email, req.user?.name).catch((err) => {
-      console.warn('Order placed email notification error:', err.message);
-    });
+    if (recipientEmail) {
+      sendOrderPlacedEmail(order, recipientEmail, recipientName).catch((err) => {
+        console.warn('Order placed email notification error:', err.message);
+      });
+    }
 
     res.status(201).json(order);
   } catch (error) {
@@ -85,7 +112,9 @@ router.get('/:id', protect, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id).populate('user', 'name email');
     if (!order) return res.status(404).json({ message: 'Order not found' });
-    if (order.user._id.toString() !== req.user._id.toString() && !['admin', 'superadmin'].includes(req.user.role)) {
+    const isOwner = order.user && req.user && order.user._id.toString() === req.user._id.toString();
+    const isAdmin = req.user && ['admin', 'superadmin'].includes(req.user.role);
+    if (!isOwner && !isAdmin) {
       return res.status(403).json({ message: 'Not authorized' });
     }
     res.json(order);

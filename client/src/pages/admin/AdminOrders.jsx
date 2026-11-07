@@ -124,7 +124,7 @@ export default function AdminOrders() {
       order.shippingAddress?.fullName?.toLowerCase().includes(search.toLowerCase()) ||
       order.shippingAddress?.phone?.includes(search) ||
       order.shippingAddress?.city?.toLowerCase().includes(search.toLowerCase()) ||
-      order.user?.email?.toLowerCase().includes(search.toLowerCase());
+      (order.user?.email || order.shippingAddress?.email)?.toLowerCase().includes(search.toLowerCase());
 
     if (!matchesSearch) return false;
 
@@ -681,9 +681,9 @@ export default function AdminOrders() {
                       </div>
 
                       <div>
-                        <span style={{ fontSize: '11px', color: 'var(--ash)', display: 'block' }}>Account Email</span>
+                        <span style={{ fontSize: '11px', color: 'var(--ash)', display: 'block' }}>Customer Email</span>
                         <span style={{ color: 'var(--graphite)', wordBreak: 'break-all' }}>
-                          {selectedDetailOrder.user?.email || 'N/A'}
+                          {selectedDetailOrder.user?.email || selectedDetailOrder.shippingAddress?.email || 'N/A'}
                         </span>
                       </div>
                     </div>

@@ -14,6 +14,7 @@ export default function Checkout() {
 
   // Form State
   const [fullName, setFullName] = useState(user?.name || '');
+  const [email, setEmail] = useState(user?.email || '');
   const [phone, setPhone] = useState(user?.phone || '');
   const [street, setStreet] = useState(user?.address?.street || '');
   const [city, setCity] = useState(user?.address?.city || '');
@@ -59,7 +60,7 @@ export default function Checkout() {
         'shippingAddress',
         JSON.stringify({
           fullName,
-          email: user?.email || '',
+          email: email.trim(),
           phone,
           street,
           city,
@@ -76,7 +77,7 @@ export default function Checkout() {
       });
 
       clearCart();
-      navigate('/account?orderSuccess=' + data.orderNumber);
+      navigate('/track?order=' + data.orderNumber + '&placed=true');
     } catch (err) {
       setErrorMsg(err.response?.data?.message || 'Failed to place order. Please review details.');
     } finally {
@@ -169,13 +170,24 @@ export default function Checkout() {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div>
-                    <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Full Recipient Name</label>
+                    <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Full Recipient Name *</label>
                     <input
                       type="text"
                       required
                       placeholder="e.g. Asad Farooq"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Email Address (For Order Confirmation & Live Tracking) *</label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="e.g. asad@gmail.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
 
