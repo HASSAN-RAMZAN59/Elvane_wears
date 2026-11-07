@@ -182,9 +182,12 @@ export default function ProductCard3D({ product }) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         style={{
-          rotateX,
-          rotateY,
-          transformStyle: 'preserve-3d',
+          rotateX: isHovered ? rotateX : 0,
+          rotateY: isHovered ? rotateY : 0,
+          transformStyle: isHovered ? 'preserve-3d' : 'flat',
+          willChange: isHovered ? 'transform' : 'auto',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
           background: '#FFFFFF',
           border: '1px solid var(--hairline)',
           borderRadius: '16px',
@@ -198,29 +201,29 @@ export default function ProductCard3D({ product }) {
         whileTap={{ scale: 0.985 }}
         onClick={() => navigate(`/product/${product.slug}`)}
       >
-        {/* Dynamic Sheen/Glare Overlay */}
-        <motion.div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            borderRadius: '16px',
-            pointerEvents: 'none',
-            background: isHovered
-              ? `radial-gradient(circle at ${glareX.get()}% ${glareY.get()}%, rgba(255, 255, 255, 0.35) 0%, rgba(229, 193, 137, 0.12) 40%, transparent 80%)`
-              : 'none',
-            zIndex: 10,
-            transform: 'translateZ(15px)',
-          }}
-        />
+        {/* Dynamic Sheen/Glare Overlay (Active on hover only) */}
+        {isHovered && (
+          <motion.div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: '16px',
+              pointerEvents: 'none',
+              background: `radial-gradient(circle at ${glareX.get()}% ${glareY.get()}%, rgba(255, 255, 255, 0.35) 0%, rgba(229, 193, 137, 0.12) 40%, transparent 80%)`,
+              zIndex: 10,
+              transform: 'translateZ(15px)',
+            }}
+          />
+        )}
 
-        {/* Floating Badges (TranslateZ 45px) */}
+        {/* Floating Badges */}
         <div
           style={{
             position: 'absolute',
             top: 22,
             left: 22,
             zIndex: 20,
-            transform: 'translateZ(45px)',
+            transform: isHovered ? 'translateZ(45px)' : 'none',
             display: 'flex',
             flexDirection: 'column',
             gap: '6px',
@@ -229,9 +232,8 @@ export default function ProductCard3D({ product }) {
           {product.isNewArrival && (
             <span
               style={{
-                background: 'rgba(255, 255, 255, 0.92)',
-                backdropFilter: 'blur(8px)',
-                border: '1px solid rgba(26, 26, 26, 0.08)',
+                background: '#FFFFFF',
+                border: '1px solid rgba(26, 26, 26, 0.12)',
                 padding: '4px 9px',
                 borderRadius: '999px',
                 fontSize: '9.5px',
@@ -249,7 +251,6 @@ export default function ProductCard3D({ product }) {
             <span
               style={{
                 background: '#FAF6ED',
-                backdropFilter: 'blur(8px)',
                 border: '1px solid var(--champagne)',
                 padding: '4px 9px',
                 borderRadius: '999px',
@@ -283,15 +284,15 @@ export default function ProductCard3D({ product }) {
           )}
         </div>
 
-        {/* Floating Wishlist Button (Z-Locked in 3D Space so scale hover never drops behind) */}
+        {/* Floating Wishlist Button */}
         <div
           style={{
             position: 'absolute',
             top: 20,
             right: 20,
             zIndex: 35,
-            transform: 'translateZ(50px)',
-            transformStyle: 'preserve-3d',
+            transform: isHovered ? 'translateZ(50px)' : 'none',
+            transformStyle: isHovered ? 'preserve-3d' : 'flat',
           }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -301,7 +302,7 @@ export default function ProductCard3D({ product }) {
             whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.9 }}
             style={{
-              background: isWishlisted ? 'rgba(232, 196, 184, 0.95)' : 'rgba(255, 255, 255, 0.92)',
+              background: isWishlisted ? 'rgba(232, 196, 184, 0.95)' : '#FFFFFF',
               border: '1px solid var(--hairline)',
               borderRadius: '50%',
               width: 34,
@@ -310,7 +311,6 @@ export default function ProductCard3D({ product }) {
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              backdropFilter: 'blur(8px)',
               boxShadow: '0 4px 12px rgba(26, 26, 26, 0.08)',
               color: isWishlisted ? 'var(--danger)' : 'var(--graphite)',
               transition: 'background 0.2s ease, border-color 0.2s ease',
@@ -330,7 +330,7 @@ export default function ProductCard3D({ product }) {
             overflow: 'hidden',
             position: 'relative',
             background: '#F6F5F2',
-            transform: 'translateZ(30px)',
+            transform: isHovered ? 'translateZ(30px)' : 'none',
           }}
         >
           {/* Subtle Ambient Sky-Champagne Glow */}
