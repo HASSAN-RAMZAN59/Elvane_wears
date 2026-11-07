@@ -233,7 +233,7 @@ export default function AdminNewProduct() {
         <span className="eyebrow" style={{ color: 'var(--champagne)' }}>
           Product Management
         </span>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '36px', color: 'var(--graphite)', marginTop: '4px' }}>
+        <h1 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '28px', fontWeight: 600, color: 'var(--graphite)', marginTop: '4px' }}>
           Add New Tracksuit Set
         </h1>
         <p style={{ fontSize: '13px', color: 'var(--ash)', marginTop: '4px' }}>
@@ -260,7 +260,7 @@ export default function AdminNewProduct() {
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
         {/* Core Attributes */}
         <div style={{ background: 'var(--snow)', borderRadius: '20px', border: '1px solid var(--hairline)', padding: '32px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '22px' }}>General Information</h3>
+          <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '18px', fontWeight: 600 }}>General Information</h3>
 
           <div>
             <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Set Title *</label>
@@ -363,7 +363,7 @@ export default function AdminNewProduct() {
 
         {/* Interactive Color & Size Activator */}
         <div style={{ background: 'var(--snow)', borderRadius: '20px', border: '1px solid var(--hairline)', padding: '32px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '22px' }}>Active Variants Configurator</h3>
+          <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '18px', fontWeight: 600 }}>Active Variants Configurator</h3>
           <p style={{ fontSize: '13px', color: 'var(--ash)', marginTop: '-12px' }}>
             Toggle ON the exact colors and sizes that customers can see and order on the storefront.
           </p>
@@ -441,7 +441,7 @@ export default function AdminNewProduct() {
               <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ borderTop: '1px solid var(--hairline)', paddingTop: '20px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-                    <h4 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '20px', color: 'var(--graphite)' }}>
+                    <h4 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '17px', fontWeight: 600, color: 'var(--graphite)' }}>
                       Color Variant Images & Visual Assets
                     </h4>
                     <span className="eyebrow" style={{ color: 'var(--champagne)' }}>

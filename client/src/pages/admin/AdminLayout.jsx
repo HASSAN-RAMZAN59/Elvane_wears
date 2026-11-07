@@ -39,8 +39,8 @@ export default function AdminLayout() {
             </div>
             <h2
               style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: '22px',
+                fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+                fontSize: '18px',
                 fontWeight: 600,
                 color: 'var(--graphite)',
                 marginTop: '2px',
@@ -186,7 +186,7 @@ export default function AdminLayout() {
           <span style={{ fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Menu</span>
         </button>
 
-        <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '20px', fontWeight: 600, color: 'var(--graphite)' }}>
+        <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '17px', fontWeight: 600, color: 'var(--graphite)' }}>
           Admin Panel
         </h3>
 

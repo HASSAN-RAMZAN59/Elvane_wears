@@ -145,7 +145,7 @@ export default function AdminOrders() {
           <span className="eyebrow" style={{ color: 'var(--champagne)' }}>
             Fulfillment Management
           </span>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(28px, 4vw, 36px)', color: 'var(--graphite)', marginTop: '4px' }}>
+          <h1 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: 'clamp(24px, 3.5vw, 30px)', fontWeight: 600, color: 'var(--graphite)', marginTop: '4px' }}>
             Store Orders
           </h1>
           <p style={{ fontSize: '13px', color: 'var(--ash)', marginTop: '4px' }}>
@@ -432,7 +432,7 @@ export default function AdminOrders() {
                       </span>
                     )}
                     <span className="eyebrow" style={{ fontSize: '10px' }}>Final Total:</span>
-                    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '22px', fontWeight: 600, color: 'var(--graphite)' }}>
+                    <span style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '17px', fontWeight: 600, color: 'var(--graphite)' }}>
                       {formatPKR(order.total)}
                     </span>
                   </div>
@@ -521,7 +521,7 @@ export default function AdminOrders() {
                       </span>
                     </div>
 
-                    <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '28px', fontWeight: 600, color: 'var(--graphite)', margin: 0 }}>
+                    <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '20px', fontWeight: 600, color: 'var(--graphite)', margin: 0 }}>
                       {selectedDetailOrder.orderNumber}
                     </h2>
                     <p style={{ fontSize: '12px', color: 'var(--ash)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -868,7 +868,7 @@ export default function AdminOrders() {
 
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', borderTop: '1px solid var(--hairline)', paddingTop: '8px', marginTop: '4px' }}>
                         <span className="eyebrow" style={{ fontSize: '11px' }}>Final Amount Payable:</span>
-                        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '26px', fontWeight: 700, color: 'var(--graphite)' }}>
+                        <span style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '20px', fontWeight: 700, color: 'var(--graphite)' }}>
                           {formatPKR(selectedDetailOrder.total)}
                         </span>
                       </div>
@@ -944,7 +944,7 @@ export default function AdminOrders() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <Tag size={18} color="var(--champagne)" />
-                    <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '24px', margin: 0 }}>
+                    <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '18px', fontWeight: 600, margin: 0 }}>
                       Adjust Order Bill Discount
                     </h3>
                   </div>
@@ -1107,7 +1107,7 @@ export default function AdminOrders() {
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '22px', margin: 0 }}>
+                  <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '18px', fontWeight: 600, margin: 0 }}>
                     Verify JazzCash Payment Proof
                   </h3>
                   <button

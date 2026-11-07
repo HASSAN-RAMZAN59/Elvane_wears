@@ -31,7 +31,7 @@ export default function AdminRevenue() {
         <span className="eyebrow" style={{ color: 'var(--champagne)' }}>
           Commercial Summary
         </span>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '36px', color: 'var(--graphite)', marginTop: '4px' }}>
+        <h1 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '28px', fontWeight: 600, color: 'var(--graphite)', marginTop: '4px' }}>
           Revenue Overview
         </h1>
         <p style={{ fontSize: '13px', color: 'var(--ash)', marginTop: '4px' }}>
@@ -43,7 +43,7 @@ export default function AdminRevenue() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '36px' }}>
         <div style={{ background: 'var(--snow)', padding: '24px', borderRadius: '16px', border: '1px solid var(--hairline)', boxShadow: '0 4px 16px rgba(26,26,26,0.03)' }}>
           <span className="eyebrow" style={{ fontSize: '10px' }}>Total Sales (PKR)</span>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '32px', color: 'var(--graphite)', marginTop: '8px' }}>
+          <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '26px', fontWeight: 600, color: 'var(--graphite)', marginTop: '8px' }}>
             {formatPKR(stats?.totalRevenue || 0)}
           </h2>
           <span style={{ fontSize: '11px', color: 'var(--success)' }}>Gross billings</span>
@@ -51,7 +51,7 @@ export default function AdminRevenue() {
 
         <div style={{ background: 'var(--snow)', padding: '24px', borderRadius: '16px', border: '1px solid var(--hairline)', boxShadow: '0 4px 16px rgba(26,26,26,0.03)' }}>
           <span className="eyebrow" style={{ fontSize: '10px' }}>Orders Placed</span>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '32px', color: 'var(--graphite)', marginTop: '8px' }}>
+          <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '26px', fontWeight: 600, color: 'var(--graphite)', marginTop: '8px' }}>
             {stats?.totalOrders || 0}
           </h2>
           <span style={{ fontSize: '11px', color: 'var(--ash)' }}>Complete 2-piece sets</span>
@@ -59,7 +59,7 @@ export default function AdminRevenue() {
 
         <div style={{ background: 'var(--snow)', padding: '24px', borderRadius: '16px', border: '1px solid var(--hairline)', boxShadow: '0 4px 16px rgba(26,26,26,0.03)' }}>
           <span className="eyebrow" style={{ fontSize: '10px' }}>Delivered / Dispatched</span>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '32px', color: 'var(--graphite)', marginTop: '8px' }}>
+          <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '26px', fontWeight: 600, color: 'var(--graphite)', marginTop: '8px' }}>
             {stats?.deliveredOrders || 0}
           </h2>
           <span style={{ fontSize: '11px', color: 'var(--ash)' }}>Full customer handover</span>
@@ -76,7 +76,7 @@ export default function AdminRevenue() {
 
       {/* Revenue Graph */}
       <div style={{ background: 'var(--snow)', borderRadius: '20px', border: '1px solid var(--hairline)', padding: '32px', marginBottom: '36px', boxShadow: '0 4px 16px rgba(26,26,26,0.03)' }}>
-        <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '24px', marginBottom: '24px' }}>
+        <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '18px', fontWeight: 600, marginBottom: '24px' }}>
           30-Day Revenue Trend (PKR)
         </h3>
         <div style={{ height: '300px', width: '100%' }}>
@@ -99,7 +99,7 @@ export default function AdminRevenue() {
 
       {/* Top Tracksuits */}
       <div style={{ background: 'var(--snow)', borderRadius: '20px', border: '1px solid var(--hairline)', padding: '32px', boxShadow: '0 4px 16px rgba(26,26,26,0.03)' }}>
-        <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '24px', marginBottom: '20px' }}>
+        <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '18px', fontWeight: 600, marginBottom: '20px' }}>
           Top Performing Tracksuit Sets
         </h3>
         {stats?.topProducts?.length === 0 ? (
@@ -111,7 +111,7 @@ export default function AdminRevenue() {
                 <span style={{ fontWeight: 600, color: 'var(--graphite)' }}>{tp.title}</span>
                 <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
                   <span style={{ color: 'var(--ash)' }}>{tp.totalSold} sets sold</span>
-                  <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '16px', fontWeight: 600 }}>{formatPKR(tp.totalRevenue)}</span>
+                  <span style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '15px', fontWeight: 600 }}>{formatPKR(tp.totalRevenue)}</span>
                 </div>
               </div>
             ))}

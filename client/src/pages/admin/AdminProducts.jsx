@@ -340,7 +340,7 @@ export default function AdminProducts() {
           <span className="eyebrow" style={{ color: 'var(--champagne)' }}>
             Catalog Governance
           </span>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(28px, 4vw, 36px)', color: 'var(--graphite)', marginTop: '4px' }}>
+          <h1 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: 'clamp(24px, 3.5vw, 30px)', fontWeight: 600, color: 'var(--graphite)', marginTop: '4px' }}>
             Store Tracksuits ({products.length})
           </h1>
           <p style={{ fontSize: '13px', color: 'var(--ash)', marginTop: '4px' }}>
@@ -414,7 +414,7 @@ export default function AdminProducts() {
                     </td>
 
                     {/* Price */}
-                    <td style={{ padding: '18px 20px', fontFamily: "'Cormorant Garamond', serif", fontSize: '18px', fontWeight: 600 }}>
+                    <td style={{ padding: '18px 20px', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '15px', fontWeight: 600 }}>
                       {formatPKR(product.price)}
                     </td>
 
@@ -640,7 +640,7 @@ export default function AdminProducts() {
                     <Edit2 size={18} color="var(--champagne)" />
                     <span className="eyebrow" style={{ color: 'var(--champagne)' }}>Product Master Editor</span>
                   </div>
-                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '26px', color: 'var(--graphite)', marginTop: '4px' }}>
+                  <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '20px', fontWeight: 600, color: 'var(--graphite)', marginTop: '4px' }}>
                     Edit: {editTitle || editProduct.title}
                   </h3>
                   <p style={{ fontSize: '12px', color: 'var(--ash)', marginTop: '2px' }}>
@@ -1233,7 +1233,7 @@ export default function AdminProducts() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
               <div>
                 <span className="eyebrow" style={{ color: 'var(--champagne)' }}>Visual Assets Governance</span>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '24px', color: 'var(--graphite)', marginTop: '4px' }}>
+                <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '20px', fontWeight: 600, color: 'var(--graphite)', marginTop: '4px' }}>
                   {colorModalProduct.title}
                 </h3>
                 <p style={{ fontSize: '13px', color: 'var(--ash)', marginTop: '2px' }}>

@@ -141,8 +141,8 @@ export default function AdminLogin() {
 
           <h1
             style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: '30px',
+              fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+              fontSize: '24px',
               fontWeight: 600,
               color: '#FFFFFF',
               letterSpacing: '-0.02em',

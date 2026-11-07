@@ -50,7 +50,7 @@ export default function AdminPromo() {
         <span className="eyebrow" style={{ color: 'var(--champagne)' }}>
           Storewide Broadcast
         </span>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '36px', color: 'var(--graphite)', marginTop: '4px' }}>
+        <h1 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '28px', fontWeight: 600, color: 'var(--graphite)', marginTop: '4px' }}>
           Promo Banner & Discount News
         </h1>
         <p style={{ fontSize: '13px', color: 'var(--ash)', marginTop: '4px' }}>

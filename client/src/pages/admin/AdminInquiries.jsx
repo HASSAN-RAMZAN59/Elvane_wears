@@ -98,9 +98,9 @@ export default function AdminInquiries() {
           </span>
           <h1
             style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: 'clamp(28px, 3.5vw, 40px)',
-              fontWeight: 400,
+              fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+              fontSize: 'clamp(24px, 3vw, 32px)',
+              fontWeight: 600,
               color: 'var(--graphite)',
               marginTop: '4px',
             }}
@@ -122,28 +122,28 @@ export default function AdminInquiries() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', marginBottom: '28px' }}>
         <div style={{ background: 'var(--snow)', padding: '20px', borderRadius: '16px', border: '1px solid var(--hairline)', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
           <span className="eyebrow" style={{ fontSize: '10px' }}>Total Inquiries</span>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '32px', margin: '4px 0 0', color: 'var(--graphite)' }}>
+          <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '26px', fontWeight: 600, margin: '4px 0 0', color: 'var(--graphite)' }}>
             {inquiries.length}
           </h2>
         </div>
 
         <div style={{ background: 'var(--snow)', padding: '20px', borderRadius: '16px', border: '1px solid var(--hairline)', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
           <span className="eyebrow" style={{ fontSize: '10px', color: '#D4A76A' }}>Action Needed (Pending)</span>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '32px', margin: '4px 0 0', color: '#B8860B' }}>
+          <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '26px', fontWeight: 600, margin: '4px 0 0', color: '#B8860B' }}>
             {pendingCount}
           </h2>
         </div>
 
         <div style={{ background: 'var(--snow)', padding: '20px', borderRadius: '16px', border: '1px solid var(--hairline)', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
           <span className="eyebrow" style={{ fontSize: '10px', color: '#3B82F6' }}>In Review</span>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '32px', margin: '4px 0 0', color: '#2563EB' }}>
+          <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '26px', fontWeight: 600, margin: '4px 0 0', color: '#2563EB' }}>
             {inReviewCount}
           </h2>
         </div>
 
         <div style={{ background: 'var(--snow)', padding: '20px', borderRadius: '16px', border: '1px solid var(--hairline)', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
           <span className="eyebrow" style={{ fontSize: '10px', color: '#16A34A' }}>Resolved</span>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '32px', margin: '4px 0 0', color: '#16A34A' }}>
+          <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '26px', fontWeight: 600, margin: '4px 0 0', color: '#16A34A' }}>
             {resolvedCount}
           </h2>
         </div>
@@ -202,7 +202,7 @@ export default function AdminInquiries() {
         ) : filteredInquiries.length === 0 ? (
           <div style={{ padding: '60px 20px', textAlign: 'center' }}>
             <MessageSquare size={36} color="var(--champagne)" style={{ margin: '0 auto 12px', opacity: 0.6 }} />
-            <h4 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '20px', color: 'var(--graphite)' }}>
+            <h4 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '16px', fontWeight: 600, color: 'var(--graphite)' }}>
               No inquiries found
             </h4>
             <p style={{ fontSize: '13px', color: 'var(--ash)', marginTop: '4px' }}>
@@ -379,7 +379,7 @@ export default function AdminInquiries() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '1px solid var(--hairline)', paddingBottom: '16px', marginBottom: '20px' }}>
                 <div>
                   <span className="eyebrow" style={{ color: 'var(--champagne)' }}>Customer Inquiry Ticket</span>
-                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '26px', color: 'var(--graphite)', marginTop: '4px' }}>
+                  <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '20px', fontWeight: 600, color: 'var(--graphite)', marginTop: '4px' }}>
                     {selectedInquiry.subject}
                   </h3>
                   <span style={{ fontSize: '12px', color: 'var(--ash)' }}>

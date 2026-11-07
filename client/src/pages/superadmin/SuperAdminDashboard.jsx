@@ -280,7 +280,7 @@ export default function SuperAdminDashboard() {
             </span>
           </div>
 
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(28px, 4.5vw, 42px)', color: 'var(--graphite)', marginTop: '8px' }}>
+          <h1 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: 'clamp(28px, 4.5vw, 42px)', color: 'var(--graphite)', marginTop: '8px' }}>
             Executive Operations & Governance
           </h1>
           <p style={{ fontSize: '13px', color: 'var(--ash)', marginTop: '4px' }}>
@@ -369,7 +369,7 @@ export default function SuperAdminDashboard() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '32px' }}>
             <div style={{ background: 'var(--snow)', padding: '24px', borderRadius: '18px', border: '1px solid var(--hairline)', boxShadow: '0 4px 18px rgba(26,26,26,0.03)' }}>
               <span className="eyebrow" style={{ fontSize: '10px' }}>Total Platform Revenue</span>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '32px', color: 'var(--graphite)', marginTop: '8px' }}>
+              <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '32px', color: 'var(--graphite)', marginTop: '8px' }}>
                 {formatPKR(analytics?.totalRevenue || 0)}
               </h2>
               <span style={{ fontSize: '11px', color: 'var(--success)' }}>Gross 100% COD Volume (PKR)</span>
@@ -377,7 +377,7 @@ export default function SuperAdminDashboard() {
 
             <div style={{ background: 'var(--snow)', padding: '24px', borderRadius: '18px', border: '1px solid var(--hairline)', boxShadow: '0 4px 18px rgba(26,26,26,0.03)' }}>
               <span className="eyebrow" style={{ fontSize: '10px' }}>Total Orders</span>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '32px', color: 'var(--graphite)', marginTop: '8px' }}>
+              <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '32px', color: 'var(--graphite)', marginTop: '8px' }}>
                 {analytics?.totalOrders || 0}
               </h2>
               <span style={{ fontSize: '11px', color: 'var(--ash)' }}>Nationwide Dispatch</span>
@@ -385,7 +385,7 @@ export default function SuperAdminDashboard() {
 
             <div style={{ background: 'var(--snow)', padding: '24px', borderRadius: '18px', border: '1px solid var(--hairline)', boxShadow: '0 4px 18px rgba(26,26,26,0.03)' }}>
               <span className="eyebrow" style={{ fontSize: '10px' }}>Average Order Value</span>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '32px', color: 'var(--graphite)', marginTop: '8px' }}>
+              <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '32px', color: 'var(--graphite)', marginTop: '8px' }}>
                 {formatPKR(analytics?.avgOrderValue || 0)}
               </h2>
               <span style={{ fontSize: '11px', color: 'var(--ash)' }}>Per transaction</span>
@@ -393,7 +393,7 @@ export default function SuperAdminDashboard() {
 
             <div style={{ background: 'var(--snow)', padding: '24px', borderRadius: '18px', border: '1px solid var(--hairline)', boxShadow: '0 4px 18px rgba(26,26,26,0.03)' }}>
               <span className="eyebrow" style={{ fontSize: '10px' }}>Registered Customers</span>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '32px', color: 'var(--graphite)', marginTop: '8px' }}>
+              <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '32px', color: 'var(--graphite)', marginTop: '8px' }}>
                 {analytics?.totalCustomers || 0}
               </h2>
               <span style={{ fontSize: '11px', color: 'var(--ash)' }}>Active Client Accounts</span>
@@ -407,7 +407,7 @@ export default function SuperAdminDashboard() {
               <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
                 <div>
                   <span className="eyebrow" style={{ fontSize: '10px' }}>Financial Metric</span>
-                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '24px' }}>Revenue Trajectory</h3>
+                  <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '24px' }}>Revenue Trajectory</h3>
                 </div>
                 {/* Period Toggles */}
                 <div style={{ display: 'flex', gap: '6px', background: 'var(--cloud)', borderRadius: '999px', padding: '4px' }}>
@@ -473,7 +473,7 @@ export default function SuperAdminDashboard() {
                     100% Cash on Delivery
                   </span>
                 </div>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '24px', marginTop: '4px' }}>
+                <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '24px', marginTop: '4px' }}>
                   Live Orders Pipeline
                 </h3>
               </div>
@@ -508,7 +508,7 @@ export default function SuperAdminDashboard() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <div>
                   <span className="eyebrow" style={{ color: 'var(--champagne)' }}>Store Performance</span>
-                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '24px' }}>
+                  <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '24px' }}>
                     Top Selling Products
                   </h3>
                 </div>
@@ -556,7 +556,7 @@ export default function SuperAdminDashboard() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <div>
                   <span className="eyebrow" style={{ color: 'var(--champagne)' }}>Immutable Records</span>
-                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '24px' }}>
+                  <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '24px' }}>
                     Admin Activity Logs ({auditLogs.length})
                   </h3>
                 </div>
@@ -679,7 +679,7 @@ export default function SuperAdminDashboard() {
           {filteredOrders.length === 0 ? (
             <div style={{ padding: '60px 20px', textAlign: 'center', background: 'var(--snow)', borderRadius: '20px', border: '1px solid var(--hairline)' }}>
               <ShoppingBag size={40} color="var(--mist)" style={{ margin: '0 auto 16px' }} />
-              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '22px', color: 'var(--graphite)' }}>
+              <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '22px', color: 'var(--graphite)' }}>
                 No Orders Matching Your Criteria
               </h3>
               <p style={{ fontSize: '13px', color: 'var(--ash)', marginTop: '4px' }}>
@@ -762,7 +762,7 @@ export default function SuperAdminDashboard() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                       <div style={{ textAlign: 'right' }}>
                         <div style={{ fontSize: '11px', color: 'var(--ash)', textTransform: 'uppercase' }}>COD Amount</div>
-                        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '20px', fontWeight: 600, color: 'var(--graphite)' }}>
+                        <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '20px', fontWeight: 600, color: 'var(--graphite)' }}>
                           {formatPKR(order.total)}
                         </div>
                       </div>
@@ -784,7 +784,7 @@ export default function SuperAdminDashboard() {
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
             <div>
               <span className="eyebrow" style={{ color: 'var(--champagne)' }}>Store Managers & Admins</span>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '28px', color: 'var(--graphite)' }}>
+              <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '28px', color: 'var(--graphite)' }}>
                 Store Admins Directory
               </h2>
               <p style={{ fontSize: '13px', color: 'var(--ash)', marginTop: '2px' }}>
@@ -900,7 +900,7 @@ export default function SuperAdminDashboard() {
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
             <div>
               <span className="eyebrow" style={{ color: 'var(--champagne)' }}>Clientele Registry</span>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '28px', color: 'var(--graphite)' }}>
+              <h2 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '28px', color: 'var(--graphite)' }}>
                 Registered Customers ({customersList.length})
               </h2>
               <p style={{ fontSize: '13px', color: 'var(--ash)', marginTop: '2px' }}>
@@ -931,7 +931,7 @@ export default function SuperAdminDashboard() {
           {filteredCustomers.length === 0 ? (
             <div style={{ padding: '60px 20px', textAlign: 'center', background: 'var(--snow)', borderRadius: '20px', border: '1px solid var(--hairline)' }}>
               <Users size={40} color="var(--mist)" style={{ margin: '0 auto 16px' }} />
-              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '22px', color: 'var(--graphite)' }}>
+              <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '22px', color: 'var(--graphite)' }}>
                 No Customers Found
               </h3>
               <p style={{ fontSize: '13px', color: 'var(--ash)', marginTop: '4px' }}>
@@ -979,7 +979,7 @@ export default function SuperAdminDashboard() {
                         <td style={{ padding: '16px 20px', fontWeight: 600, color: 'var(--graphite)' }}>
                           {c.totalOrders}
                         </td>
-                        <td style={{ padding: '16px 20px', fontWeight: 600, color: 'var(--champagne)', fontFamily: "'Cormorant Garamond', serif", fontSize: '16px' }}>
+                        <td style={{ padding: '16px 20px', fontWeight: 600, color: 'var(--champagne)', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '16px' }}>
                           {formatPKR(c.totalSpent)}
                         </td>
                         <td style={{ padding: '16px 20px', color: 'var(--ash)', fontSize: '12px' }}>
@@ -1191,7 +1191,7 @@ export default function SuperAdminDashboard() {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--hairline)', paddingTop: '10px', fontSize: '18px', fontWeight: 700, color: 'var(--graphite)' }}>
                   <span>Total Due at Doorstep</span>
-                  <span style={{ color: 'var(--champagne)', fontFamily: "'Cormorant Garamond', serif", fontSize: '22px' }}>
+                  <span style={{ color: 'var(--champagne)', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '22px' }}>
                     {formatPKR(selectedOrder.total)}
                   </span>
                 </div>
@@ -1255,7 +1255,7 @@ export default function SuperAdminDashboard() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <UserPlus size={22} color="var(--champagne)" />
-                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '24px', color: 'var(--graphite)' }}>
+                  <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '24px', color: 'var(--graphite)' }}>
                     Provision Store Admin
                   </h3>
                 </div>
@@ -1389,7 +1389,7 @@ export default function SuperAdminDashboard() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <KeyRound size={22} color="var(--champagne)" />
-                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '24px', color: 'var(--graphite)' }}>
+                  <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '24px', color: 'var(--graphite)' }}>
                     Rotate Admin Password
                   </h3>
                 </div>
