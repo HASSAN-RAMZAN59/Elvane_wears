@@ -523,16 +523,17 @@ export default function ProductCard3D({ product }) {
           {/* Product Title */}
           <h3
             style={{
-              fontSize: '17px',
+              fontSize: '15px',
               fontWeight: 500,
-              fontFamily: "'Cormorant Garamond', serif",
+              fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
               color: 'var(--graphite)',
-              marginBottom: '6px',
-              lineHeight: 1.25,
+              marginBottom: '5px',
+              lineHeight: 1.35,
               display: '-webkit-box',
               WebkitLineClamp: 1,
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
+              letterSpacing: '-0.01em',
             }}
             title={product.title}
           >
@@ -546,17 +547,18 @@ export default function ProductCard3D({ product }) {
               alignItems: 'center',
               gap: '6px',
               fontSize: '11px',
+              fontFamily: "'Inter', sans-serif",
               color: 'var(--ash)',
-              marginBottom: '6px',
+              marginBottom: '8px',
             }}
           >
             <span
               style={{
-                width: 8,
-                height: 8,
+                width: 7,
+                height: 7,
                 borderRadius: '50%',
                 backgroundColor: activeColor.hex || '#EDE8DF',
-                border: '1px solid rgba(26, 26, 26, 0.2)',
+                border: '1px solid rgba(26, 26, 26, 0.18)',
                 display: 'inline-block',
                 transition: 'background-color 0.2s ease',
               }}
@@ -570,31 +572,33 @@ export default function ProductCard3D({ product }) {
           <div
             style={{
               display: 'flex',
-              alignItems: 'baseline',
+              alignItems: 'center',
               justifyContent: 'space-between',
-              paddingTop: '2px',
-              borderTop: '1px solid rgba(26, 26, 26, 0.05)',
+              paddingTop: '6px',
+              borderTop: '1px solid rgba(26, 26, 26, 0.06)',
             }}
           >
             <span
               style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: '19px',
+                fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+                fontSize: '15px',
                 fontWeight: 600,
                 color: 'var(--graphite)',
+                letterSpacing: '-0.02em',
               }}
             >
               {formatPKR(product.price)}
             </span>
             <span
               style={{
-                fontSize: '11px',
+                fontSize: '10.5px',
+                fontWeight: 500,
                 color: 'var(--ash)',
-                fontStyle: 'italic',
-                fontFamily: "'Cormorant Garamond', serif",
+                fontFamily: "'Inter', sans-serif",
+                letterSpacing: '0.04em',
               }}
             >
-              Complete 2-Piece Set
+              2-Piece Set
             </span>
           </div>
         </div>
