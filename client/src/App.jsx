@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import Lenis from 'lenis';
 import Navbar from './components/Navbar';
 import CartDrawer from './components/CartDrawer';
 import Footer from './components/Footer';
@@ -43,45 +42,6 @@ function ScrollToTop() {
   return null;
 }
 
-function SmoothScrollManager() {
-  const location = useLocation();
-  const isAdmin =
-    location.pathname.startsWith('/admin') ||
-    location.pathname.startsWith('/super-admin') ||
-    location.pathname.startsWith('/superadmin');
-
-  useEffect(() => {
-    // Disable smooth inertial Lenis on administrative back-office portals to prevent modal scroll hijacking
-    if (isAdmin) {
-      document.documentElement.classList.remove('lenis');
-      return;
-    }
-
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1,
-    });
-
-    let rafId;
-    function raf(time) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-    rafId = requestAnimationFrame(raf);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-    };
-  }, [isAdmin]);
-
-  return null;
-}
-
 function Layout({ children }) {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin') || location.pathname.startsWith('/super-admin') || location.pathname.startsWith('/superadmin');
@@ -108,7 +68,6 @@ export default function App() {
 
   return (
     <Router>
-      <SmoothScrollManager />
       <Layout>
         <Routes>
           {/* Public Routes */}
