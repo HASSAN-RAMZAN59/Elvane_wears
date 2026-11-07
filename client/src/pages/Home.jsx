@@ -84,17 +84,10 @@ export default function Home() {
       {/* LUXURY EDITORIAL HERO SHOWCASE WITH MALE MODEL BACKGROUND IMAGES (BELOW NAVBAR) */}
       <section
         ref={heroRef}
+        className="hero-editorial-section"
         style={{
           minHeight: `calc(100vh - ${navOffset}px)`,
           marginTop: `${navOffset}px`,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          position: 'relative',
-          padding: '40px 24px 36px',
-          overflow: 'hidden',
-          background: '#0D0D0D',
         }}
       >
         {/* Full-bleed Crystal-Clear Animated Background Carousel (Confined below navbar) */}
@@ -117,18 +110,7 @@ export default function Home() {
           <div className="hero-left-scrim" />
 
           {/* Bottom Gradient Scrim strictly for text contrast without obscuring the male model */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '56%',
-              background: 'linear-gradient(0deg, rgba(10, 10, 10, 0.94) 0%, rgba(10, 10, 10, 0.6) 48%, rgba(10, 10, 10, 0.08) 80%, transparent 100%)',
-              pointerEvents: 'none',
-              zIndex: 2,
-            }}
-          />
+          <div className="hero-bottom-scrim" />
         </div>
 
         {/* Editorial Typography & Buttons (Responsive: Center on mobile, Elegant Left on desktop to unblock model) */}

@@ -321,7 +321,18 @@ a {
   }
 }
 
-/* Hero Editorial Responsive Layout (Unblocks model face on laptop/desktop) */
+/* Hero Editorial Responsive Layout (Unblocks model face completely on laptop/desktop) */
+.hero-editorial-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  overflow: hidden;
+  background: #0D0D0D;
+  padding: 40px 24px 36px;
+}
+
 .hero-editorial-container {
   width: 100%;
   max-width: 1320px;
@@ -331,7 +342,7 @@ a {
   align-items: center;
   text-align: center;
   z-index: 20;
-  padding: 0 20px 20px;
+  padding: 0 10px 10px;
 }
 
 .hero-buttons-container {
@@ -360,15 +371,31 @@ a {
   display: none;
 }
 
+.hero-bottom-scrim {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56%;
+  background: linear-gradient(0deg, rgba(10, 10, 10, 0.94) 0%, rgba(10, 10, 10, 0.6) 48%, rgba(10, 10, 10, 0.08) 80%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
 @media (min-width: 900px) {
+  .hero-editorial-section {
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 60px clamp(40px, 8vw, 130px) !important;
+  }
+
   .hero-editorial-container {
     align-items: flex-start !important;
     text-align: left !important;
-    max-width: 620px !important;
+    max-width: 580px !important;
     margin: 0 !important;
-    margin-right: auto !important;
-    padding-left: clamp(32px, 6vw, 84px) !important;
-    padding-bottom: 40px !important;
+    padding: 0 !important;
+    align-self: flex-start !important;
   }
 
   .hero-buttons-container {
@@ -379,17 +406,23 @@ a {
     justify-content: flex-start !important;
   }
 
+  /* Shift male model to the right side on desktop so face and body are totally clear of text */
   .hero-bg-slide {
-    background-position: 68% 14% !important;
+    background-position: 78% 14% !important;
   }
 
   .hero-left-scrim {
     display: block;
     position: absolute;
     inset: 0;
-    width: 62%;
-    background: linear-gradient(90deg, rgba(10, 10, 10, 0.88) 0%, rgba(10, 10, 10, 0.58) 45%, rgba(10, 10, 10, 0.12) 80%, transparent 100%);
+    width: 65%;
+    background: linear-gradient(90deg, rgba(10, 10, 10, 0.92) 0%, rgba(10, 10, 10, 0.65) 45%, rgba(10, 10, 10, 0.12) 80%, transparent 100%);
     pointer-events: none;
     z-index: 1;
+  }
+
+  .hero-bottom-scrim {
+    height: 32% !important;
+    opacity: 0.65 !important;
   }
 }
