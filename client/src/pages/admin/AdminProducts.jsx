@@ -53,6 +53,7 @@ export default function AdminProducts() {
   const [editTitle, setEditTitle] = useState('');
   const [editSlug, setEditSlug] = useState('');
   const [editPrice, setEditPrice] = useState('');
+  const [editOriginalPrice, setEditOriginalPrice] = useState('');
   const [editCategory, setEditCategory] = useState('Essential Set');
   const [editInventoryCount, setEditInventoryCount] = useState(0);
   const [editDescription, setEditDescription] = useState('');
@@ -161,6 +162,7 @@ export default function AdminProducts() {
     setEditTitle(prod.title || '');
     setEditSlug(prod.slug || '');
     setEditPrice(prod.price || 0);
+    setEditOriginalPrice(prod.originalPrice || '');
     setEditCategory(prod.category || 'Essential Set');
     setEditInventoryCount(prod.inventoryCount || 0);
     setEditDescription(prod.description || '');
@@ -302,6 +304,7 @@ export default function AdminProducts() {
         title: editTitle,
         slug: editSlug,
         price: Number(editPrice),
+        originalPrice: editOriginalPrice ? Number(editOriginalPrice) : null,
         category: editCategory,
         inventoryCount: Number(editInventoryCount),
         description: editDescription,
@@ -414,8 +417,13 @@ export default function AdminProducts() {
                     </td>
 
                     {/* Price */}
-                    <td style={{ padding: '18px 20px', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '15px', fontWeight: 600 }}>
-                      {formatPKR(product.price)}
+                    <td style={{ padding: '18px 20px', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif" }}>
+                      <div style={{ fontSize: '15px', fontWeight: 600 }}>{formatPKR(product.price)}</div>
+                      {product.originalPrice && Number(product.originalPrice) > Number(product.price) && (
+                        <div style={{ fontSize: '12px', color: 'var(--ash)', textDecoration: 'line-through' }}>
+                          {formatPKR(product.originalPrice)}
+                        </div>
+                      )}
                     </td>
 
                     {/* Active Colors with Quick Toggle */}
@@ -734,14 +742,26 @@ export default function AdminProducts() {
                       </div>
 
                       <div>
-                        <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Price in PKR *</label>
+                        <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Selling Price in PKR *</label>
                         <input
                           type="number"
                           required
                           min="1"
                           value={editPrice}
                           onChange={(e) => setEditPrice(e.target.value)}
-                          placeholder="e.g. 21500"
+                          placeholder="e.g. 4000"
+                          style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid var(--hairline)', background: 'var(--snow)', fontSize: '14px' }}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Original / Cut Price (Optional)</label>
+                        <input
+                          type="number"
+                          min="0"
+                          value={editOriginalPrice}
+                          onChange={(e) => setEditOriginalPrice(e.target.value)}
+                          placeholder="e.g. 8000 (Crossed out)"
                           style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid var(--hairline)', background: 'var(--snow)', fontSize: '14px' }}
                         />
                       </div>

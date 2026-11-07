@@ -104,7 +104,7 @@ router.post('/upload-image', protect, authorize('admin', 'superadmin'), upload.s
 // Admin: Create product
 router.post('/', protect, authorize('admin', 'superadmin'), upload.array('images', 6), async (req, res) => {
   try {
-    const { title, slug, description, price, category, fabric, care, colors, sizes, inventoryCount, isFeatured, isNewArrival, isBestseller } = req.body;
+    const { title, slug, description, price, originalPrice, category, fabric, care, colors, sizes, inventoryCount, isFeatured, isNewArrival, isBestseller } = req.body;
     let images = [];
     if (req.files && req.files.length > 0) {
       for (const f of req.files) {
@@ -129,6 +129,7 @@ router.post('/', protect, authorize('admin', 'superadmin'), upload.array('images
     const product = await Product.create({
       title, slug, description,
       price: Number(price),
+      originalPrice: (originalPrice && Number(originalPrice) > 0) ? Number(originalPrice) : null,
       category, fabric, care,
       images,
       colors: parsedColors,
@@ -171,7 +172,7 @@ router.put('/:id', protect, authorize('admin', 'superadmin'), upload.array('imag
     };
 
     const {
-      title, slug, description, price, category, fabric, care,
+      title, slug, description, price, originalPrice, category, fabric, care,
       colors, sizes, inventoryCount, isFeatured, isNewArrival, isBestseller,
       existingImages
     } = req.body;
@@ -180,6 +181,9 @@ router.put('/:id', protect, authorize('admin', 'superadmin'), upload.array('imag
     if (slug) product.slug = slug.trim().toLowerCase();
     if (description !== undefined) product.description = description;
     if (price !== undefined) product.price = Number(price);
+    if (originalPrice !== undefined) {
+      product.originalPrice = (originalPrice === '' || originalPrice === null || Number(originalPrice) <= 0) ? null : Number(originalPrice);
+    }
     if (category) product.category = category;
     if (fabric !== undefined) product.fabric = fabric;
     if (care !== undefined) product.care = care;

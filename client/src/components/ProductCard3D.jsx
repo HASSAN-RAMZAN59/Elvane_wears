@@ -270,6 +270,23 @@ export default function ProductCard3D({ product }) {
               Bestseller
             </span>
           )}
+          {product.originalPrice && Number(product.originalPrice) > Number(product.price) && (
+            <span
+              style={{
+                background: '#85462C',
+                color: '#FFFFFF',
+                padding: '4px 9px',
+                borderRadius: '999px',
+                fontSize: '9.5px',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                fontWeight: 700,
+                boxShadow: '0 2px 8px rgba(133, 70, 44, 0.25)',
+              }}
+            >
+              {Math.round(((Number(product.originalPrice) - Number(product.price)) / Number(product.originalPrice)) * 100)}% Off
+            </span>
+          )}
         </div>
 
         {/* Floating Wishlist Button (TranslateZ 35px) */}
@@ -578,17 +595,32 @@ export default function ProductCard3D({ product }) {
               borderTop: '1px solid rgba(26, 26, 26, 0.06)',
             }}
           >
-            <span
-              style={{
-                fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                fontSize: '15px',
-                fontWeight: 600,
-                color: 'var(--graphite)',
-                letterSpacing: '-0.02em',
-              }}
-            >
-              {formatPKR(product.price)}
-            </span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+              <span
+                style={{
+                  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  color: 'var(--graphite)',
+                  letterSpacing: '-0.02em',
+                }}
+              >
+                {formatPKR(product.price)}
+              </span>
+              {product.originalPrice && Number(product.originalPrice) > Number(product.price) && (
+                <span
+                  style={{
+                    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+                    fontSize: '12px',
+                    fontWeight: 400,
+                    color: 'var(--ash)',
+                    textDecoration: 'line-through',
+                  }}
+                >
+                  {formatPKR(product.originalPrice)}
+                </span>
+              )}
+            </div>
             <span
               style={{
                 fontSize: '10.5px',

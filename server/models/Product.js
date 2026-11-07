@@ -26,6 +26,7 @@ const productSchema = new mongoose.Schema({
   slug: { type: String, required: true, unique: true, lowercase: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
+  originalPrice: { type: Number, default: null },
   category: { type: String, default: 'Essential Set', enum: ['Essential Set', 'Heavyweight Set', 'Velour Set', 'Cashmere Set', 'Limited Edition'] },
   fabric: { type: String, default: '' },
   care: { type: String, default: '' },

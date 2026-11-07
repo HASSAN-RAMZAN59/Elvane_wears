@@ -23,6 +23,7 @@ export default function AdminNewProduct() {
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [price, setPrice] = useState('');
+  const [originalPrice, setOriginalPrice] = useState('');
   const [category, setCategory] = useState('Essential Set');
   const [description, setDescription] = useState('');
   const [fabric, setFabric] = useState('');
@@ -184,6 +185,7 @@ export default function AdminNewProduct() {
         title,
         slug,
         price: Number(price),
+        originalPrice: originalPrice ? Number(originalPrice) : null,
         category,
         description,
         fabric,
@@ -301,21 +303,32 @@ export default function AdminNewProduct() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
             <div>
-              <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Price in PKR (Rs.) *</label>
+              <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Selling Price in PKR (Rs.) *</label>
               <input
                 type="number"
                 required
                 min="0"
-                placeholder="e.g. 19500"
+                placeholder="e.g. 4000 (Customer pays this)"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
             </div>
 
             <div>
-              <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Backend Stock Quantity * (Hidden from clients)</label>
+              <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Original / Cut Price in PKR (Optional)</label>
+              <input
+                type="number"
+                min="0"
+                placeholder="e.g. 8000 (Crossed out ~~8000~~)"
+                value={originalPrice}
+                onChange={(e) => setOriginalPrice(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Backend Stock Quantity * (Hidden)</label>
               <input
                 type="number"
                 required
