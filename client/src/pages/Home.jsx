@@ -106,15 +106,15 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-bg-slide"
               style={{
-                position: 'absolute',
-                inset: 0,
                 backgroundImage: `url(${HERO_SLIDES[currentSlide].image})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center 12%',
               }}
             />
           </AnimatePresence>
+
+          {/* Left Gradient Scrim for Desktop Text Readability */}
+          <div className="hero-left-scrim" />
 
           {/* Bottom Gradient Scrim strictly for text contrast without obscuring the male model */}
           <div
@@ -126,22 +126,17 @@ export default function Home() {
               height: '56%',
               background: 'linear-gradient(0deg, rgba(10, 10, 10, 0.94) 0%, rgba(10, 10, 10, 0.6) 48%, rgba(10, 10, 10, 0.08) 80%, transparent 100%)',
               pointerEvents: 'none',
+              zIndex: 2,
             }}
           />
         </div>
 
-        {/* Center Editorial Typography & Buttons at Full Bottom */}
+        {/* Editorial Typography & Buttons (Responsive: Center on mobile, Elegant Left on desktop to unblock model) */}
         <motion.div
+          className="hero-editorial-container"
           style={{
             y: heroY,
             opacity: heroOpacity,
-            textAlign: 'center',
-            maxWidth: '860px',
-            zIndex: 20,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            marginBottom: '10px',
           }}
         >
           {/* Collection Badge */}
@@ -204,18 +199,12 @@ export default function Home() {
             Engineered for movement. Designed for stillness. Complete, minimalist tracksuit sets crafted from pure cashmere, merino, and double-faced organic cotton.
           </motion.p>
 
-          {/* Buttons lowered & positioned at bottom */}
+          {/* Buttons */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.35 }}
-            style={{
-              display: 'flex',
-              gap: '16px',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-              marginBottom: '28px',
-            }}
+            className="hero-buttons-container"
           >
             <Button3D
               size="lg"
@@ -261,13 +250,7 @@ export default function Home() {
           </motion.div>
 
           {/* Background Slideshow Controls & Progress Indicator */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '14px',
-            }}
-          >
+          <div className="hero-controls-container">
             <button
               onClick={() => setCurrentSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
               aria-label="Previous slide"
