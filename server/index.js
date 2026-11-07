@@ -87,7 +87,7 @@ const inquiryLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
-app.use('/api/inquiries', inquiryLimiter);
+app.use(['/api/inquiries', '/inquiries'], inquiryLimiter);
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -98,16 +98,17 @@ app.use(morgan('dev'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/seed', express.static(path.join(__dirname, 'uploads', 'seed')));
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/announcements', announcementRoutes);
-app.use('/api/super-admin', superAdminRoutes);
-app.use('/api/inquiries', inquiryRoutes);
+// Root & Health check
+app.get(['/', '/api'], (req, res) => res.json({ status: 'ok', message: 'Elvane Wear API is running' }));
+app.get(['/health', '/api/health'], (req, res) => res.json({ status: 'ok', timestamp: new Date() }));
 
-// Health check
-app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date() }));
+// Routes
+app.use(['/api/auth', '/auth'], authRoutes);
+app.use(['/api/products', '/products'], productRoutes);
+app.use(['/api/orders', '/orders'], orderRoutes);
+app.use(['/api/announcements', '/announcements'], announcementRoutes);
+app.use(['/api/super-admin', '/super-admin'], superAdminRoutes);
+app.use(['/api/inquiries', '/inquiries'], inquiryRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {
