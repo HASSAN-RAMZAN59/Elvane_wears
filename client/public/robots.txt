@@ -5,3 +5,4 @@ Disallow: /superadmin
 Disallow: /checkout
 
 Sitemap: https://elvanewears.com/sitemap.xml
+
