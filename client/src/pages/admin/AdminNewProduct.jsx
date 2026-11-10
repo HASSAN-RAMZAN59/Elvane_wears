@@ -30,6 +30,14 @@ export default function AdminNewProduct() {
   const [care, setCare] = useState('');
   const [inventoryCount, setInventoryCount] = useState(25);
 
+  // SEO & Google Ranking state
+  const [seoTitle, setSeoTitle] = useState('');
+  const [metaDescription, setMetaDescription] = useState('');
+  const [focusKeyword, setFocusKeyword] = useState('');
+  const [additionalKeywords, setAdditionalKeywords] = useState('');
+  const [imageAlt, setImageAlt] = useState('');
+  const [canonicalUrl, setCanonicalUrl] = useState('');
+
   // Active Color Swatches toggled by Admin (with image associations)
   const [activeColors, setActiveColors] = useState([
     {
@@ -72,12 +80,17 @@ export default function AdminNewProduct() {
   const handleTitleChange = (e) => {
     const val = e.target.value;
     setTitle(val);
-    setSlug(
-      val
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)+/g, '')
-    );
+    const genSlug = val
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)+/g, '');
+    setSlug(genSlug);
+    if (!seoTitle) {
+      setSeoTitle(val ? `${val} — Luxury Tracksuit Pakistan | Elvane Wear` : '');
+    }
+    if (!imageAlt) {
+      setImageAlt(val ? `${val} - Luxury Tracksuit Set Pakistan` : '');
+    }
   };
 
   const toggleColor = (col) => {
@@ -197,6 +210,12 @@ export default function AdminNewProduct() {
         isFeatured,
         isNewArrival,
         isBestseller,
+        seoTitle,
+        metaDescription,
+        focusKeyword,
+        additionalKeywords,
+        imageAlt,
+        canonicalUrl,
       };
 
       await api.post('/products', payload);
@@ -737,6 +756,116 @@ export default function AdminNewProduct() {
                 />
                 <span>Feature on Homepage 3D Carousel</span>
               </label>
+            </div>
+          </div>
+        </div>
+
+        {/* Search Engine Optimization (SEO) & Google Ranking Card */}
+        <div style={{ background: 'var(--snow)', borderRadius: '20px', border: '1px solid var(--hairline-accent)', padding: '32px', display: 'flex', flexDirection: 'column', gap: '22px' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+              <Sparkles size={18} color="var(--champagne)" />
+              <h3 style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", fontSize: '18px', fontWeight: 600, color: 'var(--graphite)' }}>
+                Google SEO & Search Rankings
+              </h3>
+            </div>
+            <p style={{ fontSize: '13px', color: 'var(--ash)' }}>
+              Configure how this tracksuit set ranks and appears on Google Search and social media in Pakistan.
+            </p>
+          </div>
+
+          {/* Google Search Live SERP Preview */}
+          <div style={{ background: '#FFFFFF', borderRadius: '12px', border: '1px solid var(--hairline)', padding: '16px 20px', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
+            <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--ash)', fontWeight: 600, display: 'block', marginBottom: '8px' }}>
+              Google Search Result Preview
+            </span>
+            <div style={{ fontSize: '13px', color: '#202124', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+              <span style={{ width: 16, height: 16, borderRadius: '50%', background: 'var(--champagne)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '9px', color: '#FFF', fontWeight: 700 }}>E</span>
+              <span style={{ color: '#202124', fontSize: '12px' }}>elvanewears.com</span>
+              <span style={{ color: '#5f6368', fontSize: '12px' }}>› product › {slug || 'tracksuit-slug'}</span>
+            </div>
+            <h4 style={{ fontSize: '18px', color: '#1a0dab', fontWeight: 500, fontFamily: 'Arial, sans-serif', lineHeight: 1.3, marginBottom: '4px' }}>
+              {seoTitle || (title ? `${title} — Luxury Tracksuit Pakistan | Elvane Wear` : 'Tracksuit Set Title — Elvane Wear')}
+            </h4>
+            <p style={{ fontSize: '13px', color: '#4d5156', fontFamily: 'Arial, sans-serif', lineHeight: 1.4, margin: 0 }}>
+              {metaDescription || (description ? description.slice(0, 155) + '...' : 'Shop luxury minimalist tracksuit sets crafted from French terry, merino wool, and organic cotton in Pakistan with Cash on Delivery.')}
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}>
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <label className="eyebrow" style={{ margin: 0 }}>SEO Title (Target: 50–60 Chars)</label>
+                <span style={{ fontSize: '11px', color: seoTitle.length > 60 ? 'var(--danger)' : 'var(--ash)' }}>
+                  {seoTitle.length} / 60
+                </span>
+              </div>
+              <input
+                type="text"
+                placeholder="e.g. French Terry Heavyweight Set — Luxury Tracksuits Pakistan"
+                value={seoTitle}
+                onChange={(e) => setSeoTitle(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <label className="eyebrow" style={{ margin: 0 }}>Meta Description (Target: 130–160 Chars)</label>
+                <span style={{ fontSize: '11px', color: metaDescription.length > 160 ? 'var(--danger)' : 'var(--ash)' }}>
+                  {metaDescription.length} / 160
+                </span>
+              </div>
+              <textarea
+                rows={3}
+                placeholder="Brief search summary enticing buyers in Pakistan to click..."
+                value={metaDescription}
+                onChange={(e) => setMetaDescription(e.target.value)}
+                style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid var(--hairline)', background: 'var(--snow)', fontSize: '13px', resize: 'vertical' }}
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
+            <div>
+              <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Focus Keyword</label>
+              <input
+                type="text"
+                placeholder="e.g. French Terry Tracksuit Pakistan"
+                value={focusKeyword}
+                onChange={(e) => setFocusKeyword(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Additional Keywords (Comma separated)</label>
+              <input
+                type="text"
+                placeholder="e.g. heavyweight tracksuit, men winter set, luxury hoodie"
+                value={additionalKeywords}
+                onChange={(e) => setAdditionalKeywords(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
+            <div>
+              <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Image ALT Text (For Google Image Search)</label>
+              <input
+                type="text"
+                placeholder="e.g. Midnight Black French Terry Tracksuit Set Model View"
+                value={imageAlt}
+                onChange={(e) => setImageAlt(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Canonical URL (Optional override)</label>
+              <input
+                type="url"
+                placeholder={`https://elvanewears.com/product/${slug || 'product-slug'}`}
+                value={canonicalUrl}
+                onChange={(e) => setCanonicalUrl(e.target.value)}
+              />
             </div>
           </div>
         </div>

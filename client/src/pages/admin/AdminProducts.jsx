@@ -60,6 +60,13 @@ export default function AdminProducts() {
   const [editIsFeatured, setEditIsFeatured] = useState(false);
   const [editIsNewArrival, setEditIsNewArrival] = useState(false);
   const [editIsBestseller, setEditIsBestseller] = useState(false);
+  // SEO state
+  const [editSeoTitle, setEditSeoTitle] = useState('');
+  const [editMetaDescription, setEditMetaDescription] = useState('');
+  const [editFocusKeyword, setEditFocusKeyword] = useState('');
+  const [editAdditionalKeywords, setEditAdditionalKeywords] = useState('');
+  const [editImageAlt, setEditImageAlt] = useState('');
+  const [editCanonicalUrl, setEditCanonicalUrl] = useState('');
   const [editColors, setEditColors] = useState([]);
   const [editSizes, setEditSizes] = useState([]);
   const [editImages, setEditImages] = useState([]);
@@ -169,6 +176,12 @@ export default function AdminProducts() {
     setEditIsFeatured(prod.isFeatured || false);
     setEditIsNewArrival(prod.isNewArrival || false);
     setEditIsBestseller(prod.isBestseller || false);
+    setEditSeoTitle(prod.seoTitle || '');
+    setEditMetaDescription(prod.metaDescription || '');
+    setEditFocusKeyword(prod.focusKeyword || '');
+    setEditAdditionalKeywords(prod.additionalKeywords || '');
+    setEditImageAlt(prod.imageAlt || '');
+    setEditCanonicalUrl(prod.canonicalUrl || '');
     setEditColors(prod.colors ? JSON.parse(JSON.stringify(prod.colors)) : []);
     
     // Ensure all master sizes are represented
@@ -311,6 +324,12 @@ export default function AdminProducts() {
         isFeatured: editIsFeatured,
         isNewArrival: editIsNewArrival,
         isBestseller: editIsBestseller,
+        seoTitle: editSeoTitle,
+        metaDescription: editMetaDescription,
+        focusKeyword: editFocusKeyword,
+        additionalKeywords: editAdditionalKeywords,
+        imageAlt: editImageAlt,
+        canonicalUrl: editCanonicalUrl,
         colors: JSON.stringify(editColors),
         sizes: JSON.stringify(editSizes),
         existingImages: JSON.stringify(editImages),
@@ -684,6 +703,7 @@ export default function AdminProducts() {
                   { id: 'sizes', label: `3. Sizes (${editSizes.filter(s => s.active).length} Active)` },
                   { id: 'images', label: `4. Gallery (${editImages.length})` },
                   { id: 'details', label: '5. Fabric & Details' },
+                  { id: 'seo', label: '6. SEO & Google' },
                 ].map((t) => (
                   <button
                     key={t.id}
@@ -1177,6 +1197,109 @@ export default function AdminProducts() {
                           value={editCare}
                           onChange={(e) => setEditCare(e.target.value)}
                           placeholder="e.g. Hand wash cold or gentle cycle. Lay flat to dry."
+                          style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid var(--hairline)', background: 'var(--snow)', fontSize: '13px' }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 6: SEO & GOOGLE RANKING */}
+                {editTab === 'seo' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    {/* Google Search Live SERP Preview */}
+                    <div style={{ background: '#FFFFFF', borderRadius: '12px', border: '1px solid var(--hairline)', padding: '16px 20px', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
+                      <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--ash)', fontWeight: 600, display: 'block', marginBottom: '8px' }}>
+                        Google Search Result Preview
+                      </span>
+                      <div style={{ fontSize: '13px', color: '#202124', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+                        <span style={{ width: 16, height: 16, borderRadius: '50%', background: 'var(--champagne)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '9px', color: '#FFF', fontWeight: 700 }}>E</span>
+                        <span style={{ color: '#202124', fontSize: '12px' }}>elvanewears.com</span>
+                        <span style={{ color: '#5f6368', fontSize: '12px' }}>› product › {editSlug || 'tracksuit-slug'}</span>
+                      </div>
+                      <h4 style={{ fontSize: '18px', color: '#1a0dab', fontWeight: 500, fontFamily: 'Arial, sans-serif', lineHeight: 1.3, marginBottom: '4px' }}>
+                        {editSeoTitle || (editTitle ? `${editTitle} — Luxury Tracksuit Pakistan | Elvane Wear` : 'Tracksuit Set Title — Elvane Wear')}
+                      </h4>
+                      <p style={{ fontSize: '13px', color: '#4d5156', fontFamily: 'Arial, sans-serif', lineHeight: 1.4, margin: 0 }}>
+                        {editMetaDescription || (editDescription ? editDescription.slice(0, 155) + '...' : 'Shop luxury minimalist tracksuit sets crafted from French terry, merino wool, and organic cotton in Pakistan with Cash on Delivery.')}
+                      </p>
+                    </div>
+
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                        <label className="eyebrow" style={{ margin: 0 }}>SEO Title (Target: 50–60 Chars)</label>
+                        <span style={{ fontSize: '11px', color: editSeoTitle.length > 60 ? 'var(--danger)' : 'var(--ash)' }}>
+                          {editSeoTitle.length} / 60
+                        </span>
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="e.g. French Terry Heavyweight Set — Luxury Tracksuits Pakistan"
+                        value={editSeoTitle}
+                        onChange={(e) => setEditSeoTitle(e.target.value)}
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid var(--hairline)', background: 'var(--snow)', fontSize: '13px' }}
+                      />
+                    </div>
+
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                        <label className="eyebrow" style={{ margin: 0 }}>Meta Description (Target: 130–160 Chars)</label>
+                        <span style={{ fontSize: '11px', color: editMetaDescription.length > 160 ? 'var(--danger)' : 'var(--ash)' }}>
+                          {editMetaDescription.length} / 160
+                        </span>
+                      </div>
+                      <textarea
+                        rows={3}
+                        placeholder="Brief search summary enticing buyers in Pakistan to click..."
+                        value={editMetaDescription}
+                        onChange={(e) => setEditMetaDescription(e.target.value)}
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid var(--hairline)', background: 'var(--snow)', fontSize: '13px', resize: 'vertical' }}
+                      />
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+                      <div>
+                        <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Focus Keyword</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. French Terry Tracksuit Pakistan"
+                          value={editFocusKeyword}
+                          onChange={(e) => setEditFocusKeyword(e.target.value)}
+                          style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid var(--hairline)', background: 'var(--snow)', fontSize: '13px' }}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Additional Keywords (Comma separated)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. heavyweight tracksuit, men winter set, luxury hoodie"
+                          value={editAdditionalKeywords}
+                          onChange={(e) => setEditAdditionalKeywords(e.target.value)}
+                          style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid var(--hairline)', background: 'var(--snow)', fontSize: '13px' }}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+                      <div>
+                        <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Image ALT Text (For Google Image Search)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Midnight Black French Terry Tracksuit Set Model View"
+                          value={editImageAlt}
+                          onChange={(e) => setEditImageAlt(e.target.value)}
+                          style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid var(--hairline)', background: 'var(--snow)', fontSize: '13px' }}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Canonical URL (Optional override)</label>
+                        <input
+                          type="url"
+                          placeholder={`https://elvanewears.com/product/${editSlug || 'product-slug'}`}
+                          value={editCanonicalUrl}
+                          onChange={(e) => setEditCanonicalUrl(e.target.value)}
                           style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1px solid var(--hairline)', background: 'var(--snow)', fontSize: '13px' }}
                         />
                       </div>

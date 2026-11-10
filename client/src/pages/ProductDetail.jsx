@@ -51,6 +51,99 @@ export default function ProductDetail() {
     fetchProduct();
   }, [slug]);
 
+  // Dynamic SEO Injection (Title, Meta Description, Canonical, OG, Product JSON-LD Schema)
+  useEffect(() => {
+    if (!product) return;
+
+    const previousTitle = document.title;
+    const pageTitle = product.seoTitle || `${product.title} | Luxury Tracksuits Pakistan | Elvane Wear`;
+    document.title = pageTitle;
+
+    const metaDescContent = product.metaDescription || product.description?.slice(0, 160) || 'Shop complete luxury minimalist tracksuit sets crafted for comfort, style, and everyday elegance in Pakistan with Cash on Delivery.';
+    const canonicalHref = product.canonicalUrl || `https://elvanewears.com/product/${product.slug}`;
+    const primaryImg = product.colors?.[0]?.modelImage || product.images?.[0] || 'https://elvanewears.com/logo.png';
+
+    const setMetaTag = (attrName, attrVal, content) => {
+      let el = document.querySelector(`meta[${attrName}="${attrVal}"]`);
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute(attrName, attrVal);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+      return el;
+    };
+
+    setMetaTag('name', 'description', metaDescContent);
+    if (product.focusKeyword || product.additionalKeywords) {
+      setMetaTag('name', 'keywords', [product.focusKeyword, product.additionalKeywords, 'tracksuits Pakistan, luxury tracksuits'].filter(Boolean).join(', '));
+    }
+
+    // Canonical link
+    let canonicalEl = document.querySelector('link[rel="canonical"]');
+    if (!canonicalEl) {
+      canonicalEl = document.createElement('link');
+      canonicalEl.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalEl);
+    }
+    canonicalEl.setAttribute('href', canonicalHref);
+
+    // Open Graph / WhatsApp / Facebook Preview
+    setMetaTag('property', 'og:title', pageTitle);
+    setMetaTag('property', 'og:description', metaDescContent);
+    setMetaTag('property', 'og:image', primaryImg);
+    setMetaTag('property', 'og:url', canonicalHref);
+    setMetaTag('property', 'og:type', 'product');
+
+    // JSON-LD Product Schema for Google Rich Snippets
+    let schemaEl = document.getElementById('product-schema-jsonld');
+    if (!schemaEl) {
+      schemaEl = document.createElement('script');
+      schemaEl.id = 'product-schema-jsonld';
+      schemaEl.type = 'application/ld+json';
+      document.head.appendChild(schemaEl);
+    }
+
+    const schemaData = {
+      '@context': 'https://schema.org/',
+      '@type': 'Product',
+      name: product.seoTitle || product.title,
+      image: [primaryImg],
+      description: metaDescContent,
+      sku: product._id,
+      brand: {
+        '@type': 'Brand',
+        name: 'Elvane Wear'
+      },
+      offers: {
+        '@type': 'Offer',
+        url: canonicalHref,
+        priceCurrency: 'PKR',
+        price: product.price,
+        itemCondition: 'https://schema.org/NewCondition',
+        availability: 'https://schema.org/InStock',
+        seller: {
+          '@type': 'Organization',
+          name: 'Elvane Wear Atelier Pakistan'
+        }
+      }
+    };
+    if (product.averageRating && product.numReviews > 0) {
+      schemaData.aggregateRating = {
+        '@type': 'AggregateRating',
+        ratingValue: product.averageRating,
+        reviewCount: product.numReviews
+      };
+    }
+    schemaEl.textContent = JSON.stringify(schemaData);
+
+    return () => {
+      document.title = previousTitle;
+      const sEl = document.getElementById('product-schema-jsonld');
+      if (sEl) sEl.remove();
+    };
+  }, [product]);
+
   const handleAddToCart = () => {
     if (!selectedColor || !selectedSize) return;
     addItem(product, selectedColor, selectedSize, quantity);
@@ -223,7 +316,7 @@ export default function ProductDetail() {
                       ? (activeColorObj?.modelImage || product.images?.[0] || '/images/hero/hero-1.jpg')
                       : (activeColorObj?.articleImage || product.images?.[1] || activeColorObj?.modelImage || '/images/hero/hero-1.jpg')
                   }
-                  alt={`${product.title} - ${selectedColor}`}
+                  alt={product.imageAlt ? `${product.imageAlt} - ${selectedColor}` : `${product.title} - ${selectedColor}`}
                   initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}

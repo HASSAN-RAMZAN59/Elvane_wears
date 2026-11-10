@@ -119,7 +119,11 @@ router.post('/upload-image', protect, authorize('admin', 'superadmin'), upload.s
 // Admin: Create product
 router.post('/', protect, authorize('admin', 'superadmin'), upload.array('images', 6), async (req, res) => {
   try {
-    const { title, slug, description, price, originalPrice, category, fabric, care, colors, sizes, inventoryCount, isFeatured, isNewArrival, isBestseller } = req.body;
+    const {
+      title, slug, description, price, originalPrice, category, fabric, care,
+      colors, sizes, inventoryCount, isFeatured, isNewArrival, isBestseller,
+      seoTitle, metaDescription, focusKeyword, additionalKeywords, imageAlt, canonicalUrl
+    } = req.body;
     let images = [];
     if (req.files && req.files.length > 0) {
       for (const f of req.files) {
@@ -153,6 +157,12 @@ router.post('/', protect, authorize('admin', 'superadmin'), upload.array('images
       isFeatured: isFeatured === 'true' || isFeatured === true,
       isNewArrival: isNewArrival === 'true' || isNewArrival === true,
       isBestseller: isBestseller === 'true' || isBestseller === true,
+      seoTitle: seoTitle ? seoTitle.trim() : '',
+      metaDescription: metaDescription ? metaDescription.trim() : '',
+      focusKeyword: focusKeyword ? focusKeyword.trim() : '',
+      additionalKeywords: additionalKeywords ? additionalKeywords.trim() : '',
+      imageAlt: imageAlt ? imageAlt.trim() : '',
+      canonicalUrl: canonicalUrl ? canonicalUrl.trim() : '',
     });
 
     await createAuditLog({
@@ -189,7 +199,8 @@ router.put('/:id', protect, authorize('admin', 'superadmin'), upload.array('imag
     const {
       title, slug, description, price, originalPrice, category, fabric, care,
       colors, sizes, inventoryCount, isFeatured, isNewArrival, isBestseller,
-      existingImages
+      existingImages,
+      seoTitle, metaDescription, focusKeyword, additionalKeywords, imageAlt, canonicalUrl
     } = req.body;
 
     if (title) product.title = title.trim();
@@ -203,6 +214,14 @@ router.put('/:id', protect, authorize('admin', 'superadmin'), upload.array('imag
     if (category) product.category = category;
     if (fabric !== undefined) product.fabric = fabric;
     if (care !== undefined) product.care = care;
+
+    // SEO updates
+    if (seoTitle !== undefined) product.seoTitle = seoTitle.trim();
+    if (metaDescription !== undefined) product.metaDescription = metaDescription.trim();
+    if (focusKeyword !== undefined) product.focusKeyword = focusKeyword.trim();
+    if (additionalKeywords !== undefined) product.additionalKeywords = additionalKeywords.trim();
+    if (imageAlt !== undefined) product.imageAlt = imageAlt.trim();
+    if (canonicalUrl !== undefined) product.canonicalUrl = canonicalUrl.trim();
 
     if (sizes) {
       const parsedSizes = typeof sizes === 'string' ? JSON.parse(sizes) : sizes;

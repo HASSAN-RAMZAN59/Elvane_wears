@@ -37,6 +37,13 @@ const productSchema = new mongoose.Schema({
   isFeatured: { type: Boolean, default: false },
   isNewArrival: { type: Boolean, default: false },
   isBestseller: { type: Boolean, default: false },
+  // SEO Optimization & Google Ranking Fields
+  seoTitle: { type: String, default: '', trim: true },
+  metaDescription: { type: String, default: '', trim: true },
+  focusKeyword: { type: String, default: '', trim: true },
+  additionalKeywords: { type: String, default: '', trim: true },
+  imageAlt: { type: String, default: '', trim: true },
+  canonicalUrl: { type: String, default: '', trim: true },
   reviews: [reviewSchema],
   averageRating: { type: Number, default: 0 },
   numReviews: { type: Number, default: 0 },

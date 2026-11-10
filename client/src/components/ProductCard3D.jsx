@@ -352,7 +352,7 @@ export default function ProductCard3D({ product }) {
               <img
                 key={`model-${activeColor.name}-${modelImageSrc}`}
                 src={modelImageSrc}
-                alt={`${product.title} - ${activeColor.name}`}
+                alt={product.imageAlt ? `${product.imageAlt} - ${activeColor.name}` : `${product.title} - ${activeColor.name}`}
                 loading="lazy"
                 onError={() => setImageError(true)}
                 style={{
