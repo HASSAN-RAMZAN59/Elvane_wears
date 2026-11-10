@@ -183,18 +183,18 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=Cashmere Set" className="link-underline" style={{ fontSize: '13px', color: 'var(--ash)' }}>
-                  Cashmere-Blend Series
+                <Link to="/shop?category=Sportswear" className="link-underline" style={{ fontSize: '13px', color: 'var(--ash)' }}>
+                  Sportswear
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=Heavyweight Set" className="link-underline" style={{ fontSize: '13px', color: 'var(--ash)' }}>
-                  Heavyweight Merino
+                <Link to="/shop?category=Limited Sets" className="link-underline" style={{ fontSize: '13px', color: 'var(--ash)' }}>
+                  Limited Sets
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=Velour Set" className="link-underline" style={{ fontSize: '13px', color: 'var(--ash)' }}>
-                  Velour & Lounge Sets
+                <Link to="/shop?category=Newest Release" className="link-underline" style={{ fontSize: '13px', color: 'var(--ash)' }}>
+                  Newest Release
                 </Link>
               </li>
             </ul>
@@ -216,14 +216,13 @@ export default function Footer() {
             </h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <li>
-                <Link to="/about" className="link-underline" style={{ fontSize: '13px', color: 'var(--ash)' }}>
-                  Our Brand Story
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="link-underline" style={{ fontSize: '13px', color: 'var(--ash)' }}>
-                  Customer Care & Inquiries
-                </Link>
+                <a
+                  href="tel:03243069043"
+                  className="link-underline"
+                  style={{ fontSize: '13px', color: 'var(--graphite)', fontWeight: 600, display: 'inline-block' }}
+                >
+                  📞 03243069043
+                </a>
               </li>
               <li>
                 <a
@@ -233,6 +232,19 @@ export default function Footer() {
                 >
                   ✉ elvane.wears@gmail.com
                 </a>
+              </li>
+              <li style={{ fontSize: '12px', color: 'var(--ash)', lineHeight: 1.4 }}>
+                📍 Sargodha Road Near Eden Orchard, Faisalabad 38000
+              </li>
+              <li>
+                <Link to="/about" className="link-underline" style={{ fontSize: '13px', color: 'var(--ash)' }}>
+                  Our Brand Story
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="link-underline" style={{ fontSize: '13px', color: 'var(--ash)' }}>
+                  Customer Care & Inquiries
+                </Link>
               </li>
               <li>
                 <Link to="/returns" className="link-underline" style={{ fontSize: '13px', color: 'var(--ash)' }}>

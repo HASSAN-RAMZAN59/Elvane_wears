@@ -27,7 +27,7 @@ const productSchema = new mongoose.Schema({
   description: { type: String, required: true },
   price: { type: Number, required: true },
   originalPrice: { type: Number, default: null },
-  category: { type: String, default: 'Essential Set', enum: ['Essential Set', 'Heavyweight Set', 'Velour Set', 'Cashmere Set', 'Limited Edition'] },
+  category: { type: String, default: 'Sportswear', trim: true },
   fabric: { type: String, default: '' },
   care: { type: String, default: '' },
   images: [{ type: String }],

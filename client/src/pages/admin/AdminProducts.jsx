@@ -9,11 +9,9 @@ import api, { formatPKR } from '../../utils/api';
 import Button3D from '../../components/Button3D';
 
 const CATEGORIES = [
-  'Essential Set',
-  'Heavyweight Set',
-  'Velour Set',
-  'Cashmere Set',
-  'Limited Edition'
+  'Sportswear',
+  'Limited Sets',
+  'Newest Release'
 ];
 
 const MASTER_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];

@@ -6,11 +6,9 @@ import api from '../utils/api';
 
 const categories = [
   'All Sets',
-  'Essential Set',
-  'Heavyweight Set',
-  'Velour Set',
-  'Cashmere Set',
-  'Limited Edition',
+  'Limited Sets',
+  'Newest Release',
+  'Sportswear',
 ];
 
 export default function Shop() {

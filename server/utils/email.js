@@ -131,8 +131,8 @@ const getLuxuryEmailWrapper = (contentHtml) => `
           <!-- Footer -->
           <tr>
             <td align="center" style="padding: 24px 32px; background-color: #FAFAFA; border-top: 1px solid #F0EEE9; font-size: 12px; color: #8F8B82; line-height: 1.6;">
-              <p style="margin: 0 0 8px;"><strong>Elvane Wear Pakistan</strong> • 100% Cash on Delivery</p>
-              <p style="margin: 0;">For inquiries or sizing assistance, contact us at <a href="mailto:elvane.wears@gmail.com" style="color: #D4A76A; text-decoration: none;">elvane.wears@gmail.com</a></p>
+              <p style="margin: 0 0 6px;"><strong>Elvane Wear Pakistan</strong> • Sargodha Road Near Eden Orchard, Faisalabad 38000</p>
+              <p style="margin: 0;">For inquiries or sizing assistance, contact us at <a href="mailto:elvane.wears@gmail.com" style="color: #D4A76A; text-decoration: none;">elvane.wears@gmail.com</a> or Call/WhatsApp: <a href="tel:03243069043" style="color: #1A1A1A; text-decoration: none; font-weight: 600;">03243069043</a></p>
             </td>
           </tr>
         </table>

@@ -24,7 +24,7 @@ export default function AdminNewProduct() {
   const [slug, setSlug] = useState('');
   const [price, setPrice] = useState('');
   const [originalPrice, setOriginalPrice] = useState('');
-  const [category, setCategory] = useState('Essential Set');
+  const [category, setCategory] = useState('Sportswear');
   const [description, setDescription] = useState('');
   const [fabric, setFabric] = useState('');
   const [care, setCare] = useState('');
@@ -294,11 +294,9 @@ export default function AdminNewProduct() {
                 onChange={(e) => setCategory(e.target.value)}
                 style={{ height: '46px' }}
               >
-                <option value="Essential Set">Essential Set</option>
-                <option value="Heavyweight Set">Heavyweight Set</option>
-                <option value="Velour Set">Velour Set</option>
-                <option value="Cashmere Set">Cashmere Set</option>
-                <option value="Limited Edition">Limited Edition</option>
+                <option value="Sportswear">Sportswear</option>
+                <option value="Limited Sets">Limited Sets</option>
+                <option value="Newest Release">Newest Release</option>
               </select>
             </div>
           </div>

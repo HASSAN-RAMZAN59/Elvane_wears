@@ -78,8 +78,9 @@ export default function Contact() {
                 <div>
                   <p className="eyebrow" style={{ marginBottom: '4px' }}>Location</p>
                   <p style={{ fontSize: '14px', color: 'var(--charcoal)', lineHeight: 1.6 }}>
-                    Elvane Wear Headquarters<br />
-                    Gulberg III, Lahore, Pakistan
+                    Elvane Wear Atelier<br />
+                    Sargodha Road Near Eden Orchard<br />
+                    Faisalabad 38000, Pakistan
                   </p>
                 </div>
               </div>
@@ -87,11 +88,11 @@ export default function Contact() {
               <div style={{ display: 'flex', gap: '16px' }}>
                 <Phone size={20} color="var(--champagne)" style={{ flexShrink: 0, marginTop: '4px' }} />
                 <div>
-                  <p className="eyebrow" style={{ marginBottom: '4px' }}>Customer Care</p>
-                  <a href="tel:+923001234567" style={{ fontSize: '14px', color: 'var(--charcoal)', textDecoration: 'none', fontWeight: 500 }}>
-                    +92 300 1234567
+                  <p className="eyebrow" style={{ marginBottom: '4px' }}>Customer Care & WhatsApp</p>
+                  <a href="tel:03243069043" style={{ fontSize: '15px', color: 'var(--charcoal)', textDecoration: 'none', fontWeight: 600 }}>
+                    03243069043
                   </a>
-                  <p style={{ fontSize: '12px', color: 'var(--ash)', marginTop: '2px' }}>Mon – Sat, 10:00 – 19:00 PKT</p>
+                  <p style={{ fontSize: '12px', color: 'var(--ash)', marginTop: '2px' }}>Call & WhatsApp Available (10:00 – 20:00 PKT)</p>
                 </div>
               </div>
 
@@ -169,7 +170,7 @@ export default function Contact() {
                     <label className="eyebrow" style={{ display: 'block', marginBottom: '6px' }}>Phone (Optional)</label>
                     <input
                       type="tel"
-                      placeholder="0300 1234567"
+                      placeholder="0324 3069043"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     />

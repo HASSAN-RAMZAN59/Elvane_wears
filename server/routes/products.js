@@ -12,7 +12,22 @@ router.get('/', async (req, res) => {
   try {
     const { category, sort, search, featured } = req.query;
     let filter = {};
-    if (category && category !== 'All Sets') filter.category = category;
+    if (category && category !== 'All Sets') {
+      if (category === 'Newest Release') {
+        filter.$or = [
+          { category: 'Newest Release' },
+          { isNewArrival: true }
+        ];
+      } else if (category === 'Limited Sets' || category === 'Limited Set') {
+        filter.$or = [
+          { category: 'Limited Sets' },
+          { category: 'Limited Set' },
+          { category: 'Limited Edition' }
+        ];
+      } else {
+        filter.category = category;
+      }
+    }
     if (search) {
       // Escape special regex characters to prevent ReDoS injection attacks
       const safeSearch = String(search).trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
