@@ -72,6 +72,7 @@ export default function AdminProducts() {
   const [editImages, setEditImages] = useState([]);
   const [customColorName, setCustomColorName] = useState('');
   const [customColorHex, setCustomColorHex] = useState('#2A2A2A');
+  const [customColorNotice, setCustomColorNotice] = useState(null);
   const [savingProduct, setSavingProduct] = useState(false);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState('');
   const [saveErrorMsg, setSaveErrorMsg] = useState('');
@@ -196,6 +197,7 @@ export default function AdminProducts() {
       }))
     );
     setEditImages(prod.images ? [...prod.images] : []);
+    setCustomColorNotice(null);
     setSaveSuccessMsg('');
     setSaveErrorMsg('');
   };
@@ -250,17 +252,29 @@ export default function AdminProducts() {
   };
 
   const handleAddCustomColor = (e) => {
-    e.preventDefault();
-    if (!customColorName.trim()) return;
-    const exists = editColors.some((c) => c.name.toLowerCase() === customColorName.trim().toLowerCase());
+    if (e) e.preventDefault();
+    setCustomColorNotice(null);
+
+    const trimmedName = customColorName.trim();
+    const colorName = trimmedName || `Custom ${customColorHex.toUpperCase()}`;
+
+    const exists = editColors.find(
+      (c) =>
+        c.name.toLowerCase() === colorName.toLowerCase() ||
+        (!trimmedName && c.hex?.toLowerCase() === customColorHex.toLowerCase())
+    );
     if (exists) {
-      alert('This color name already exists in this tracksuit set');
+      setCustomColorNotice({
+        type: 'error',
+        text: `Color "${exists.name}" already exists in this tracksuit set.`,
+      });
       return;
     }
+
     setEditColors((prev) => [
       ...prev,
       {
-        name: customColorName.trim(),
+        name: colorName,
         hex: customColorHex,
         active: true,
         modelImage: '',
@@ -269,6 +283,10 @@ export default function AdminProducts() {
       },
     ]);
     setCustomColorName('');
+    setCustomColorNotice({
+      type: 'success',
+      text: `Added "${colorName}" (${customColorHex}).`,
+    });
   };
 
   const handleAddPresetColor = (preset) => {
@@ -846,27 +864,53 @@ export default function AdminProducts() {
                 {editTab === 'colors' && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                     {/* Add Color row */}
-                    <div style={{ background: 'var(--cloud)', padding: '16px 20px', borderRadius: '14px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '12px' }}>
-                      <span className="eyebrow" style={{ fontSize: '10px' }}>Add Color:</span>
-                      <input
-                        type="text"
-                        placeholder="Color Name (e.g. Royal Navy)"
-                        value={customColorName}
-                        onChange={(e) => setCustomColorName(e.target.value)}
-                        style={{ flex: 1, minWidth: '160px', padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--hairline)', fontSize: '12px' }}
-                      />
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <div style={{ background: 'var(--cloud)', padding: '16px 20px', borderRadius: '14px' }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '12px' }}>
+                        <span className="eyebrow" style={{ fontSize: '10px' }}>Add Color:</span>
                         <input
-                          type="color"
-                          value={customColorHex}
-                          onChange={(e) => setCustomColorHex(e.target.value)}
-                          style={{ width: '36px', height: '36px', borderRadius: '8px', border: 'none', cursor: 'pointer', background: 'transparent' }}
+                          type="text"
+                          placeholder="Color Name (e.g. Royal Navy)"
+                          value={customColorName}
+                          onChange={(e) => {
+                            setCustomColorName(e.target.value);
+                            if (customColorNotice) setCustomColorNotice(null);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleAddCustomColor(e);
+                            }
+                          }}
+                          style={{ flex: 1, minWidth: '160px', padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--hairline)', fontSize: '12px' }}
                         />
-                        <span style={{ fontSize: '11px', fontFamily: 'monospace', color: 'var(--ash)' }}>{customColorHex}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <input
+                            type="color"
+                            value={customColorHex}
+                            onChange={(e) => {
+                              setCustomColorHex(e.target.value);
+                              if (customColorNotice) setCustomColorNotice(null);
+                            }}
+                            style={{ width: '36px', height: '36px', padding: 0, borderRadius: '8px', border: 'none', cursor: 'pointer', background: 'transparent' }}
+                          />
+                          <span style={{ fontSize: '11px', fontFamily: 'monospace', color: 'var(--ash)' }}>{customColorHex}</span>
+                        </div>
+                        <Button3D type="button" variant="dark" size="sm" onClick={handleAddCustomColor}>
+                          + Add Color
+                        </Button3D>
                       </div>
-                      <Button3D type="button" variant="dark" size="sm" onClick={handleAddCustomColor}>
-                        + Add Color
-                      </Button3D>
+                      {customColorNotice && (
+                        <p
+                          style={{
+                            marginTop: '8px',
+                            fontSize: '12px',
+                            fontWeight: 500,
+                            color: customColorNotice.type === 'error' ? 'var(--danger)' : 'var(--success)',
+                          }}
+                        >
+                          {customColorNotice.text}
+                        </p>
+                      )}
                     </div>
 
                     {/* Presets shortcut */}

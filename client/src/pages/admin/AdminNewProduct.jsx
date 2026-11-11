@@ -61,6 +61,7 @@ export default function AdminNewProduct() {
   // Custom Color Builder state
   const [customColorName, setCustomColorName] = useState('');
   const [customColorHex, setCustomColorHex] = useState('#4A6B82');
+  const [customColorNotice, setCustomColorNotice] = useState(null);
   const [uploadingKey, setUploadingKey] = useState('');
 
   // Active Sizes toggled by Admin
@@ -113,16 +114,29 @@ export default function AdminNewProduct() {
   };
 
   const handleAddCustomColor = (e) => {
-    e.preventDefault();
-    if (!customColorName.trim()) return;
+    if (e) e.preventDefault();
+    setCustomColorNotice(null);
+
+    const trimmedName = customColorName.trim();
+    const colorName = trimmedName || `Custom ${customColorHex.toUpperCase()}`;
+
     const exists = activeColors.find(
-      (c) => c.name.toLowerCase() === customColorName.trim().toLowerCase()
+      (c) =>
+        c.name.toLowerCase() === colorName.toLowerCase() ||
+        (!trimmedName && c.hex?.toLowerCase() === customColorHex.toLowerCase())
     );
-    if (exists) return;
-    setActiveColors([
-      ...activeColors,
+    if (exists) {
+      setCustomColorNotice({
+        type: 'error',
+        text: `Color "${exists.name}" is already added.`,
+      });
+      return;
+    }
+
+    setActiveColors((prev) => [
+      ...prev,
       {
-        name: customColorName.trim(),
+        name: colorName,
         hex: customColorHex,
         active: true,
         modelImage: '',
@@ -131,6 +145,10 @@ export default function AdminNewProduct() {
       },
     ]);
     setCustomColorName('');
+    setCustomColorNotice({
+      type: 'success',
+      text: `Added "${colorName}" (${customColorHex}). You can upload its photos below.`,
+    });
   };
 
   const updateColorImage = (colorName, field, value) => {
@@ -429,6 +447,32 @@ export default function AdminNewProduct() {
                   </button>
                 );
               })}
+
+              {/* Custom colors added by admin */}
+              {activeColors
+                .filter((col) => !MASTER_COLORS.some((m) => m.name === col.name))
+                .map((col) => (
+                  <button
+                    type="button"
+                    key={col.name}
+                    onClick={() => toggleColor(col)}
+                    title="Click to remove custom color"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 16px',
+                      borderRadius: '999px',
+                      background: 'var(--snow)',
+                      border: '1.5px solid var(--champagne)',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <span style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: col.hex, border: '1px solid rgba(0,0,0,0.15)' }} />
+                    <span style={{ fontSize: '12px', fontWeight: 600 }}>{col.name}</span>
+                    <Check size={12} color="var(--champagne)" />
+                  </button>
+                ))}
             </div>
 
             {/* Custom Color Creator */}
@@ -441,14 +485,26 @@ export default function AdminNewProduct() {
                   type="text"
                   placeholder="Custom Color (e.g. Sage Green)"
                   value={customColorName}
-                  onChange={(e) => setCustomColorName(e.target.value)}
+                  onChange={(e) => {
+                    setCustomColorName(e.target.value);
+                    if (customColorNotice) setCustomColorNotice(null);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddCustomColor(e);
+                    }
+                  }}
                   style={{ width: '220px', height: '40px', fontSize: '12.5px' }}
                 />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <input
                     type="color"
                     value={customColorHex}
-                    onChange={(e) => setCustomColorHex(e.target.value)}
+                    onChange={(e) => {
+                      setCustomColorHex(e.target.value);
+                      if (customColorNotice) setCustomColorNotice(null);
+                    }}
                     style={{ width: '40px', height: '40px', padding: 0, border: 'none', borderRadius: '8px', cursor: 'pointer', background: 'transparent' }}
                     title="Choose Color Hex"
                   />
@@ -464,6 +520,18 @@ export default function AdminNewProduct() {
                   Add Custom Color
                 </Button3D>
               </div>
+              {customColorNotice && (
+                <p
+                  style={{
+                    marginTop: '8px',
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    color: customColorNotice.type === 'error' ? 'var(--danger)' : 'var(--success)',
+                  }}
+                >
+                  {customColorNotice.text}
+                </p>
+              )}
             </div>
 
             {/* Color Variant Visuals & Images Section (Requested by User) */}

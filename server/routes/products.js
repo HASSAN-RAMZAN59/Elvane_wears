@@ -125,6 +125,10 @@ router.post('/', protect, authorize('admin', 'superadmin'), upload.array('images
       seoTitle, metaDescription, focusKeyword, additionalKeywords, imageAlt, canonicalUrl
     } = req.body;
     let images = [];
+    if (req.body.images !== undefined) {
+      const bodyImages = typeof req.body.images === 'string' ? JSON.parse(req.body.images) : req.body.images;
+      if (Array.isArray(bodyImages)) images = bodyImages.filter(Boolean);
+    }
     if (req.files && req.files.length > 0) {
       for (const f of req.files) {
         try {
@@ -135,8 +139,9 @@ router.post('/', protect, authorize('admin', 'superadmin'), upload.array('images
         }
       }
     }
-    
-    const parsedColors = JSON.parse(colors || '[]').map(c => ({
+
+    const rawColors = typeof colors === 'string' ? JSON.parse(colors || '[]') : (colors || []);
+    const parsedColors = rawColors.map(c => ({
       name: c.name,
       hex: c.hex,
       active: c.active !== false,
@@ -145,6 +150,8 @@ router.post('/', protect, authorize('admin', 'superadmin'), upload.array('images
       imageUrl: c.imageUrl || c.modelImage || c.articleImage || '',
     }));
 
+    const parsedSizes = typeof sizes === 'string' ? JSON.parse(sizes || '[]') : (sizes || []);
+
     const product = await Product.create({
       title, slug, description,
       price: Number(price),
@@ -152,7 +159,7 @@ router.post('/', protect, authorize('admin', 'superadmin'), upload.array('images
       category, fabric, care,
       images,
       colors: parsedColors,
-      sizes: JSON.parse(sizes || '[]'),
+      sizes: parsedSizes,
       inventoryCount: Number(inventoryCount) || 0,
       isFeatured: isFeatured === 'true' || isFeatured === true,
       isNewArrival: isNewArrival === 'true' || isNewArrival === true,
