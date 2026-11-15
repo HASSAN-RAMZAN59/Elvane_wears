@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, Check, Upload, Image as ImageIcon, Sparkles, Trash2 } from 'lucide-react';
+import { ArrowLeft, Plus, Check, Upload, Image as ImageIcon, Sparkles, Trash2, Link2 } from 'lucide-react';
 import api from '../../utils/api';
 import Button3D from '../../components/Button3D';
 
@@ -63,6 +63,7 @@ export default function AdminNewProduct() {
   const [customColorHex, setCustomColorHex] = useState('#4A6B82');
   const [customColorNotice, setCustomColorNotice] = useState(null);
   const [uploadingKey, setUploadingKey] = useState('');
+  const [showUrlInputs, setShowUrlInputs] = useState({});
 
   // Active Sizes toggled by Admin
   const [activeSizes, setActiveSizes] = useState([
@@ -611,38 +612,81 @@ export default function AdminNewProduct() {
                         </div>
 
                         {/* Image Input 1: Primary / Model Image */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '14px', alignItems: 'center' }}>
-                          <div>
-                            <label style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--graphite)', display: 'block', marginBottom: '4px' }}>
-                              Primary / Model Photo (Front Display & Color Hover)
-                            </label>
-                            <div style={{ display: 'flex', gap: '8px' }}>
-                              <input
-                                type="text"
-                                placeholder="/images/products/p1-cream-model.jpg or https://..."
-                                value={col.modelImage || ''}
-                                onChange={(e) => updateColorImage(col.name, 'modelImage', e.target.value)}
-                                style={{ flex: 1, height: '42px', fontSize: '12px' }}
-                              />
+                        <div
+                          style={{
+                            background: 'var(--snow)',
+                            border: '1px solid var(--hairline)',
+                            borderRadius: '12px',
+                            padding: '12px 14px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '10px',
+                          }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                              <div
+                                style={{
+                                  width: 52,
+                                  height: 52,
+                                  borderRadius: '8px',
+                                  background: '#F0ECE4',
+                                  border: '1px solid var(--hairline)',
+                                  overflow: 'hidden',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexShrink: 0,
+                                }}
+                              >
+                                {col.modelImage ? (
+                                  <img
+                                    src={col.modelImage}
+                                    alt="Model preview"
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                  />
+                                ) : (
+                                  <ImageIcon size={20} color="var(--mist)" />
+                                )}
+                              </div>
+                              <div>
+                                <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--graphite)' }}>
+                                  Primary / Model Photo
+                                </div>
+                                <div style={{ fontSize: '11px', color: col.modelImage ? 'var(--success)' : 'var(--ash)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                  {col.modelImage ? (
+                                    <>
+                                      <Check size={12} color="var(--success)" />
+                                      <span style={{ fontWeight: 500 }}>Photo Attached</span>
+                                    </>
+                                  ) : (
+                                    <span>No photo selected</span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                               <label
                                 style={{
                                   display: 'inline-flex',
                                   alignItems: 'center',
                                   gap: '6px',
-                                  padding: '0 14px',
-                                  height: '42px',
-                                  borderRadius: '10px',
-                                  background: isUploadingModel ? 'var(--ash)' : 'var(--snow)',
-                                  border: '1px solid var(--hairline)',
-                                  color: 'var(--graphite)',
+                                  padding: '8px 14px',
+                                  height: '36px',
+                                  borderRadius: '8px',
+                                  background: isUploadingModel ? 'var(--ash)' : 'var(--graphite)',
+                                  color: 'var(--snow)',
                                   fontSize: '11px',
                                   fontWeight: 600,
                                   cursor: isUploadingModel ? 'not-allowed' : 'pointer',
                                   whiteSpace: 'nowrap',
+                                  boxShadow: '0 2px 4px rgba(0,0,0,0.06)',
                                 }}
                               >
-                                <Upload size={13} />
-                                <span>{isUploadingModel ? 'Uploading...' : 'Upload File'}</span>
+                                <Upload size={12} />
+                                <span>{isUploadingModel ? 'Uploading...' : col.modelImage ? 'Change Photo' : 'Upload Photo'}</span>
                                 <input
                                   type="file"
                                   accept="image/*"
@@ -651,69 +695,139 @@ export default function AdminNewProduct() {
                                   onChange={(e) => handleFileUpload(col.name, 'modelImage', e.target.files?.[0])}
                                 />
                               </label>
+
+                              {col.modelImage && (
+                                <button
+                                  type="button"
+                                  onClick={() => updateColorImage(col.name, 'modelImage', '')}
+                                  style={{
+                                    background: 'none',
+                                    border: '1px solid var(--hairline)',
+                                    borderRadius: '8px',
+                                    height: '36px',
+                                    padding: '0 10px',
+                                    color: 'var(--ash)',
+                                    cursor: 'pointer',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '4px',
+                                    fontSize: '11px',
+                                  }}
+                                  title="Remove photo"
+                                >
+                                  <Trash2 size={12} />
+                                  <span>Remove</span>
+                                </button>
+                              )}
+
+                              <button
+                                type="button"
+                                onClick={() => setShowUrlInputs(prev => ({ ...prev, [`${col.name}-model`]: !prev[`${col.name}-model`] }))}
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  color: 'var(--mist)',
+                                  cursor: 'pointer',
+                                  padding: '6px',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                }}
+                                title="Custom link options"
+                              >
+                                <Link2 size={13} />
+                              </button>
                             </div>
                           </div>
 
-                          {/* Thumbnail Preview */}
-                          <div
-                            style={{
-                              width: 60,
-                              height: 60,
-                              borderRadius: '10px',
-                              background: '#F0ECE4',
-                              border: '1px solid var(--hairline)',
-                              overflow: 'hidden',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}
-                          >
-                            {col.modelImage ? (
-                              <img
-                                src={col.modelImage}
-                                alt="Model preview"
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                          {showUrlInputs[`${col.name}-model`] && (
+                            <div style={{ marginTop: '4px', paddingTop: '8px', borderTop: '1px dashed var(--hairline)' }}>
+                              <input
+                                type="text"
+                                placeholder="Paste custom image URL if not uploading..."
+                                value={col.modelImage || ''}
+                                onChange={(e) => updateColorImage(col.name, 'modelImage', e.target.value)}
+                                style={{ width: '100%', height: '36px', fontSize: '11px', padding: '0 10px', borderRadius: '6px', border: '1px solid var(--hairline)' }}
                               />
-                            ) : (
-                              <ImageIcon size={18} color="var(--mist)" />
-                            )}
-                          </div>
+                            </div>
+                          )}
                         </div>
 
                         {/* Image Input 2: Flat-lay / Article Image */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '14px', alignItems: 'center' }}>
-                          <div>
-                            <label style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--ash)', display: 'block', marginBottom: '4px' }}>
-                              Article / Garment Flat-Lay Photo (Card Hover View)
-                            </label>
-                            <div style={{ display: 'flex', gap: '8px' }}>
-                              <input
-                                type="text"
-                                placeholder="/images/products/p1-cream-flat.jpg or https://..."
-                                value={col.articleImage || ''}
-                                onChange={(e) => updateColorImage(col.name, 'articleImage', e.target.value)}
-                                style={{ flex: 1, height: '42px', fontSize: '12px' }}
-                              />
+                        <div
+                          style={{
+                            background: 'var(--snow)',
+                            border: '1px solid var(--hairline)',
+                            borderRadius: '12px',
+                            padding: '12px 14px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '10px',
+                          }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                              <div
+                                style={{
+                                  width: 52,
+                                  height: 52,
+                                  borderRadius: '8px',
+                                  background: '#F0ECE4',
+                                  border: '1px solid var(--hairline)',
+                                  overflow: 'hidden',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexShrink: 0,
+                                }}
+                              >
+                                {col.articleImage ? (
+                                  <img
+                                    src={col.articleImage}
+                                    alt="Article preview"
+                                    style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '2px' }}
+                                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                  />
+                                ) : (
+                                  <ImageIcon size={20} color="var(--mist)" />
+                                )}
+                              </div>
+                              <div>
+                                <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--graphite)' }}>
+                                  Article Flat-Lay Photo (Card Hover View)
+                                </div>
+                                <div style={{ fontSize: '11px', color: col.articleImage ? 'var(--success)' : 'var(--ash)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                  {col.articleImage ? (
+                                    <>
+                                      <Check size={12} color="var(--success)" />
+                                      <span style={{ fontWeight: 500 }}>Photo Attached</span>
+                                    </>
+                                  ) : (
+                                    <span>No photo selected</span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                               <label
                                 style={{
                                   display: 'inline-flex',
                                   alignItems: 'center',
                                   gap: '6px',
-                                  padding: '0 14px',
-                                  height: '42px',
-                                  borderRadius: '10px',
-                                  background: isUploadingArticle ? 'var(--ash)' : 'var(--snow)',
-                                  border: '1px solid var(--hairline)',
-                                  color: 'var(--graphite)',
+                                  padding: '8px 14px',
+                                  height: '36px',
+                                  borderRadius: '8px',
+                                  background: isUploadingArticle ? 'var(--ash)' : 'var(--graphite)',
+                                  color: 'var(--snow)',
                                   fontSize: '11px',
                                   fontWeight: 600,
                                   cursor: isUploadingArticle ? 'not-allowed' : 'pointer',
                                   whiteSpace: 'nowrap',
+                                  boxShadow: '0 2px 4px rgba(0,0,0,0.06)',
                                 }}
                               >
-                                <Upload size={13} />
-                                <span>{isUploadingArticle ? 'Uploading...' : 'Upload File'}</span>
+                                <Upload size={12} />
+                                <span>{isUploadingArticle ? 'Uploading...' : col.articleImage ? 'Change Photo' : 'Upload Photo'}</span>
                                 <input
                                   type="file"
                                   accept="image/*"
@@ -722,34 +836,61 @@ export default function AdminNewProduct() {
                                   onChange={(e) => handleFileUpload(col.name, 'articleImage', e.target.files?.[0])}
                                 />
                               </label>
+
+                              {col.articleImage && (
+                                <button
+                                  type="button"
+                                  onClick={() => updateColorImage(col.name, 'articleImage', '')}
+                                  style={{
+                                    background: 'none',
+                                    border: '1px solid var(--hairline)',
+                                    borderRadius: '8px',
+                                    height: '36px',
+                                    padding: '0 10px',
+                                    color: 'var(--ash)',
+                                    cursor: 'pointer',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '4px',
+                                    fontSize: '11px',
+                                  }}
+                                  title="Remove photo"
+                                >
+                                  <Trash2 size={12} />
+                                  <span>Remove</span>
+                                </button>
+                              )}
+
+                              <button
+                                type="button"
+                                onClick={() => setShowUrlInputs(prev => ({ ...prev, [`${col.name}-article`]: !prev[`${col.name}-article`] }))}
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  color: 'var(--mist)',
+                                  cursor: 'pointer',
+                                  padding: '6px',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                }}
+                                title="Custom link options"
+                              >
+                                <Link2 size={13} />
+                              </button>
                             </div>
                           </div>
 
-                          {/* Thumbnail Preview */}
-                          <div
-                            style={{
-                              width: 60,
-                              height: 60,
-                              borderRadius: '10px',
-                              background: '#F0ECE4',
-                              border: '1px solid var(--hairline)',
-                              overflow: 'hidden',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}
-                          >
-                            {col.articleImage ? (
-                              <img
-                                src={col.articleImage}
-                                alt="Article preview"
-                                style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '4px' }}
-                                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                          {showUrlInputs[`${col.name}-article`] && (
+                            <div style={{ marginTop: '4px', paddingTop: '8px', borderTop: '1px dashed var(--hairline)' }}>
+                              <input
+                                type="text"
+                                placeholder="Paste custom image URL if not uploading..."
+                                value={col.articleImage || ''}
+                                onChange={(e) => updateColorImage(col.name, 'articleImage', e.target.value)}
+                                style={{ width: '100%', height: '36px', fontSize: '11px', padding: '0 10px', borderRadius: '6px', border: '1px solid var(--hairline)' }}
                               />
-                            ) : (
-                              <ImageIcon size={18} color="var(--mist)" />
-                            )}
-                          </div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     );

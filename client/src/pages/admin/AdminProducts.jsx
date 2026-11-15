@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Package, Plus, Edit2, Trash2, Check, X, ShieldAlert, Sparkles,
-  Image as ImageIcon, Upload, Eye, CheckCircle2, AlertCircle, Layers
+  Image as ImageIcon, Upload, Eye, CheckCircle2, AlertCircle, Layers, Link2
 } from 'lucide-react';
 import api, { formatPKR } from '../../utils/api';
 import Button3D from '../../components/Button3D';
@@ -42,6 +42,7 @@ export default function AdminProducts() {
   const [modalColors, setModalColors] = useState([]);
   const [savingColors, setSavingColors] = useState(false);
   const [uploadingKey, setUploadingKey] = useState('');
+  const [showUrlInputs, setShowUrlInputs] = useState({});
 
   // ----------------------------------------------------
   // FULL A-TO-Z PRODUCT EDIT MODAL STATE
@@ -1013,22 +1014,73 @@ export default function AdminProducts() {
                               {/* Images for this color */}
                               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px', background: 'var(--cloud)', padding: '14px 16px', borderRadius: '12px' }}>
                                 {/* Model Photo */}
-                                <div>
-                                  <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--graphite)', display: 'block', marginBottom: '6px' }}>
-                                    Model Front Photo (Storefront Card Display)
-                                  </label>
-                                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                    {col.modelImage ? (
-                                      <img src={col.modelImage} alt="Model" style={{ width: '44px', height: '44px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--hairline)' }} />
-                                    ) : (
-                                      <div style={{ width: '44px', height: '44px', background: 'var(--snow)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <ImageIcon size={18} color="var(--mist)" />
+                                <div style={{ background: 'var(--snow)', border: '1px solid var(--hairline)', borderRadius: '10px', padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                      <div style={{ width: '44px', height: '44px', borderRadius: '8px', background: '#F0ECE4', border: '1px solid var(--hairline)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                        {col.modelImage ? (
+                                          <img src={col.modelImage} alt="Model" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                                        ) : (
+                                          <ImageIcon size={18} color="var(--mist)" />
+                                        )}
                                       </div>
-                                    )}
-                                    <div style={{ flex: 1, display: 'flex', gap: '6px' }}>
+                                      <div>
+                                        <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--graphite)' }}>Model Photo</div>
+                                        <div style={{ fontSize: '10px', color: col.modelImage ? 'var(--success)' : 'var(--ash)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                                          {col.modelImage ? (
+                                            <>
+                                              <Check size={11} color="var(--success)" />
+                                              <span>Photo Ready</span>
+                                            </>
+                                          ) : (
+                                            <span>No photo</span>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                      <label style={{ background: isUploadingModel ? 'var(--ash)' : 'var(--graphite)', color: 'var(--snow)', borderRadius: '6px', padding: '6px 10px', cursor: isUploadingModel ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                                        <Upload size={11} />
+                                        <span>{isUploadingModel ? '...' : col.modelImage ? 'Change' : 'Upload'}</span>
+                                        <input
+                                          type="file"
+                                          accept="image/*"
+                                          style={{ display: 'none' }}
+                                          disabled={isUploadingModel}
+                                          onChange={(e) => handleColorImageUpload(col.name, 'modelImage', e.target.files?.[0])}
+                                        />
+                                      </label>
+                                      {col.modelImage && (
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setEditColors((prev) =>
+                                              prev.map((c) => (c.name === col.name ? { ...c, modelImage: '', imageUrl: '' } : c))
+                                            );
+                                          }}
+                                          style={{ background: 'none', border: '1px solid var(--hairline)', borderRadius: '6px', padding: '5px 7px', color: 'var(--ash)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}
+                                          title="Remove photo"
+                                        >
+                                          <Trash2 size={11} />
+                                        </button>
+                                      )}
+                                      <button
+                                        type="button"
+                                        onClick={() => setShowUrlInputs(prev => ({ ...prev, [`edit-${col.name}-model`]: !prev[`edit-${col.name}-model`] }))}
+                                        style={{ background: 'none', border: 'none', color: 'var(--mist)', cursor: 'pointer', padding: '4px', display: 'inline-flex', alignItems: 'center' }}
+                                        title="Paste link manually"
+                                      >
+                                        <Link2 size={12} />
+                                      </button>
+                                    </div>
+                                  </div>
+
+                                  {showUrlInputs[`edit-${col.name}-model`] && (
+                                    <div style={{ marginTop: '2px', paddingTop: '6px', borderTop: '1px dashed var(--hairline)' }}>
                                       <input
                                         type="text"
-                                        placeholder="https://... or upload"
+                                        placeholder="Paste custom image URL..."
                                         value={col.modelImage || ''}
                                         onChange={(e) => {
                                           const val = e.target.value;
@@ -1036,39 +1088,80 @@ export default function AdminProducts() {
                                             prev.map((c) => (c.name === col.name ? { ...c, modelImage: val, imageUrl: val } : c))
                                           );
                                         }}
-                                        style={{ width: '100%', padding: '6px 10px', borderRadius: '6px', border: '1px solid var(--hairline)', fontSize: '11px' }}
+                                        style={{ width: '100%', padding: '5px 8px', borderRadius: '5px', border: '1px solid var(--hairline)', fontSize: '11px' }}
                                       />
-                                      <label style={{ background: 'var(--snow)', border: '1px solid var(--hairline)', borderRadius: '6px', padding: '6px 10px', cursor: 'pointer', display: 'flex', alignItems: 'center', fontSize: '11px', fontWeight: 600, whiteSpace: 'nowrap' }}>
-                                        <Upload size={12} style={{ marginRight: '4px' }} />
-                                        <span>{isUploadingModel ? '...' : 'Upload'}</span>
+                                    </div>
+                                  )}
+                                </div>
+
+                                {/* Flat-lay photo */}
+                                <div style={{ background: 'var(--snow)', border: '1px solid var(--hairline)', borderRadius: '10px', padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                      <div style={{ width: '44px', height: '44px', borderRadius: '8px', background: '#F0ECE4', border: '1px solid var(--hairline)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                        {col.articleImage ? (
+                                          <img src={col.articleImage} alt="Flatlay" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '2px' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                                        ) : (
+                                          <ImageIcon size={18} color="var(--mist)" />
+                                        )}
+                                      </div>
+                                      <div>
+                                        <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--graphite)' }}>Flat-Lay Photo</div>
+                                        <div style={{ fontSize: '10px', color: col.articleImage ? 'var(--success)' : 'var(--ash)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                                          {col.articleImage ? (
+                                            <>
+                                              <Check size={11} color="var(--success)" />
+                                              <span>Photo Ready</span>
+                                            </>
+                                          ) : (
+                                            <span>No photo</span>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                      <label style={{ background: isUploadingFlat ? 'var(--ash)' : 'var(--graphite)', color: 'var(--snow)', borderRadius: '6px', padding: '6px 10px', cursor: isUploadingFlat ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                                        <Upload size={11} />
+                                        <span>{isUploadingFlat ? '...' : col.articleImage ? 'Change' : 'Upload'}</span>
                                         <input
                                           type="file"
                                           accept="image/*"
                                           style={{ display: 'none' }}
-                                          onChange={(e) => handleColorImageUpload(col.name, 'modelImage', e.target.files?.[0])}
+                                          disabled={isUploadingFlat}
+                                          onChange={(e) => handleColorImageUpload(col.name, 'articleImage', e.target.files?.[0])}
                                         />
                                       </label>
+                                      {col.articleImage && (
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setEditColors((prev) =>
+                                              prev.map((c) => (c.name === col.name ? { ...c, articleImage: '' } : c))
+                                            );
+                                          }}
+                                          style={{ background: 'none', border: '1px solid var(--hairline)', borderRadius: '6px', padding: '5px 7px', color: 'var(--ash)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}
+                                          title="Remove photo"
+                                        >
+                                          <Trash2 size={11} />
+                                        </button>
+                                      )}
+                                      <button
+                                        type="button"
+                                        onClick={() => setShowUrlInputs(prev => ({ ...prev, [`edit-${col.name}-flat`]: !prev[`edit-${col.name}-flat`] }))}
+                                        style={{ background: 'none', border: 'none', color: 'var(--mist)', cursor: 'pointer', padding: '4px', display: 'inline-flex', alignItems: 'center' }}
+                                        title="Paste link manually"
+                                      >
+                                        <Link2 size={12} />
+                                      </button>
                                     </div>
                                   </div>
-                                </div>
 
-                                {/* Flat-lay photo */}
-                                <div>
-                                  <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--graphite)', display: 'block', marginBottom: '6px' }}>
-                                    Flat-lay / Article Photo (Hover / Detail)
-                                  </label>
-                                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                    {col.articleImage ? (
-                                      <img src={col.articleImage} alt="Flatlay" style={{ width: '44px', height: '44px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--hairline)' }} />
-                                    ) : (
-                                      <div style={{ width: '44px', height: '44px', background: 'var(--snow)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <ImageIcon size={18} color="var(--mist)" />
-                                      </div>
-                                    )}
-                                    <div style={{ flex: 1, display: 'flex', gap: '6px' }}>
+                                  {showUrlInputs[`edit-${col.name}-flat`] && (
+                                    <div style={{ marginTop: '2px', paddingTop: '6px', borderTop: '1px dashed var(--hairline)' }}>
                                       <input
                                         type="text"
-                                        placeholder="https://... or upload"
+                                        placeholder="Paste custom image URL..."
                                         value={col.articleImage || ''}
                                         onChange={(e) => {
                                           const val = e.target.value;
@@ -1076,20 +1169,10 @@ export default function AdminProducts() {
                                             prev.map((c) => (c.name === col.name ? { ...c, articleImage: val } : c))
                                           );
                                         }}
-                                        style={{ width: '100%', padding: '6px 10px', borderRadius: '6px', border: '1px solid var(--hairline)', fontSize: '11px' }}
+                                        style={{ width: '100%', padding: '5px 8px', borderRadius: '5px', border: '1px solid var(--hairline)', fontSize: '11px' }}
                                       />
-                                      <label style={{ background: 'var(--snow)', border: '1px solid var(--hairline)', borderRadius: '6px', padding: '6px 10px', cursor: 'pointer', display: 'flex', alignItems: 'center', fontSize: '11px', fontWeight: 600, whiteSpace: 'nowrap' }}>
-                                        <Upload size={12} style={{ marginRight: '4px' }} />
-                                        <span>{isUploadingFlat ? '...' : 'Upload'}</span>
-                                        <input
-                                          type="file"
-                                          accept="image/*"
-                                          style={{ display: 'none' }}
-                                          onChange={(e) => handleColorImageUpload(col.name, 'articleImage', e.target.files?.[0])}
-                                        />
-                                      </label>
                                     </div>
-                                  </div>
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -1462,141 +1545,225 @@ export default function AdminProducts() {
                     </div>
 
                     {/* Primary Photo */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '10px', alignItems: 'center' }}>
-                      <div>
-                        <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--graphite)', display: 'block', marginBottom: '3px' }}>
-                          Primary / Model Photo (Front Display & Color Hover)
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="https://... or upload a file"
-                          value={col.modelImage || ''}
-                          onChange={(e) => {
-                            const val = e.target.value;
-                            setModalColors((prev) =>
-                              prev.map((c) => (c.name === col.name ? { ...c, modelImage: val, imageUrl: val } : c))
-                            );
-                          }}
-                          style={{ width: '100%', padding: '8px 12px', fontSize: '12px' }}
-                        />
+                    <div style={{ background: 'var(--snow)', border: '1px solid var(--hairline)', borderRadius: '10px', padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div style={{ width: 44, height: 44, borderRadius: '8px', background: '#F0ECE4', border: '1px solid var(--hairline)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            {col.modelImage ? (
+                              <img src={col.modelImage} alt={col.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                            ) : (
+                              <ImageIcon size={18} color="var(--mist)" />
+                            )}
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--graphite)' }}>Model Photo (Front)</div>
+                            <div style={{ fontSize: '10px', color: col.modelImage ? 'var(--success)' : 'var(--ash)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                              {col.modelImage ? (
+                                <>
+                                  <Check size={11} color="var(--success)" />
+                                  <span>Photo Ready</span>
+                                </>
+                              ) : (
+                                <span>No photo</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <label
+                            style={{
+                              background: isUploadingModel ? 'var(--ash)' : 'var(--graphite)',
+                              color: 'var(--snow)',
+                              borderRadius: '6px',
+                              padding: '6px 10px',
+                              cursor: isUploadingModel ? 'not-allowed' : 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            <Upload size={11} />
+                            <span>{isUploadingModel ? '...' : col.modelImage ? 'Change' : 'Upload'}</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              style={{ display: 'none' }}
+                              disabled={isUploadingModel}
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  const formData = new FormData();
+                                  formData.append('image', file);
+                                  setUploadingKey(`${col.name}-modelImage`);
+                                  api.post('/products/upload-image', formData, {
+                                    headers: { 'Content-Type': 'multipart/form-data' },
+                                  }).then(({ data }) => {
+                                    setModalColors((prev) =>
+                                      prev.map((c) => (c.name === col.name ? { ...c, modelImage: data.url, imageUrl: data.url } : c))
+                                    );
+                                  }).catch((err) => alert('Upload failed')).finally(() => setUploadingKey(''));
+                                }
+                              }}
+                            />
+                          </label>
+
+                          {col.modelImage && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setModalColors((prev) =>
+                                  prev.map((c) => (c.name === col.name ? { ...c, modelImage: '', imageUrl: '' } : c))
+                                );
+                              }}
+                              style={{ background: 'none', border: '1px solid var(--hairline)', borderRadius: '6px', padding: '5px 7px', color: 'var(--ash)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}
+                              title="Remove photo"
+                            >
+                              <Trash2 size={11} />
+                            </button>
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() => setShowUrlInputs(prev => ({ ...prev, [`modal-${col.name}-model`]: !prev[`modal-${col.name}-model`] }))}
+                            style={{ background: 'none', border: 'none', color: 'var(--mist)', cursor: 'pointer', padding: '4px', display: 'inline-flex', alignItems: 'center' }}
+                            title="Paste link manually"
+                          >
+                            <Link2 size={12} />
+                          </button>
+                        </div>
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '16px' }}>
-                        {col.modelImage && (
-                          <img
-                            src={col.modelImage}
-                            alt={col.name}
-                            style={{ width: 34, height: 34, objectFit: 'cover', borderRadius: '6px', border: '1px solid var(--hairline)' }}
-                          />
-                        )}
-                        <label
-                          style={{
-                            background: 'var(--snow)',
-                            border: '1px solid var(--hairline)',
-                            borderRadius: '8px',
-                            padding: '7px 12px',
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '5px',
-                            fontSize: '11px',
-                            fontWeight: 600,
-                            color: 'var(--graphite)',
-                          }}
-                        >
-                          <Upload size={12} />
-                          <span>{isUploadingModel ? 'Uploading...' : 'Upload'}</span>
+                      {showUrlInputs[`modal-${col.name}-model`] && (
+                        <div style={{ marginTop: '2px', paddingTop: '6px', borderTop: '1px dashed var(--hairline)' }}>
                           <input
-                            type="file"
-                            accept="image/*"
-                            style={{ display: 'none' }}
+                            type="text"
+                            placeholder="Paste custom image URL..."
+                            value={col.modelImage || ''}
                             onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file) {
-                                const formData = new FormData();
-                                formData.append('image', file);
-                                setUploadingKey(`${col.name}-modelImage`);
-                                api.post('/products/upload-image', formData, {
-                                  headers: { 'Content-Type': 'multipart/form-data' },
-                                }).then(({ data }) => {
-                                  setModalColors((prev) =>
-                                    prev.map((c) => (c.name === col.name ? { ...c, modelImage: data.url, imageUrl: data.url } : c))
-                                  );
-                                }).catch((err) => alert('Upload failed')).finally(() => setUploadingKey(''));
-                              }
+                              const val = e.target.value;
+                              setModalColors((prev) =>
+                                prev.map((c) => (c.name === col.name ? { ...c, modelImage: val, imageUrl: val } : c))
+                              );
                             }}
+                            style={{ width: '100%', padding: '5px 8px', borderRadius: '5px', border: '1px solid var(--hairline)', fontSize: '11px' }}
                           />
-                        </label>
-                      </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Flat-Lay Photo */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '10px', alignItems: 'center' }}>
-                      <div>
-                        <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--graphite)', display: 'block', marginBottom: '3px' }}>
-                          Article Flat-Lay Photo (Clean Apparel Still-Life View)
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="https://... or upload a file"
-                          value={col.articleImage || ''}
-                          onChange={(e) => {
-                            const val = e.target.value;
-                            setModalColors((prev) =>
-                              prev.map((c) => (c.name === col.name ? { ...c, articleImage: val } : c))
-                            );
-                          }}
-                          style={{ width: '100%', padding: '8px 12px', fontSize: '12px' }}
-                        />
+                    <div style={{ background: 'var(--snow)', border: '1px solid var(--hairline)', borderRadius: '10px', padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div style={{ width: 44, height: 44, borderRadius: '8px', background: '#F0ECE4', border: '1px solid var(--hairline)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            {col.articleImage ? (
+                              <img src={col.articleImage} alt={col.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '2px' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                            ) : (
+                              <ImageIcon size={18} color="var(--mist)" />
+                            )}
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--graphite)' }}>Flat-Lay Photo (Detail)</div>
+                            <div style={{ fontSize: '10px', color: col.articleImage ? 'var(--success)' : 'var(--ash)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                              {col.articleImage ? (
+                                <>
+                                  <Check size={11} color="var(--success)" />
+                                  <span>Photo Ready</span>
+                                </>
+                              ) : (
+                                <span>No photo</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <label
+                            style={{
+                              background: isUploadingArticle ? 'var(--ash)' : 'var(--graphite)',
+                              color: 'var(--snow)',
+                              borderRadius: '6px',
+                              padding: '6px 10px',
+                              cursor: isUploadingArticle ? 'not-allowed' : 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            <Upload size={11} />
+                            <span>{isUploadingArticle ? '...' : col.articleImage ? 'Change' : 'Upload'}</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              style={{ display: 'none' }}
+                              disabled={isUploadingArticle}
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  const formData = new FormData();
+                                  formData.append('image', file);
+                                  setUploadingKey(`${col.name}-articleImage`);
+                                  api.post('/products/upload-image', formData, {
+                                    headers: { 'Content-Type': 'multipart/form-data' },
+                                  }).then(({ data }) => {
+                                    setModalColors((prev) =>
+                                      prev.map((c) => (c.name === col.name ? { ...c, articleImage: data.url } : c))
+                                    );
+                                  }).catch((err) => alert('Upload failed')).finally(() => setUploadingKey(''));
+                                }
+                              }}
+                            />
+                          </label>
+
+                          {col.articleImage && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setModalColors((prev) =>
+                                  prev.map((c) => (c.name === col.name ? { ...c, articleImage: '' } : c))
+                                );
+                              }}
+                              style={{ background: 'none', border: '1px solid var(--hairline)', borderRadius: '6px', padding: '5px 7px', color: 'var(--ash)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}
+                              title="Remove photo"
+                            >
+                              <Trash2 size={11} />
+                            </button>
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() => setShowUrlInputs(prev => ({ ...prev, [`modal-${col.name}-flat`]: !prev[`modal-${col.name}-flat`] }))}
+                            style={{ background: 'none', border: 'none', color: 'var(--mist)', cursor: 'pointer', padding: '4px', display: 'inline-flex', alignItems: 'center' }}
+                            title="Paste link manually"
+                          >
+                            <Link2 size={12} />
+                          </button>
+                        </div>
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '16px' }}>
-                        {col.articleImage && (
-                          <img
-                            src={col.articleImage}
-                            alt={col.name}
-                            style={{ width: 34, height: 34, objectFit: 'cover', borderRadius: '6px', border: '1px solid var(--hairline)' }}
-                          />
-                        )}
-                        <label
-                          style={{
-                            background: 'var(--snow)',
-                            border: '1px solid var(--hairline)',
-                            borderRadius: '8px',
-                            padding: '7px 12px',
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '5px',
-                            fontSize: '11px',
-                            fontWeight: 600,
-                            color: 'var(--graphite)',
-                          }}
-                        >
-                          <Upload size={12} />
-                          <span>{isUploadingArticle ? 'Uploading...' : 'Upload'}</span>
+                      {showUrlInputs[`modal-${col.name}-flat`] && (
+                        <div style={{ marginTop: '2px', paddingTop: '6px', borderTop: '1px dashed var(--hairline)' }}>
                           <input
-                            type="file"
-                            accept="image/*"
-                            style={{ display: 'none' }}
+                            type="text"
+                            placeholder="Paste custom image URL..."
+                            value={col.articleImage || ''}
                             onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file) {
-                                const formData = new FormData();
-                                formData.append('image', file);
-                                setUploadingKey(`${col.name}-articleImage`);
-                                api.post('/products/upload-image', formData, {
-                                  headers: { 'Content-Type': 'multipart/form-data' },
-                                }).then(({ data }) => {
-                                  setModalColors((prev) =>
-                                    prev.map((c) => (c.name === col.name ? { ...c, articleImage: data.url } : c))
-                                  );
-                                }).catch((err) => alert('Upload failed')).finally(() => setUploadingKey(''));
-                              }
+                              const val = e.target.value;
+                              setModalColors((prev) =>
+                                prev.map((c) => (c.name === col.name ? { ...c, articleImage: val } : c))
+                              );
                             }}
+                            style={{ width: '100%', padding: '5px 8px', borderRadius: '5px', border: '1px solid var(--hairline)', fontSize: '11px' }}
                           />
-                        </label>
-                      </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
