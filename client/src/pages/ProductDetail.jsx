@@ -742,7 +742,7 @@ export default function ProductDetail() {
                 {openAccordion === 'returns' && (
                   <div style={{ paddingBottom: '18px', fontSize: '13px', color: 'var(--ash)', lineHeight: 1.7 }}>
                     <p>
-                      Enjoy peace of mind with our 7-day exchange window. If your tracksuit set requires another size or colorway, we coordinate a seamless doorstep pickup across Pakistan. Items must be unworn with original tags attached.
+                      Enjoy peace of mind with our 7-day exchange window. If your tracksuit set requires another size or colorway, we coordinate a seamless exchange service across Pakistan. Items must be unworn with original tags attached.
                     </p>
                     <p style={{ marginTop: '10px' }}>
                       <span

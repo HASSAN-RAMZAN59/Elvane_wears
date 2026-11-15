@@ -32,11 +32,11 @@ export default function ReturnsPolicy() {
           </p>
         </div>
 
-        {/* 3 Pillars of Our Exchange Guarantee */}
+        {/* Pillars of Our Exchange Guarantee */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: '24px',
             marginBottom: '48px',
           }}
@@ -69,37 +69,6 @@ export default function ReturnsPolicy() {
             </h3>
             <p style={{ fontSize: '13px', color: 'var(--ash)', lineHeight: 1.65 }}>
               Try your set at home. If you require a different size (XS to XXL) or another colorway, request an exchange within 7 days of delivery.
-            </p>
-          </div>
-
-          <div
-            style={{
-              background: 'var(--cloud)',
-              padding: '32px 28px',
-              borderRadius: '20px',
-              border: '1px solid var(--hairline)',
-            }}
-          >
-            <div
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: '50%',
-                background: 'var(--snow)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '1px solid var(--hairline-sky)',
-                marginBottom: '20px',
-              }}
-            >
-              <Truck size={20} color="var(--champagne)" />
-            </div>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '22px', marginBottom: '8px', color: 'var(--graphite)' }}>
-              Doorstep Reverse Pickup
-            </h3>
-            <p style={{ fontSize: '13px', color: 'var(--ash)', lineHeight: 1.65 }}>
-              Nationwide across Karachi, Lahore, Islamabad, and all cities. Our courier handles the pickup from your doorstep seamlessly.
             </p>
           </div>
 
