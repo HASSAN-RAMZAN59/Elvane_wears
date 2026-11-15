@@ -1101,7 +1101,7 @@ export default function AdminNewProduct() {
               {seoTitle || (title ? `${title} — Luxury Tracksuit Pakistan | Elvane Wear` : 'Tracksuit Set Title — Elvane Wear')}
             </h4>
             <p style={{ fontSize: '13px', color: '#4d5156', fontFamily: 'Arial, sans-serif', lineHeight: 1.4, margin: 0 }}>
-              {metaDescription || (description ? description.slice(0, 155) + '...' : 'Shop luxury minimalist tracksuit sets crafted from French terry, merino wool, and organic cotton in Pakistan with Cash on Delivery.')}
+              {metaDescription || (description ? description.slice(0, 155) + '...' : 'Shop luxury minimalist tracksuit sets crafted from premium combed cotton, luxury fleece, and heavyweight loopback in Pakistan with Cash on Delivery.')}
             </p>
           </div>
 

@@ -178,7 +178,7 @@ export default function Home() {
               textShadow: '0 2px 14px rgba(0, 0, 0, 0.7)',
             }}
           >
-            Engineered for movement. Designed for stillness. Complete, minimalist tracksuit sets crafted from pure cashmere, merino, and double-faced organic cotton.
+            Engineered for movement. Designed for stillness. Complete, minimalist tracksuit sets crafted from premium combed cotton, luxury fleece, and heavyweight loopback in Pakistan.
           </motion.p>
 
           {/* Buttons */}

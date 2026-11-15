@@ -42,7 +42,7 @@ export default function About() {
               In high fashion tailoring, no master tailor would ever recommend pairing an exquisite suit jacket with an alien pair of trousers. We hold the tracksuit to the identical standard of sartorial integrity. Every Elvane Wear tracksuit is strictly designed and sold as a harmonious 1-piece tracksuit set.
             </p>
             <p style={{ marginTop: '16px' }}>
-              From initial fabric spinning to precision dyeing in single-batch dye lots, the jacket and trousers live as one entity—balanced in GSM weight, tensile stretch, and monochrome tone.
+              From initial fabric spinning in Faisalabad to precision dyeing in single-batch dye lots, the jacket and trousers live as one entity—balanced in GSM weight, tensile stretch, and monochrome tone.
             </p>
           </div>
 
@@ -53,7 +53,7 @@ export default function About() {
                 Noble Natural Fibers
               </h4>
               <p style={{ fontSize: '14px', color: 'var(--ash)', lineHeight: 1.7 }}>
-                Australian Extra-Fine Merino Wool, Italian Cashmere blends, and Egyptian Long-Staple Pima Cotton. Natural thermoregulation that breathes with your body.
+                Premium Pakistani long-staple combed cotton, artisanal fleece, and luxury heavyweight loopback. Milled and dyed in Faisalabad with natural thermoregulation tailored for our climate and effortless daily breathability.
               </p>
             </div>
 
@@ -63,7 +63,7 @@ export default function About() {
                 Concealed Engineering
               </h4>
               <p style={{ fontSize: '14px', color: 'var(--ash)', lineHeight: 1.7 }}>
-                Internal French seams, invisible zip garages, heavy-gauge custom ribbing, and weighted hem anchors that maintain the sculptural silhouette whether stationary or moving.
+                Precision reinforced seams, invisible zip garages, heavy-gauge custom ribbing, and weighted hem anchors. Master-tailored locally in Pakistan to maintain a clean, sculptural silhouette whether stationary or moving.
               </p>
             </div>
           </div>
