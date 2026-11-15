@@ -104,6 +104,8 @@ export default function App() {
 
           {/* Dedicated Back-Office / Admin Login Portal */}
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/portal" element={<Navigate to="/admin/login" replace />} />
+          <Route path="/manage" element={<Navigate to="/admin/login" replace />} />
           <Route path="/super-admin/login" element={<Navigate to="/admin/login" replace />} />
           <Route path="/superadmin/login" element={<Navigate to="/admin/login" replace />} />
 

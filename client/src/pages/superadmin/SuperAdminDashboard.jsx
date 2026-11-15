@@ -5,7 +5,7 @@ import {
   Shield, KeyRound, Activity, BarChart3, TrendingUp, Users,
   ShoppingBag, CheckCircle2, AlertTriangle, ArrowLeft, RefreshCw,
   Search, X, UserPlus, Eye, Package, Phone, Mail, MapPin, Truck,
-  Calendar, DollarSign, Award, Clock, ChevronRight, Lock
+  Calendar, DollarSign, Award, Clock, ChevronRight, Lock, LogOut
 } from 'lucide-react';
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
@@ -295,6 +295,18 @@ export default function SuperAdminDashboard() {
           </Button3D>
           <Button3D variant="ghost" size="sm" onClick={() => navigate('/')}>
             Storefront
+          </Button3D>
+          <Button3D
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              logout();
+              navigate('/admin/login');
+            }}
+            icon={LogOut}
+            style={{ color: 'var(--danger)' }}
+          >
+            Sign Out
           </Button3D>
           <Button3D variant="dark" size="sm" onClick={loadData} icon={RefreshCw}>
             Refresh Feeds

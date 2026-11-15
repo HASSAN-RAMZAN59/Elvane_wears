@@ -150,7 +150,7 @@ export default function AdminLayout() {
         <button
           onClick={() => {
             logout();
-            navigate('/login');
+            navigate('/admin/login');
           }}
           style={{
             display: 'flex',

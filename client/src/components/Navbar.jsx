@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Heart, User, Menu, X, LogOut, Shield } from 'lucide-react';
-import { useAuthStore } from '../store/authStore';
+import { ShoppingBag, Heart, Menu, X } from 'lucide-react';
 import { useCartStore } from '../store/cartStore';
 import api from '../utils/api';
 
@@ -10,7 +9,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [announcement, setAnnouncement] = useState(null);
-  const { user, isAuthenticated, logout } = useAuthStore();
   const { getItemCount, toggleCart } = useCartStore();
   const navigate = useNavigate();
   const location = useLocation();
@@ -184,29 +182,6 @@ export default function Navbar() {
             )}
           </button>
 
-          {isAuthenticated && (user?.role === 'admin' || user?.role === 'superadmin') && (
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <Link
-                to={user?.role === 'superadmin' ? '/super-admin' : '/admin'}
-                style={{ color: 'var(--ash)', display: 'flex' }}
-                title="Admin Dashboard"
-              >
-                <User size={20} strokeWidth={1.25} />
-              </Link>
-              <button
-                onClick={() => {
-                  logout();
-                  navigate('/');
-                }}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ash)', display: 'flex' }}
-                className="hidden sm:flex"
-                title="Sign Out"
-              >
-                <LogOut size={18} strokeWidth={1.25} />
-              </button>
-            </div>
-          )}
-
           {/* Mobile hamburger toggle button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -278,42 +253,6 @@ export default function Navbar() {
                 <Heart size={16} strokeWidth={1.5} />
                 <span>Private Wishlist</span>
               </Link>
-
-              {isAuthenticated && (user?.role === 'admin' || user?.role === 'superadmin') && (
-                <>
-                  <Link
-                    to={user?.role === 'superadmin' ? '/super-admin' : '/admin'}
-                    onClick={() => setMobileOpen(false)}
-                    style={{ fontSize: 13, color: 'var(--champagne)', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}
-                  >
-                    <Shield size={16} strokeWidth={1.5} />
-                    <span>Admin Management Portal</span>
-                  </Link>
-
-                  <button
-                    onClick={() => {
-                      logout();
-                      setMobileOpen(false);
-                      navigate('/');
-                    }}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--danger)',
-                      fontSize: 13,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      cursor: 'pointer',
-                      padding: 0,
-                      marginTop: '4px',
-                    }}
-                  >
-                    <LogOut size={16} strokeWidth={1.5} />
-                    <span>Sign Out</span>
-                  </button>
-                </>
-              )}
             </div>
           </motion.div>
         )}
