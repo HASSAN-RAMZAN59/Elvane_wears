@@ -146,7 +146,12 @@ export default function ProductDetail() {
 
   const handleAddToCart = () => {
     if (!selectedColor || !selectedSize) return;
-    addItem(product, selectedColor, selectedSize, quantity);
+    const activeColorObj = product.colors?.find((c) => c.name === selectedColor) || product.colors?.[0];
+    const colorPhoto =
+      activeViewMode === 'model'
+        ? (activeColorObj?.modelImage || activeColorObj?.imageUrl || product.images?.[0])
+        : (activeColorObj?.articleImage || activeColorObj?.modelImage || product.images?.[0]);
+    addItem(product, selectedColor, selectedSize, quantity, colorPhoto);
     openCart();
   };
 

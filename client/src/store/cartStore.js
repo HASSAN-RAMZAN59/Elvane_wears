@@ -7,14 +7,30 @@ export const useCartStore = create(
       items: [],
       isCartOpen: false,
 
-      addItem: (product, color, size, quantity = 1) => {
+      addItem: (product, color, size, quantity = 1, customImage = null) => {
         const items = get().items;
         const existingIndex = items.findIndex(
           item => item.product === product._id && item.color === color && item.size === size
         );
+
+        // Resolve the specific photo corresponding to the chosen color
+        const matchedColor = product.colors?.find(
+          c => c.name?.toLowerCase() === String(color || '').toLowerCase()
+        );
+        const resolvedImage =
+          customImage ||
+          matchedColor?.modelImage ||
+          matchedColor?.imageUrl ||
+          matchedColor?.articleImage ||
+          product.images?.[0] ||
+          '';
+
         if (existingIndex > -1) {
           const newItems = [...items];
           newItems[existingIndex].quantity += quantity;
+          if (resolvedImage) {
+            newItems[existingIndex].image = resolvedImage;
+          }
           set({ items: newItems });
         } else {
           set({
@@ -22,7 +38,7 @@ export const useCartStore = create(
               product: product._id,
               title: product.title,
               slug: product.slug,
-              image: product.images?.[0] || '',
+              image: resolvedImage,
               price: product.price,
               color,
               size,

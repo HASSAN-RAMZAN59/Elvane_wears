@@ -51,10 +51,20 @@ router.post('/', optionalAuth, upload.single('jazzCashScreenshot'), async (req, 
       if (product.inventoryCount < qty) {
         return res.status(400).json({ message: `Insufficient stock for ${product.title}` });
       }
+      const matchedColor = product.colors?.find(
+        (c) => c.name?.toLowerCase() === String(item.color || '').toLowerCase()
+      );
+      const colorImg =
+        matchedColor?.modelImage ||
+        matchedColor?.imageUrl ||
+        matchedColor?.articleImage ||
+        product.images?.[0] ||
+        '';
+
       orderItems.push({
         product: product._id,
         title: product.title,
-        image: product.images[0] || '',
+        image: colorImg,
         color: String(item.color || ''),
         size: String(item.size || ''),
         quantity: qty,

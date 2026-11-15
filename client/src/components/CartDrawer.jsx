@@ -169,13 +169,13 @@ export default function CartDrawer() {
                       position: 'relative',
                     }}
                   >
-                    {/* Small Tracksuit swatch representation */}
+                    {/* Selected Tracksuit Color Photo */}
                     <div
                       style={{
                         width: '74px',
-                        height: '90px',
-                        borderRadius: '8px',
-                        background: 'var(--snow)',
+                        height: '92px',
+                        borderRadius: '10px',
+                        background: '#F0ECE4',
                         border: '1px solid var(--hairline)',
                         display: 'flex',
                         alignItems: 'center',
@@ -185,13 +185,42 @@ export default function CartDrawer() {
                         overflow: 'hidden',
                       }}
                     >
-                      <svg width="44" height="60" viewBox="0 0 100 130" fill="none">
-                        <path
-                          d="M32 18 C38 12, 62 12, 68 18 L86 36 C89 39, 87 45, 83 47 L76 50 L75 72 L25 72 L24 50 L17 47 Z"
-                          fill="var(--charcoal)"
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={`${item.title} - ${item.color}`}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            objectPosition: 'center 15%',
+                          }}
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            const fallback = e.currentTarget.parentElement.querySelector('.cart-svg-fallback');
+                            if (fallback) fallback.style.display = 'flex';
+                          }}
                         />
-                        <path d="M28 80 L72 80 L66 128 L56 128 L51 96 L47 128 L34 128 Z" fill="var(--charcoal)" />
-                      </svg>
+                      ) : null}
+                      <div
+                        className="cart-svg-fallback"
+                        style={{
+                          display: item.image ? 'none' : 'flex',
+                          width: '100%',
+                          height: '100%',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          background: 'var(--cloud)',
+                        }}
+                      >
+                        <svg width="40" height="54" viewBox="0 0 100 130" fill="none">
+                          <path
+                            d="M32 18 C38 12, 62 12, 68 18 L86 36 C89 39, 87 45, 83 47 L76 50 L75 72 L25 72 L24 50 L17 47 Z"
+                            fill="var(--charcoal)"
+                          />
+                          <path d="M28 80 L72 80 L66 128 L56 128 L51 96 L47 128 L34 128 Z" fill="var(--charcoal)" />
+                        </svg>
+                      </div>
                     </div>
 
                     {/* Details */}

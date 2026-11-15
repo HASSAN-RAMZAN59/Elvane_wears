@@ -370,11 +370,27 @@ export default function Checkout() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '24px' }}>
                 {items.map((item, idx) => (
                   <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px' }}>
-                    <div>
-                      <p style={{ fontWeight: 600, color: 'var(--graphite)' }}>{item.title}</p>
-                      <p style={{ fontSize: '11px', color: 'var(--ash)' }}>
-                        {item.color} / {item.size} × {item.quantity}
-                      </p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      {item.image && (
+                        <img
+                          src={item.image}
+                          alt={`${item.title} - ${item.color}`}
+                          style={{
+                            width: '44px',
+                            height: '54px',
+                            objectFit: 'cover',
+                            borderRadius: '8px',
+                            border: '1px solid var(--hairline)',
+                            background: '#F0ECE4',
+                          }}
+                        />
+                      )}
+                      <div>
+                        <p style={{ fontWeight: 600, color: 'var(--graphite)' }}>{item.title}</p>
+                        <p style={{ fontSize: '11px', color: 'var(--ash)' }}>
+                          {item.color} / {item.size} × {item.quantity}
+                        </p>
+                      </div>
                     </div>
                     <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '16px', fontWeight: 600 }}>
                       {formatPKR(item.price * item.quantity)}

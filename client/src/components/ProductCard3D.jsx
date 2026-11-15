@@ -158,7 +158,8 @@ export default function ProductCard3D({ product }) {
     e.stopPropagation();
     const chosenColor = activeColor.name || product.colors?.[0]?.name || 'Default';
     const firstSize = product.sizes?.find((s) => s.active)?.name || 'M';
-    addItem(product, chosenColor, firstSize, 1);
+    const colorPhoto = activeColor.modelImage || activeColor.imageUrl || activeColor.articleImage || product.images?.[0];
+    addItem(product, chosenColor, firstSize, 1, colorPhoto);
     openCart();
   };
 
