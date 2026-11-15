@@ -1,4 +1,5 @@
 import express from 'express';
+import fs from 'fs';
 import Product from '../models/Product.js';
 import { protect, authorize } from '../middleware/auth.js';
 import { upload } from '../middleware/upload.js';
@@ -106,7 +107,11 @@ router.post('/upload-image', protect, authorize('admin', 'superadmin'), upload.s
     let url = `/uploads/${req.file.filename}`;
     try {
       const cloudUrl = await uploadFileToCloudinary(req.file.path, 'elvena_wear/products');
-      if (cloudUrl) url = cloudUrl;
+      if (cloudUrl) {
+        url = cloudUrl;
+        // Clean up temporary local file
+        fs.unlink(req.file.path, () => {});
+      }
     } catch (err) {
       console.warn('Cloudinary upload fallback to local storage:', err.message);
     }
