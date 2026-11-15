@@ -27,6 +27,20 @@ const PRESET_COLORS = [
   { name: 'Washed Olive Sage', hex: '#827F5E' },
 ];
 
+const isValidHex = (hex) => {
+  return /^#?([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(hex?.trim() || '');
+};
+
+const normalizeHex = (hex) => {
+  if (!hex) return '#000000';
+  let clean = hex.trim();
+  if (!clean.startsWith('#')) clean = '#' + clean;
+  if (clean.length === 4) {
+    clean = '#' + clean[1] + clean[1] + clean[2] + clean[2] + clean[3] + clean[3];
+  }
+  return clean.toUpperCase();
+};
+
 export default function AdminProducts() {
   const navigate = useNavigate();
 
@@ -252,17 +266,56 @@ export default function AdminProducts() {
     setEditImages((prev) => prev.filter((_, i) => i !== idx));
   };
 
+  const handleCustomHexChange = (val) => {
+    let cleaned = val.trim();
+    if (cleaned && !cleaned.startsWith('#')) {
+      cleaned = '#' + cleaned;
+    }
+    setCustomColorHex(cleaned.toUpperCase());
+    if (customColorNotice) setCustomColorNotice(null);
+  };
+
+  const handleCustomNameChange = (val) => {
+    setCustomColorName(val);
+    if (customColorNotice) setCustomColorNotice(null);
+
+    // If user typed a hex code in the name field, automatically sync hex & graph
+    const trimmed = val.trim();
+    if (/^#?[0-9A-Fa-f]{3}$|^#?[0-9A-Fa-f]{6}$/.test(trimmed)) {
+      const formatted = (trimmed.startsWith('#') ? trimmed : '#' + trimmed).toUpperCase();
+      setCustomColorHex(formatted);
+    }
+  };
+
   const handleAddCustomColor = (e) => {
     if (e) e.preventDefault();
     setCustomColorNotice(null);
 
+    let finalHex = customColorHex.trim();
+    if (finalHex && !finalHex.startsWith('#')) finalHex = '#' + finalHex;
+
     const trimmedName = customColorName.trim();
-    const colorName = trimmedName || `Custom ${customColorHex.toUpperCase()}`;
+    if (/^#?[0-9A-Fa-f]{3}$|^#?[0-9A-Fa-f]{6}$/.test(trimmedName)) {
+      finalHex = (trimmedName.startsWith('#') ? trimmedName : '#' + trimmedName).toUpperCase();
+    }
+
+    if (!isValidHex(finalHex)) {
+      setCustomColorNotice({
+        type: 'error',
+        text: 'Please enter a valid Hex color code (e.g. #2A2A2A).',
+      });
+      return;
+    }
+
+    finalHex = normalizeHex(finalHex);
+
+    const isNameHex = /^#?[0-9A-Fa-f]{3}$|^#?[0-9A-Fa-f]{6}$/.test(trimmedName);
+    const colorName = trimmedName && !isNameHex ? trimmedName : `Custom ${finalHex}`;
 
     const exists = editColors.find(
       (c) =>
         c.name.toLowerCase() === colorName.toLowerCase() ||
-        (!trimmedName && c.hex?.toLowerCase() === customColorHex.toLowerCase())
+        (!trimmedName && c.hex?.toLowerCase() === finalHex.toLowerCase())
     );
     if (exists) {
       setCustomColorNotice({
@@ -276,7 +329,7 @@ export default function AdminProducts() {
       ...prev,
       {
         name: colorName,
-        hex: customColorHex,
+        hex: finalHex,
         active: true,
         modelImage: '',
         articleImage: '',
@@ -286,7 +339,7 @@ export default function AdminProducts() {
     setCustomColorName('');
     setCustomColorNotice({
       type: 'success',
-      text: `Added "${colorName}" (${customColorHex}).`,
+      text: `Added "${colorName}" (${finalHex}).`,
     });
   };
 
@@ -872,10 +925,7 @@ export default function AdminProducts() {
                           type="text"
                           placeholder="Color Name (e.g. Royal Navy)"
                           value={customColorName}
-                          onChange={(e) => {
-                            setCustomColorName(e.target.value);
-                            if (customColorNotice) setCustomColorNotice(null);
-                          }}
+                          onChange={(e) => handleCustomNameChange(e.target.value)}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                               e.preventDefault();
@@ -884,17 +934,68 @@ export default function AdminProducts() {
                           }}
                           style={{ flex: 1, minWidth: '160px', padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--hairline)', fontSize: '12px' }}
                         />
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        {/* Editable Hex Code Input + Synchronized Color Picker Graph */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--snow)', padding: '2px 6px', borderRadius: '8px', border: '1px solid var(--hairline)' }}>
                           <input
-                            type="color"
+                            type="text"
+                            placeholder="#2A2A2A"
                             value={customColorHex}
-                            onChange={(e) => {
-                              setCustomColorHex(e.target.value);
-                              if (customColorNotice) setCustomColorNotice(null);
+                            onChange={(e) => handleCustomHexChange(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                handleAddCustomColor(e);
+                              }
                             }}
-                            style={{ width: '36px', height: '36px', padding: 0, borderRadius: '8px', border: 'none', cursor: 'pointer', background: 'transparent' }}
+                            style={{
+                              width: '85px',
+                              height: '32px',
+                              fontSize: '11px',
+                              fontFamily: 'monospace',
+                              fontWeight: 600,
+                              color: 'var(--graphite)',
+                              border: 'none',
+                              background: 'transparent',
+                              padding: '0 4px',
+                              textTransform: 'uppercase',
+                            }}
+                            title="Type or paste Hex code (e.g. #3B82F6)"
                           />
-                          <span style={{ fontSize: '11px', fontFamily: 'monospace', color: 'var(--ash)' }}>{customColorHex}</span>
+                          <div
+                            style={{
+                              width: '28px',
+                              height: '28px',
+                              borderRadius: '6px',
+                              overflow: 'hidden',
+                              border: '1px solid rgba(0,0,0,0.15)',
+                              boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+                              position: 'relative',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              backgroundColor: isValidHex(customColorHex) ? normalizeHex(customColorHex) : '#2A2A2A',
+                              cursor: 'pointer',
+                            }}
+                            title="Click to open color palette graph"
+                          >
+                            <input
+                              type="color"
+                              value={isValidHex(customColorHex) && normalizeHex(customColorHex).length === 7 ? normalizeHex(customColorHex) : '#2A2A2A'}
+                              onChange={(e) => {
+                                setCustomColorHex(e.target.value.toUpperCase());
+                                if (customColorNotice) setCustomColorNotice(null);
+                              }}
+                              style={{
+                                position: 'absolute',
+                                top: -8,
+                                left: -8,
+                                width: '44px',
+                                height: '44px',
+                                opacity: 0,
+                                cursor: 'pointer',
+                              }}
+                            />
+                          </div>
                         </div>
                         <Button3D type="button" variant="dark" size="sm" onClick={handleAddCustomColor}>
                           + Add Color

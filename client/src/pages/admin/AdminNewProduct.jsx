@@ -17,6 +17,20 @@ const MASTER_COLORS = [
 
 const MASTER_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
+const isValidHex = (hex) => {
+  return /^#?([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(hex?.trim() || '');
+};
+
+const normalizeHex = (hex) => {
+  if (!hex) return '#000000';
+  let clean = hex.trim();
+  if (!clean.startsWith('#')) clean = '#' + clean;
+  if (clean.length === 4) {
+    clean = '#' + clean[1] + clean[1] + clean[2] + clean[2] + clean[3] + clean[3];
+  }
+  return clean.toUpperCase();
+};
+
 export default function AdminNewProduct() {
   const navigate = useNavigate();
 
@@ -114,17 +128,56 @@ export default function AdminNewProduct() {
     }
   };
 
+  const handleCustomHexChange = (val) => {
+    let cleaned = val.trim();
+    if (cleaned && !cleaned.startsWith('#')) {
+      cleaned = '#' + cleaned;
+    }
+    setCustomColorHex(cleaned.toUpperCase());
+    if (customColorNotice) setCustomColorNotice(null);
+  };
+
+  const handleCustomNameChange = (val) => {
+    setCustomColorName(val);
+    if (customColorNotice) setCustomColorNotice(null);
+
+    // If user typed a hex code in the name field, automatically sync hex & graph
+    const trimmed = val.trim();
+    if (/^#?[0-9A-Fa-f]{3}$|^#?[0-9A-Fa-f]{6}$/.test(trimmed)) {
+      const formatted = (trimmed.startsWith('#') ? trimmed : '#' + trimmed).toUpperCase();
+      setCustomColorHex(formatted);
+    }
+  };
+
   const handleAddCustomColor = (e) => {
     if (e) e.preventDefault();
     setCustomColorNotice(null);
 
+    let finalHex = customColorHex.trim();
+    if (finalHex && !finalHex.startsWith('#')) finalHex = '#' + finalHex;
+
     const trimmedName = customColorName.trim();
-    const colorName = trimmedName || `Custom ${customColorHex.toUpperCase()}`;
+    if (/^#?[0-9A-Fa-f]{3}$|^#?[0-9A-Fa-f]{6}$/.test(trimmedName)) {
+      finalHex = (trimmedName.startsWith('#') ? trimmedName : '#' + trimmedName).toUpperCase();
+    }
+
+    if (!isValidHex(finalHex)) {
+      setCustomColorNotice({
+        type: 'error',
+        text: 'Please enter a valid Hex color code (e.g. #4A6B82).',
+      });
+      return;
+    }
+
+    finalHex = normalizeHex(finalHex);
+
+    const isNameHex = /^#?[0-9A-Fa-f]{3}$|^#?[0-9A-Fa-f]{6}$/.test(trimmedName);
+    const colorName = trimmedName && !isNameHex ? trimmedName : `Custom ${finalHex}`;
 
     const exists = activeColors.find(
       (c) =>
         c.name.toLowerCase() === colorName.toLowerCase() ||
-        (!trimmedName && c.hex?.toLowerCase() === customColorHex.toLowerCase())
+        (!trimmedName && c.hex?.toLowerCase() === finalHex.toLowerCase())
     );
     if (exists) {
       setCustomColorNotice({
@@ -138,7 +191,7 @@ export default function AdminNewProduct() {
       ...prev,
       {
         name: colorName,
-        hex: customColorHex,
+        hex: finalHex,
         active: true,
         modelImage: '',
         articleImage: '',
@@ -148,7 +201,7 @@ export default function AdminNewProduct() {
     setCustomColorName('');
     setCustomColorNotice({
       type: 'success',
-      text: `Added "${colorName}" (${customColorHex}). You can upload its photos below.`,
+      text: `Added "${colorName}" (${finalHex}). You can upload its photos below.`,
     });
   };
 
@@ -484,33 +537,84 @@ export default function AdminNewProduct() {
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
                 <input
                   type="text"
-                  placeholder="Custom Color (e.g. Sage Green)"
+                  placeholder="Color Name (e.g. Sage Green)"
                   value={customColorName}
-                  onChange={(e) => {
-                    setCustomColorName(e.target.value);
-                    if (customColorNotice) setCustomColorNotice(null);
-                  }}
+                  onChange={(e) => handleCustomNameChange(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
                       handleAddCustomColor(e);
                     }
                   }}
-                  style={{ width: '220px', height: '40px', fontSize: '12.5px' }}
+                  style={{ width: '210px', height: '40px', fontSize: '12.5px', padding: '0 12px' }}
                 />
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+
+                {/* Editable Hex Code Input + Synchronized Color Picker Graph */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--cloud)', padding: '2px 6px', borderRadius: '10px', border: '1px solid var(--hairline)' }}>
                   <input
-                    type="color"
+                    type="text"
+                    placeholder="#4A6B82"
                     value={customColorHex}
-                    onChange={(e) => {
-                      setCustomColorHex(e.target.value);
-                      if (customColorNotice) setCustomColorNotice(null);
+                    onChange={(e) => handleCustomHexChange(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleAddCustomColor(e);
+                      }
                     }}
-                    style={{ width: '40px', height: '40px', padding: 0, border: 'none', borderRadius: '8px', cursor: 'pointer', background: 'transparent' }}
-                    title="Choose Color Hex"
+                    style={{
+                      width: '92px',
+                      height: '36px',
+                      fontSize: '12px',
+                      fontFamily: 'monospace',
+                      fontWeight: 600,
+                      color: 'var(--graphite)',
+                      border: 'none',
+                      background: 'transparent',
+                      padding: '0 6px',
+                      textTransform: 'uppercase',
+                    }}
+                    title="Type or paste Hex color code"
                   />
-                  <span style={{ fontSize: '12px', fontFamily: 'monospace', color: 'var(--graphite)' }}>{customColorHex}</span>
+
+                  {/* Visual Color Graph / Picker (Auto syncs with typed hex) */}
+                  <div
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      border: '1.5px solid rgba(0,0,0,0.15)',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                      position: 'relative',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: isValidHex(customColorHex) ? normalizeHex(customColorHex) : '#4A6B82',
+                      cursor: 'pointer',
+                    }}
+                    title="Click to open color palette graph"
+                  >
+                    <input
+                      type="color"
+                      value={isValidHex(customColorHex) && normalizeHex(customColorHex).length === 7 ? normalizeHex(customColorHex) : '#4A6B82'}
+                      onChange={(e) => {
+                        setCustomColorHex(e.target.value.toUpperCase());
+                        if (customColorNotice) setCustomColorNotice(null);
+                      }}
+                      style={{
+                        position: 'absolute',
+                        top: -8,
+                        left: -8,
+                        width: '48px',
+                        height: '48px',
+                        opacity: 0,
+                        cursor: 'pointer',
+                      }}
+                    />
+                  </div>
                 </div>
+
                 <Button3D
                   type="button"
                   variant="outline"
