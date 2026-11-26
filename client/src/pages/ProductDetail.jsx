@@ -5,7 +5,9 @@ import { Heart, ShoppingBag, ShieldCheck, Truck, RotateCcw, ChevronDown, Star, C
 import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
 import Button3D from '../components/Button3D';
+import RelatedProducts from '../components/RelatedProducts';
 import api, { formatPKR } from '../utils/api';
+import { optimizeImageUrl, getResponsiveSrcSet } from '../utils/imageOptimizer';
 
 export default function ProductDetail() {
   const { slug } = useParams();
@@ -314,26 +316,36 @@ export default function ProductDetail() {
             >
               {/* Image Rendering: Model or Flat-Lay */}
               <AnimatePresence mode="wait">
-                <motion.img
-                  key={`${selectedColor}-${activeViewMode}`}
-                  src={
-                    activeViewMode === 'model'
-                      ? (activeColorObj?.modelImage || product.images?.[0] || '/images/hero/hero-1.jpg')
-                      : (activeColorObj?.articleImage || product.images?.[1] || activeColorObj?.modelImage || '/images/hero/hero-1.jpg')
-                  }
-                  alt={product.imageAlt ? `${product.imageAlt} - ${selectedColor}` : `${product.title} - ${selectedColor}`}
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.35 }}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: activeViewMode === 'model' ? 'cover' : 'contain',
-                    objectPosition: 'center 15%',
-                    padding: activeViewMode === 'flat' ? '32px' : 0,
-                  }}
-                />
+                {(() => {
+                  const rawSrc = activeViewMode === 'model'
+                    ? (activeColorObj?.modelImage || product.images?.[0] || '/images/hero/hero-1.jpg')
+                    : (activeColorObj?.articleImage || product.images?.[1] || activeColorObj?.modelImage || '/images/hero/hero-1.jpg');
+                  return (
+                    <motion.img
+                      key={`${selectedColor}-${activeViewMode}`}
+                      src={optimizeImageUrl(rawSrc, { width: 960 })}
+                      srcSet={getResponsiveSrcSet(rawSrc, [480, 720, 960, 1200])}
+                      sizes="(max-width: 900px) 100vw, 50vw"
+                      alt={product.imageAlt ? `${product.imageAlt} - ${selectedColor}` : `${product.title} - ${selectedColor}`}
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.35 }}
+                      fetchPriority="high"
+                      loading="eager"
+                      decoding="async"
+                      width={720}
+                      height={900}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: activeViewMode === 'model' ? 'cover' : 'contain',
+                        objectPosition: 'center 15%',
+                        padding: activeViewMode === 'flat' ? '32px' : 0,
+                      }}
+                    />
+                  );
+                })()}
               </AnimatePresence>
             </div>
 
@@ -354,8 +366,12 @@ export default function ProductDetail() {
                 }}
               >
                 <img
-                  src={activeColorObj?.modelImage || product.images?.[0]}
+                  src={optimizeImageUrl(activeColorObj?.modelImage || product.images?.[0], { width: 240 })}
                   alt="Model View"
+                  loading="lazy"
+                  decoding="async"
+                  width={180}
+                  height={90}
                   style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%' }}
                 />
                 <span
@@ -389,8 +405,12 @@ export default function ProductDetail() {
                 }}
               >
                 <img
-                  src={activeColorObj?.articleImage || product.images?.[1] || activeColorObj?.modelImage}
+                  src={optimizeImageUrl(activeColorObj?.articleImage || product.images?.[1] || activeColorObj?.modelImage, { width: 240 })}
                   alt="Flat-lay View"
+                  loading="lazy"
+                  decoding="async"
+                  width={180}
+                  height={90}
                   style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '6px' }}
                 />
                 <span
@@ -763,6 +783,9 @@ export default function ProductDetail() {
             </div>
           </div>
         </div>
+
+        {/* YOU MAY ALSO LIKE / RELATED PRODUCTS */}
+        <RelatedProducts currentSlug={slug} currentCategory={product.category} />
 
         {/* CUSTOMER REVIEWS & STAR RATING SECTION */}
         <section style={{ marginTop: '120px', borderTop: '1px solid var(--hairline)', paddingTop: '64px' }}>

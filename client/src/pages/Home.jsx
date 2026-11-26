@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import ProductCard3D from '../components/ProductCard3D';
 import Button3D from '../components/Button3D';
 import api, { formatPKR } from '../utils/api';
+import { optimizeImageUrl, getResponsiveSrcSet } from '../utils/imageOptimizer';
 
 const HERO_SLIDES = [
   {
@@ -100,10 +101,20 @@ export default function Home() {
               exit={{ opacity: 0 }}
               transition={{ duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
               className="hero-bg-slide"
-              style={{
-                backgroundImage: `url(${HERO_SLIDES[currentSlide].image})`,
-              }}
-            />
+            >
+              <img
+                src={optimizeImageUrl(HERO_SLIDES[currentSlide].image, { width: 1200 })}
+                srcSet={getResponsiveSrcSet(HERO_SLIDES[currentSlide].image, [480, 800, 1200, 1600])}
+                sizes="100vw"
+                alt={HERO_SLIDES[currentSlide].badge}
+                fetchPriority={currentSlide === 0 ? "high" : "auto"}
+                loading={currentSlide === 0 ? "eager" : "lazy"}
+                decoding="async"
+                width={1920}
+                height={1080}
+                className="hero-bg-img"
+              />
+            </motion.div>
           </AnimatePresence>
 
           {/* Left Gradient Scrim for Desktop Text Readability */}
@@ -401,9 +412,14 @@ export default function Home() {
                 onClick={() => navigate('/shop')}
               >
                 <img
-                  src={item.src}
+                  src={optimizeImageUrl(item.src, { width: 480 })}
+                  srcSet={getResponsiveSrcSet(item.src, [240, 480])}
+                  sizes="(max-width: 640px) 33vw, 16vw"
                   alt={`Elvane Wear Collection ${idx + 1}`}
                   loading="lazy"
+                  decoding="async"
+                  width={280}
+                  height={420}
                   style={{
                     width: '100%',
                     height: '100%',

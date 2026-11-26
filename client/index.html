@@ -7,10 +7,39 @@
     <title>Elvane Wear — Luxury 3D Atelier E-Commerce</title>
     <meta name="description" content="Elvane Wear Atelier: Engineered for movement. Designed for stillness. Complete luxury minimalist tracksuit sets crafted from pure cashmere, merino wool, and organic pima cotton in Pakistan." />
     <meta name="google-site-verification" content="EYQ0n_s3vddj6NjdYUTaQo9v40Z_XjA0XDsWiL9SBdk" />
-    <link rel="canonical" href="https://elvanewears.com/" />
+    <link rel="canonical" id="canonical-url" href="https://elvanewears.com/" />
+    <meta property="og:url" id="og-url" content="https://elvanewears.com/" />
+    <script>
+      (function() {
+        try {
+          var link = document.getElementById('canonical-url') || document.querySelector('link[rel="canonical"]');
+          var ogUrl = document.getElementById('og-url') || document.querySelector('meta[property="og:url"]');
+          if (window.location) {
+            var base = 'https://elvanewears.com';
+            var p = window.location.pathname || '/';
+            if (p.length > 1 && p.endsWith('/')) {
+              p = p.replace(/\/+$/, '');
+            }
+            if (p === '/return-policy') p = '/returns';
+            var target = p === '/' ? base + '/' : base + p;
+            if (link) link.setAttribute('href', target);
+            if (ogUrl) ogUrl.setAttribute('content', target);
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <!-- Preload Critical Above-The-Fold Hero Image for Mobile & Desktop (Drastically Improves LCP) -->
+    <link rel="preload" as="image" href="https://res.cloudinary.com/up56alno/image/upload/f_auto,q_auto,w_800,c_limit/v1793827559/elvena_wear/hero/a6ldjggzj2ebxxb15cp0.jpg" fetchpriority="high" media="(max-width: 768px)">
+    <link rel="preload" as="image" href="https://res.cloudinary.com/up56alno/image/upload/f_auto,q_auto,w_1200,c_limit/v1793827559/elvena_wear/hero/a6ldjggzj2ebxxb15cp0.jpg" fetchpriority="high" media="(min-width: 769px)">
+
+    <!-- Non-render-blocking Google Fonts with preconnect and print-swap pattern -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap">
+    </noscript>
   </head>
   <body>
     <div id="root"></div>

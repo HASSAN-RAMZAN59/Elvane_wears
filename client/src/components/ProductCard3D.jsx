@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
 import { formatPKR } from '../utils/api';
+import { optimizeImageUrl, getResponsiveSrcSet } from '../utils/imageOptimizer';
 
 // Luxury Tracksuit Vector Silhouette Fallback
 function TracksuitSilhouette({ hex, title }) {
@@ -352,9 +353,14 @@ export default function ProductCard3D({ product }) {
             <>
               <img
                 key={`model-${activeColor.name}-${modelImageSrc}`}
-                src={modelImageSrc}
+                src={optimizeImageUrl(modelImageSrc, { width: 600 })}
+                srcSet={getResponsiveSrcSet(modelImageSrc, [320, 480, 640])}
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 alt={product.imageAlt ? `${product.imageAlt} - ${activeColor.name}` : `${product.title} - ${activeColor.name}`}
                 loading="lazy"
+                decoding="async"
+                width={400}
+                height={500}
                 onError={() => setImageError(true)}
                 style={{
                   position: 'absolute',
@@ -370,26 +376,33 @@ export default function ProductCard3D({ product }) {
                 }}
               />
 
-              {/* 2. Hover View: Pure Article Without Face (Flat-lay / Studio Garment) */}
-              <img
-                key={`flat-${activeColor.name}-${articleImageSrc}`}
-                src={articleImageSrc}
-                alt={`${product.title} garment flat-lay - ${activeColor.name}`}
-                loading="lazy"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  padding: '16px',
-                  background: '#F9F8F5',
-                  opacity: (isHovered && hoveredColorIndex === null) ? 1 : 0,
-                  transform: (isHovered && hoveredColorIndex === null) ? 'scale(1)' : 'scale(0.96)',
-                  transition: 'opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s ease',
-                  zIndex: 3,
-                }}
-              />
+              {/* 2. Hover View: Pure Article Without Face (Only loaded when hovered to save mobile bandwidth) */}
+              {isHovered && (
+                <img
+                  key={`flat-${activeColor.name}-${articleImageSrc}`}
+                  src={optimizeImageUrl(articleImageSrc, { width: 600 })}
+                  srcSet={getResponsiveSrcSet(articleImageSrc, [320, 480, 640])}
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  alt={`${product.title} garment flat-lay - ${activeColor.name}`}
+                  loading="lazy"
+                  decoding="async"
+                  width={400}
+                  height={500}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    padding: '16px',
+                    background: '#F9F8F5',
+                    opacity: (isHovered && hoveredColorIndex === null) ? 1 : 0,
+                    transform: (isHovered && hoveredColorIndex === null) ? 'scale(1)' : 'scale(0.96)',
+                    transition: 'opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s ease',
+                    zIndex: 3,
+                  }}
+                />
+              )}
             </>
           ) : (
             <TracksuitSilhouette hex={activeColor.hex} title={product.title} />

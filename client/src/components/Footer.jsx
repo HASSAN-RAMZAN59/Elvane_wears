@@ -126,6 +126,10 @@ export default function Footer() {
               <img
                 src="/logo.png"
                 alt="Elvane Wear"
+                width={240}
+                height={62}
+                loading="lazy"
+                decoding="async"
                 style={{
                   height: '62px',
                   width: 'auto',

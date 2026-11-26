@@ -5,6 +5,8 @@ import { protect, authorize } from '../middleware/auth.js';
 import { upload } from '../middleware/upload.js';
 import { createAuditLog } from '../utils/auditLog.js';
 import { uploadFileToCloudinary } from '../config/cloudinary.js';
+import { syncSitemapToDisk } from '../services/sitemapService.js';
+import { convertToWebP } from '../utils/imageProcessor.js';
 
 const router = express.Router();
 
@@ -58,6 +60,46 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get 4 related products for a given slug (public)
+router.get('/slug/:slug/related', async (req, res) => {
+  try {
+    const current = await Product.findOne({ slug: req.params.slug });
+    if (!current) return res.status(404).json({ message: 'Product not found' });
+
+    // 1. Fetch products in same category first, excluding the currently viewed product
+    let related = await Product.find({
+      _id: { $ne: current._id },
+      slug: { $ne: current.slug },
+      category: current.category,
+    })
+      .select('title slug price originalPrice images colors category isNewArrival isBestseller')
+      .limit(4);
+
+    // 2. If fewer than 4 in same category, fill remaining slots from other products
+    if (related.length < 4) {
+      const needed = 4 - related.length;
+      const existingIds = [current._id, ...related.map((p) => p._id)];
+      const others = await Product.find({
+        _id: { $nin: existingIds },
+        slug: { $ne: current.slug },
+      })
+        .select('title slug price originalPrice images colors category isNewArrival isBestseller')
+        .limit(needed);
+      related = [...related, ...others];
+    }
+
+    const publicRelated = related.map((p) => {
+      const obj = p.toObject();
+      if (obj.colors) obj.colors = obj.colors.filter((c) => c.active);
+      return obj;
+    });
+
+    res.json(publicRelated);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Get single product by slug (public)
 router.get('/slug/:slug', async (req, res) => {
   try {
@@ -104,13 +146,16 @@ router.post('/upload-image', protect, authorize('admin', 'superadmin'), upload.s
     if (!req.file) {
       return res.status(400).json({ message: 'No image file uploaded' });
     }
-    let url = `/uploads/${req.file.filename}`;
+
+    // Automatically convert JPG/PNG into WebP format while preserving the original file
+    const { webpPath, webpFilename } = await convertToWebP(req.file.path);
+    const fileToUpload = webpPath || req.file.path;
+    let url = `/uploads/${webpFilename || req.file.filename}`;
+
     try {
-      const cloudUrl = await uploadFileToCloudinary(req.file.path, 'elvena_wear/products');
+      const cloudUrl = await uploadFileToCloudinary(fileToUpload, 'elvena_wear/products');
       if (cloudUrl) {
         url = cloudUrl;
-        // Clean up temporary local file
-        fs.unlink(req.file.path, () => {});
       }
     } catch (err) {
       console.warn('Cloudinary upload fallback to local storage:', err.message);
@@ -137,8 +182,10 @@ router.post('/', protect, authorize('admin', 'superadmin'), upload.array('images
     if (req.files && req.files.length > 0) {
       for (const f of req.files) {
         try {
-          const cloudUrl = await uploadFileToCloudinary(f.path, 'elvena_wear/products');
-          images.push(cloudUrl || `/uploads/${f.filename}`);
+          const { webpPath, webpFilename } = await convertToWebP(f.path);
+          const fileToUpload = webpPath || f.path;
+          const cloudUrl = await uploadFileToCloudinary(fileToUpload, 'elvena_wear/products');
+          images.push(cloudUrl || `/uploads/${webpFilename || f.filename}`);
         } catch {
           images.push(`/uploads/${f.filename}`);
         }
@@ -186,6 +233,9 @@ router.post('/', protect, authorize('admin', 'superadmin'), upload.array('images
       after: { title, price, category },
       description: `Added new product: ${title}`
     });
+
+    // Auto-update sitemap on product addition
+    syncSitemapToDisk().catch((err) => console.error('Sitemap sync error:', err.message));
 
     res.status(201).json(product);
   } catch (error) {
@@ -262,8 +312,10 @@ router.put('/:id', protect, authorize('admin', 'superadmin'), upload.array('imag
     if (req.files && req.files.length > 0) {
       for (const f of req.files) {
         try {
-          const cloudUrl = await uploadFileToCloudinary(f.path, 'elvena_wear/products');
-          uploadedCloudImages.push(cloudUrl || `/uploads/${f.filename}`);
+          const { webpPath, webpFilename } = await convertToWebP(f.path);
+          const fileToUpload = webpPath || f.path;
+          const cloudUrl = await uploadFileToCloudinary(fileToUpload, 'elvena_wear/products');
+          uploadedCloudImages.push(cloudUrl || `/uploads/${webpFilename || f.filename}`);
         } catch {
           uploadedCloudImages.push(`/uploads/${f.filename}`);
         }
@@ -300,6 +352,9 @@ router.put('/:id', protect, authorize('admin', 'superadmin'), upload.array('imag
       description: `Admin updated product details: "${product.title}" (Price: Rs. ${product.price}, Stock: ${product.inventoryCount})`
     });
 
+    // Auto-update sitemap on product update
+    syncSitemapToDisk().catch((err) => console.error('Sitemap sync error:', err.message));
+
     res.json(product);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -323,6 +378,10 @@ router.delete('/:id', protect, authorize('admin', 'superadmin'), async (req, res
     });
 
     await Product.findByIdAndDelete(req.params.id);
+
+    // Auto-update sitemap on product deletion
+    syncSitemapToDisk().catch((err) => console.error('Sitemap sync error:', err.message));
+
     res.json({ message: 'Product deleted' });
   } catch (error) {
     res.status(500).json({ message: error.message });

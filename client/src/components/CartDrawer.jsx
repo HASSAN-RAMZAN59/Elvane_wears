@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCartStore } from '../store/cartStore';
 import { useAuthStore } from '../store/authStore';
 import { formatPKR } from '../utils/api';
+import { optimizeImageUrl } from '../utils/imageOptimizer';
 import Button3D from './Button3D';
 
 export default function CartDrawer() {
@@ -187,8 +188,12 @@ export default function CartDrawer() {
                     >
                       {item.image ? (
                         <img
-                          src={item.image}
+                          src={optimizeImageUrl(item.image, { width: 160 })}
                           alt={`${item.title} - ${item.color}`}
+                          loading="lazy"
+                          decoding="async"
+                          width={76}
+                          height={96}
                           style={{
                             width: '100%',
                             height: '100%',

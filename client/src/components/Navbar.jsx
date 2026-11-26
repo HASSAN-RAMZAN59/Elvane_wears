@@ -95,6 +95,10 @@ export default function Navbar() {
             <img
               src="/logo.png"
               alt="Elvane Wear"
+              width={180}
+              height={46}
+              fetchPriority="high"
+              decoding="async"
               style={{
                 height: 'clamp(36px, 4.5vw, 46px)',
                 width: 'auto',

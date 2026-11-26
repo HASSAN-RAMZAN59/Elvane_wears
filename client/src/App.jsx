@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import CartDrawer from './components/CartDrawer';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
+import CanonicalManager from './components/CanonicalManager';
 import { useAuthStore } from './store/authStore';
 
 // Customer Pages
@@ -21,18 +22,18 @@ import Contact from './pages/Contact';
 import ReturnsPolicy from './pages/ReturnsPolicy';
 import TrackOrder from './pages/TrackOrder';
 
-// Admin Pages
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminLayout from './pages/admin/AdminLayout';
-import AdminOrders from './pages/admin/AdminOrders';
-import AdminProducts from './pages/admin/AdminProducts';
-import AdminNewProduct from './pages/admin/AdminNewProduct';
-import AdminPromo from './pages/admin/AdminPromo';
-import AdminRevenue from './pages/admin/AdminRevenue';
-import AdminInquiries from './pages/admin/AdminInquiries';
+// Admin Pages (Code-split with React.lazy to reduce initial render-blocking JS on mobile)
+const AdminLogin = React.lazy(() => import('./pages/admin/AdminLogin'));
+const AdminLayout = React.lazy(() => import('./pages/admin/AdminLayout'));
+const AdminOrders = React.lazy(() => import('./pages/admin/AdminOrders'));
+const AdminProducts = React.lazy(() => import('./pages/admin/AdminProducts'));
+const AdminNewProduct = React.lazy(() => import('./pages/admin/AdminNewProduct'));
+const AdminPromo = React.lazy(() => import('./pages/admin/AdminPromo'));
+const AdminRevenue = React.lazy(() => import('./pages/admin/AdminRevenue'));
+const AdminInquiries = React.lazy(() => import('./pages/admin/AdminInquiries'));
 
-// Super Admin Page
-import SuperAdminDashboard from './pages/superadmin/SuperAdminDashboard';
+// Super Admin Page (Code-split)
+const SuperAdminDashboard = React.lazy(() => import('./pages/superadmin/SuperAdminDashboard'));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -49,6 +50,7 @@ function Layout({ children }) {
   return (
     <>
       <ScrollToTop />
+      <CanonicalManager />
       {!isAdminRoute && <Navbar />}
       {!isAdminRoute && <CartDrawer />}
       <main style={{ minHeight: isAdminRoute ? '100vh' : 'calc(100vh - 72px)' }}>
@@ -69,7 +71,8 @@ export default function App() {
   return (
     <Router>
       <Layout>
-        <Routes>
+        <React.Suspense fallback={<div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--ash)' }}>Loading...</div>}>
+          <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
@@ -141,7 +144,8 @@ export default function App() {
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </Layout>
-    </Router>
+      </React.Suspense>
+    </Layout>
+  </Router>
   );
 }

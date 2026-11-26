@@ -17,7 +17,7 @@ cloudinary.config({
  * @param {string} folder - Folder name in Cloudinary
  * @returns {Promise<string|null>} - Cloudinary secure_url
  */
-export const uploadFileToCloudinary = async (filePath, folder = 'elvena_wear/products') => {
+export const uploadFileToCloudinary = async (filePath, folder = 'elvena_wear/products', options = {}) => {
   if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY) {
     return null;
   }
@@ -25,6 +25,11 @@ export const uploadFileToCloudinary = async (filePath, folder = 'elvena_wear/pro
     const result = await cloudinary.uploader.upload(filePath, {
       folder,
       resource_type: 'image',
+      format: 'webp',
+      transformation: [
+        { quality: 'auto:good' }
+      ],
+      ...options,
     });
     return result.secure_url;
   } catch (error) {
