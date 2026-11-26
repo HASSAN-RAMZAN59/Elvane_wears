@@ -28,9 +28,15 @@
         } catch (e) {}
       })();
     </script>
-    <!-- Preload Critical Above-The-Fold Hero Image for Mobile & Desktop (Drastically Improves LCP) -->
-    <link rel="preload" as="image" href="https://res.cloudinary.com/up56alno/image/upload/f_auto,q_auto,w_800,c_limit/v1793827559/elvena_wear/hero/a6ldjggzj2ebxxb15cp0.jpg" fetchpriority="high" media="(max-width: 768px)">
-    <link rel="preload" as="image" href="https://res.cloudinary.com/up56alno/image/upload/f_auto,q_auto,w_1200,c_limit/v1793827559/elvena_wear/hero/a6ldjggzj2ebxxb15cp0.jpg" fetchpriority="high" media="(min-width: 769px)">
+    <!-- Preload Critical Above-The-Fold Hero Image for Mobile & Desktop with responsive srcset (Drastically Improves LCP) -->
+    <link
+      rel="preload"
+      as="image"
+      href="https://res.cloudinary.com/up56alno/image/upload/f_auto,q_auto,w_800,c_limit/v1793827559/elvena_wear/hero/a6ldjggzj2ebxxb15cp0.jpg"
+      imagesrcset="https://res.cloudinary.com/up56alno/image/upload/f_auto,q_auto,w_480,c_limit/v1793827559/elvena_wear/hero/a6ldjggzj2ebxxb15cp0.jpg 480w, https://res.cloudinary.com/up56alno/image/upload/f_auto,q_auto,w_800,c_limit/v1793827559/elvena_wear/hero/a6ldjggzj2ebxxb15cp0.jpg 800w, https://res.cloudinary.com/up56alno/image/upload/f_auto,q_auto,w_1200,c_limit/v1793827559/elvena_wear/hero/a6ldjggzj2ebxxb15cp0.jpg 1200w"
+      imagesizes="100vw"
+      fetchpriority="high"
+    />
 
     <!-- Non-render-blocking Google Fonts with preconnect and print-swap pattern -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,7 +48,22 @@
     </noscript>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="initial-hero-shell" style="position:fixed;inset:0;background:#050505;z-index:0;overflow:hidden;">
+        <img
+          src="https://res.cloudinary.com/up56alno/image/upload/f_auto,q_auto,w_800,c_limit/v1793827559/elvena_wear/hero/a6ldjggzj2ebxxb15cp0.jpg"
+          srcset="https://res.cloudinary.com/up56alno/image/upload/f_auto,q_auto,w_480,c_limit/v1793827559/elvena_wear/hero/a6ldjggzj2ebxxb15cp0.jpg 480w, https://res.cloudinary.com/up56alno/image/upload/f_auto,q_auto,w_800,c_limit/v1793827559/elvena_wear/hero/a6ldjggzj2ebxxb15cp0.jpg 800w, https://res.cloudinary.com/up56alno/image/upload/f_auto,q_auto,w_1200,c_limit/v1793827559/elvena_wear/hero/a6ldjggzj2ebxxb15cp0.jpg 1200w"
+          sizes="100vw"
+          alt="Elvane Wear Luxury Minimalist"
+          fetchpriority="high"
+          loading="eager"
+          decoding="async"
+          width="1920"
+          height="1080"
+          style="width:100%;height:100%;object-fit:cover;object-position:center 20%;"
+        />
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -131,6 +131,12 @@ function renderPage(route) {
     );
   }
 
+  // Remove hero image preload from non-home subpages
+  html = html.replace(/<link\s+rel="preload"\s+as="image"[^>]*hero\/a6ldjggzj2ebxxb15cp0\.jpg[^>]*\/>/i, '');
+
+  // Clear homepage hero shell placeholder from non-home subpages
+  html = html.replace(/<div id="root">[\s\S]*?<\/div>\s*<\/body>/i, '<div id="root"></div>\n  </body>');
+
   const targetDir = path.join(distDir, route.path);
   fs.mkdirSync(targetDir, { recursive: true });
   fs.writeFileSync(path.join(targetDir, 'index.html'), html, 'utf8');
