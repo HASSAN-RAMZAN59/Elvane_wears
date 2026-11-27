@@ -63,7 +63,7 @@ export default function Home() {
         const { data } = await api.get('/products');
         setFeaturedProducts(data.slice(0, 12));
       } catch (err) {
-        console.error('Failed to fetch products', err);
+        console.warn('⚠️ [Home] Data fetch fallback:', err.message || err);
       } finally {
         setLoading(false);
       }

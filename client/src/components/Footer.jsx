@@ -168,7 +168,7 @@ export default function Footer() {
 
           {/* Navigation Links */}
           <div>
-            <h4
+            <h3
               className="eyebrow"
               style={{
                 marginBottom: '16px',
@@ -179,7 +179,7 @@ export default function Footer() {
               }}
             >
               Collection
-            </h4>
+            </h3>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <li>
                 <Link to="/shop" className="link-underline" style={{ fontSize: '13px', color: 'var(--ash)' }}>
@@ -206,7 +206,7 @@ export default function Footer() {
 
           {/* Client Concierge */}
           <div>
-            <h4
+            <h3
               className="eyebrow"
               style={{
                 marginBottom: '16px',
@@ -217,7 +217,7 @@ export default function Footer() {
               }}
             >
               Help & Support
-            </h4>
+            </h3>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <li>
                 <a
