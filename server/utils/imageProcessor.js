@@ -1,6 +1,17 @@
-import sharp from 'sharp';
 import path from 'path';
 import fs from 'fs';
+
+let sharpModule = null;
+async function getSharp() {
+  if (sharpModule) return sharpModule;
+  try {
+    const mod = await import('sharp');
+    sharpModule = mod.default || mod;
+    return sharpModule;
+  } catch {
+    return null;
+  }
+}
 
 /**
  * Automatically converts an uploaded JPG/PNG image into WebP format
@@ -36,6 +47,16 @@ export async function convertToWebP(filePath) {
   const webpPath = path.join(dir, webpFilename);
 
   try {
+    const sharp = await getSharp();
+    if (!sharp) {
+      // If sharp is not installed in the host runtime, graceful fallback to original
+      return {
+        originalPath: filePath,
+        webpPath: null,
+        webpFilename: null,
+      };
+    }
+
     await sharp(filePath)
       .webp({ quality: 82, effort: 4 })
       .toFile(webpPath);

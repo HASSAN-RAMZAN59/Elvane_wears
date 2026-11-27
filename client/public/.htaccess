@@ -2,9 +2,7 @@
   RewriteEngine On
   RewriteBase /
 
-  # Dynamic XML Sitemap and robots direct routing
-  RewriteRule ^sitemap\.xml$ /api/sitemap.xml [L]
-  RewriteRule ^robots\.txt$ /api/robots.txt [L]
+  # Serve existing files directly (robots.txt, sitemap.xml, assets, images)
 
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
